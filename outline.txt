@@ -1,0 +1,259 @@
+# Learning Data Science with LLMs
+
+Audience: Undergraduates two years into a degree. Some high-school Python,
+unused for years. Want to make charts and trust their results. Already use
+LLMs for writing and search. Worried about deskilling, job loss, and the
+social and environmental costs of AI tools.
+
+Each session is one hour. Each session uses a different example.
+
+In sessions 1-6 the LLM writes all code. Learners focus on writing prompts,
+running the code they receive, and interpreting the output. In sessions 7-12
+learners begin reading what the LLM produced well enough to catch errors and
+understand what happened, but still do not write code from scratch.
+
+Data sometimes comes from SQLite files. The LLM handles loading these into
+dataframes; learners do not write or read SQL.
+
+Each session introduces at most one new statistical concept, building
+toward a working understanding of mean, median, spread, sampling bias,
+correlation, probability, regression, inference, hypothesis testing,
+and confidence intervals.
+
+## Session 1: Introduction
+
+-   Domain: the tutorial itself
+-   Statistical concept: what statistics is for
+-   Goals:
+    -   Understand what this course will teach and why it matters
+    -   See how researchers actually use data science tools today
+    -   Articulate what LLMs can and cannot do as coding assistants
+-   Content:
+    -   What is data science? (turning messy observations into defensible claims)
+    -   Why Python? Why not spreadsheets? (scale, reproducibility, sharing)
+    -   What LLMs actually do when they generate code (pattern matching, not
+        reasoning); why this matters for trusting their output
+    -   The social and environmental costs of LLMs: real numbers, honest tradeoffs
+    -   What the course will build, session by session
+    -   Statistics as the discipline of drawing conclusions from imperfect data:
+        why every number in a research paper has uncertainty behind it
+-   No coding in this session. Discussion and orientation only.
+
+## Session 2: First Steps
+
+-   Domain: global surface temperatures (one CSV file, one column)
+-   Statistical concept: mean and median
+-   Goals:
+    -   Open a terminal and run a Python script
+    -   Use uv to create an environment and install packages
+    -   Prompt an LLM to compute and interpret the mean and median of a column
+-   Content:
+    -   Opening the terminal; the working directory; ls, cd, pwd
+    -   What uv does and why we use it instead of pip directly
+    -   Prompting an LLM to write "read a CSV and print the first five rows";
+        copying the result into a file; running it
+    -   Prompting: "compute the mean and median of the temperature column"
+    -   Mean vs. median in plain English: why they differ when the data is skewed,
+        and which one to report depending on whether outliers matter
+    -   The copy-paste-run loop: what we will do in every session from here on
+
+## Session 3: Tables
+
+-   Domain: bird survey counts from a national park
+-   Statistical concept: spread (standard deviation and range)
+-   Goals:
+    -   Prompt an LLM to load tabular data and describe what it contains
+    -   Interpret shape, column names, and data types
+    -   Ask the LLM to compute spread and explain what it means for this data
+-   Content:
+    -   What a dataframe is (a table with named columns and typed data)
+    -   Prompting: "load this CSV and tell me how many rows and columns it has
+        and what each column contains"
+    -   Reading the output: what shape, dtypes, and a sample row tell you
+    -   Prompting: "compute the standard deviation and range of the count column"
+    -   Standard deviation in plain English: how far a typical observation sits
+        from the mean; range as the distance from smallest to largest
+    -   Interpreting the result: a high standard deviation for bird counts means
+        survey sites vary a lot, not that the data is wrong
+
+## Session 4: Cleaning
+
+-   Domain: patient discharge records (real-world messiness)
+-   Statistical concept: sampling bias
+-   Goals:
+    -   Prompt an LLM to find missing values and inconsistent categories
+    -   Interpret before-and-after output to confirm cleaning worked
+    -   Explain how missing data can make a sample unrepresentative
+-   Content:
+    -   Why real data is always dirty (data entry, format conversions, merges)
+    -   Prompting: "show me how many missing values each column has"
+    -   Prompting: "show me every distinct value in the gender column" and
+        interpreting the resulting list ("M", "Male", "male", "F", "female", ...)
+    -   Prompting: "normalize those values so only 'male' and 'female' appear";
+        running the result; checking the distinct values again to confirm
+    -   Sampling bias: if records for one patient group are missing more often
+        than others, any conclusion drawn from the cleaned data may not apply
+        to the full population, and the LLM has no way to warn you about this
+
+## Session 5: Summarizing
+
+-   Domain: municipal budget expenditures by department and year
+-   Statistical concept: central tendency (mean, median, and mode together)
+-   Goals:
+    -   Prompt an LLM to group data and compute aggregations
+    -   Distinguish mean, median, and mode and know when each is appropriate
+    -   Sanity-check a summary against a known published figure
+-   Content:
+    -   What "group by" means in plain English (one row per department per year,
+        not one row per spending item)
+    -   Prompting: "show me total, mean, and median spending by department for
+        each year, sorted by department name"
+    -   Mode for categorical data: prompting "what is the most common department
+        category in this dataset?" and explaining what mode means
+    -   When mean misleads: one department with a very large budget pulls the
+        mean up, making the median a fairer summary of a typical department
+    -   Sanity-checking: finding the total in the original report and confirming
+        the LLM's number matches
+
+## Session 6: First Charts
+
+-   Domain: exoplanet orbital periods and distances from their host stars
+-   Statistical concept: correlation
+-   Goals:
+    -   Prompt an LLM to create a scatter plot and save it to a file
+    -   Interpret whether the chart answers the question you asked
+    -   Explain what correlation means and how to read it from a scatter plot
+-   Content:
+    -   Why looking at data before computing statistics is essential
+        (Anscombe's quartet: four datasets with identical means and variances
+        but completely different shapes)
+    -   Prompting: "make a scatter plot of orbital period on the x axis and
+        distance on the y axis, colored by planet type, and save it as a PNG"
+    -   Correlation in plain English: when one variable tends to increase as
+        another increases (positive), decrease (negative), or show no pattern
+    -   Prompting: "compute the correlation between orbital period and distance"
+        and matching the number to what the scatter plot shows
+    -   Iterating on prompts to improve the chart: log scales, axis labels,
+        removing extreme outliers — each time re-running and checking the result
+
+## Session 7: Better Prompts
+
+-   Domain: soil chemistry measurements across field sites
+-   Statistical concept: probability
+-   Goals:
+    -   Identify what information an LLM needs to write useful data-science code
+    -   Write prompts that include data shape, goal, and constraints
+    -   Interpret a probability as a proportion and connect it to observed counts
+-   Content:
+    -   Why vague prompts produce vague code: the LLM invents column names
+        it has not been told
+    -   Anatomy of a useful prompt: data description (columns, types, a sample
+        row) + goal + constraints (units, expected range)
+    -   Prompting: "what proportion of soil samples exceed the safe lead threshold?"
+    -   Probability as a proportion: if 23 of 200 samples exceed the threshold,
+        the probability is 0.115, meaning about 1 in 9 — not a certainty, not a rarity
+    -   Giving the LLM a two-row sample of the data in the prompt to anchor its
+        column names; re-prompting when the first result is wrong
+
+## Session 8: Dates and Times
+
+-   Domain: monthly influenza case counts by province, 2010-2023
+-   Statistical concept: probability applied to seasonal patterns
+-   Goals:
+    -   Prompt an LLM to parse and work with date columns
+    -   Interpret a line chart that shows change over time
+    -   Use probability to describe how often a seasonal pattern occurs
+-   Content:
+    -   Why dates are not plain text: "March 5" and "2024-03-05" mean the same
+        thing but a computer treats them differently until told otherwise
+    -   Prompting: "load this CSV and convert the date column to an actual date type"
+    -   Prompting: "plot case counts over time as a line chart" and reading the result
+    -   Prompting: "group by month-of-year and show the average across all years"
+        to reveal seasonal patterns; interpreting the bar chart that results
+    -   Prompting: "in what fraction of years did January have the highest case count?"
+        connecting the answer back to probability as a proportion of observed outcomes
+    -   What to check: are the dates in order? is there a gap suggesting missing data?
+
+## Session 9: Joining Data
+
+-   Domain: weather station readings (one CSV) and station metadata (one CSV)
+-   Statistical concept: regression
+-   Goals:
+    -   Explain in plain English what a join does and when it is needed
+    -   Prompt an LLM to join two dataframes and interpret the result
+    -   Interpret a regression line as a summary of a relationship between variables
+-   Content:
+    -   Why data arrives in separate files: readings collected by one team,
+        station locations recorded by another
+    -   Prompting: "combine the readings dataframe and the stations dataframe so
+        each reading row also shows the station's elevation"
+    -   Checking the result: does every reading row now have an elevation?
+        Are there any nulls that were not there before?
+    -   Prompting: "is there a relationship between elevation and temperature?
+        add a regression line to the scatter plot"
+    -   Regression in plain English: the line that best summarizes the trend,
+        showing how much temperature tends to change per metre of elevation gain;
+        it is a summary, not a law, so points will scatter around it
+
+## Session 10: Telling Stories
+-   Domain: survey responses on study habits and exam outcomes
+-   Statistical concept: correlation vs. causation
+-   Goals:
+    -   Choose chart types that match the question being asked
+    -   Prompt an LLM to create bar charts, line charts, and faceted charts
+    -   Explain why a correlation between two variables does not prove one causes the other
+-   Content:
+    -   Matching chart type to question: counts (bar), trends (line),
+        distributions (histogram), relationships (scatter)
+    -   Prompting: "make a bar chart of average exam score by study-hours
+        bracket, with one panel per year of study" and reading the result
+    -   The chart shows students who study more score higher: why this does not
+        prove that studying more causes higher scores (students who feel confident
+        may study more and also score higher for independent reasons)
+    -   Prompting to fix a misleading chart: "the y axis starts at 60; start it
+        at 0 so the differences are not exaggerated"
+    -   What the LLM cannot judge: whether the question the chart answers is
+        the question worth asking
+
+## Session 11: Checking Your Work
+
+-   Domain: energy consumption data with a hidden unit error
+-   Statistical concept: inference and hypothesis testing
+-   Goals:
+    -   Verify LLM output by checking it against known values and common sense
+    -   Interpret a hypothesis test result without misreading it as certainty
+    -   Recognize that a confident-sounding LLM answer is not a correct answer
+-   Content:
+    -   The scenario: the LLM produces a summary off by a factor of 1000 because
+        one file uses megawatt-hours and another uses kilowatt-hours
+    -   Strategies that do not require reading code: check a single known row
+        by hand; compare the total to a published figure; ask the LLM "what
+        units did you assume for each column?"
+    -   Prompting: "run a t-test to check whether consumption differs significantly
+        between the two regions" and reading the p-value
+    -   Inference and hypothesis testing in plain English: we assume there is no
+        difference (the null hypothesis), then ask how surprising our data would
+        be if that were true; a small p-value means "pretty surprising", not "proven"
+    -   Why a p-value below 0.05 is not a guarantee, and why a unit error can
+        produce a significant result that means nothing
+
+## Session 12: Conclusion
+
+-   Domain: learners' own research questions
+-   Statistical concept: confidence intervals
+-   Goals:
+    -   Connect course skills to real research workflows
+    -   Interpret a confidence interval and explain what it does and does not mean
+    -   Form a realistic view of LLMs as tools with real costs and real limits
+-   Content:
+    -   Review: the workflow built across sessions (prompt -> run -> interpret
+        -> sanity-check -> refine -> chart -> verify)
+    -   Prompting: "compute the 95% confidence interval for the mean of this column"
+    -   Confidence intervals in plain English: if we repeated this study many times,
+        95% of the intervals we computed would contain the true mean — it is a
+        statement about the method, not a guarantee about this particular interval
+    -   How to find help when the LLM fails: official documentation, forums,
+        asking a colleague who codes
+    -   The environmental and labor costs of LLMs: what we know, what we don't,
+        and how to make an informed choice about when to use them
+    -   Where to go next: more statistics, machine learning, reproducible research
