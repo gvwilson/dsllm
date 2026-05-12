@@ -69,8 +69,6 @@ FIXME: is Polars installed? What *is* Polars? How can we expect learners to know
     -   For most Canadian cities the annual mean will be between -10° and +15° C
     -   If the number is in the hundreds, the LLM likely read the wrong column
 
-## Why Mean and Median Differ
-
 *Why would the mean and median of a dataset ever be different numbers?*
 
 -   The mean is the sum of all values divided by the count
@@ -100,6 +98,10 @@ FIXME: is Polars installed? What *is* Polars? How can we expect learners to know
     -   Running cells out of order can produce outputs that no longer match the code
     -   Use "Kernel → Restart and Run All" before sharing a notebook to confirm everything runs cleanly
 -   The combination of the data file and the saved notebook is the smallest unit of reproducible analysis
+
+## Saving Prompts
+
+FIXME: something on CLAUDE.md or equivalent file to avoid repeating yourself, with "use Polars" and similar prompts
 
 ## Check Understanding
 
