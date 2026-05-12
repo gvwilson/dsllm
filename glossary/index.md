@@ -49,8 +49,11 @@
 ## L
 
 <span id="llm">large language model</span> (LLM)
-:   A machine-learning system trained on large amounts of text that generates new text by predicting the most plausible next word given everything before it.
-    LLMs can write code, summarize documents, and answer questions, but they do not reason about problems---they produce plausible-sounding text based on patterns in their training data.
+:   A machine-learning system trained on large amounts of text that generates new text
+    by predicting the most plausible next word given everything before it.
+    LLMs can write code, summarize documents, and answer questions,
+	but they do not reason about problems.
+	They produce plausible-sounding text based on patterns in their training data.
 
 ## M
 
@@ -66,7 +69,7 @@
 <span id="missing-value">missing value</span>
 :   A data point that was not recorded or was lost.
     Missing values are represented differently in different datasets: as blank cells, as special codes like `?`, `-99`, or `NA`, or as the special null marker that database systems use.
-    How missing values are handled---dropped, filled in, or kept---affects every analysis that uses the column.
+    How missing values are dropped, filled in, or kept affects every analysis that uses the column.
 
 ## N
 

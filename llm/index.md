@@ -56,7 +56,7 @@
 
 ## Mean and Median
 
--   The [%g mean "mean" %] is the sum of all values divided by the count---what most people call the average
+-   The [%g mean "mean" %] is the sum of all values divided by the count (also called the average)
 -   The [%g median "median" %] is the middle value when all observations are sorted from smallest to largest
 
 *Compute the mean and median of the monthly mean temperature column.*
@@ -116,7 +116,8 @@
     -   "Always use Altair for charts."
     -   "Treat blank cells and the values U, Q, and N as missing unless I say otherwise."
     -   "Print the first five rows after reading any CSV file."
--   Custom instructions do not replace careful prompting---you still need to give the LLM the column names and goal for each specific task
+-   Custom instructions do not replace careful prompting
+    -   You still need to give the LLM the column names and goal for each specific task
     -   They only save you from repeating the same background preferences in every session
 
 ## Check Understanding

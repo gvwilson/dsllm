@@ -21,9 +21,10 @@
 
 *Why do different columns have different types, and why does it matter?*
 
--   A station number like `08MF065` looks like text but is stored as a string---arithmetic on station IDs is meaningless
+-   A station number like `08MF065` looks like text but is stored as a string, so arithmetic on station IDs is meaningless
     -   Polars reads it correctly as a string by default
-    -   Date columns stored as text cannot be sorted chronologically without conversion---confirm the type of any date column before using it in a time-series analysis
+    -   Date columns stored as text cannot be sorted chronologically without conversion
+	-   Confirm the type of any date column before using it in a time-series analysis
 
 ## Shape, Types, and Sample Rows
 
@@ -57,9 +58,10 @@ or
 [%inc spread_flow.py %]
 
 -   Run the cell and look at the numbers
-    -   A standard deviation larger than the mean is common for streamflow data---most months are near baseflow, but spring snowmelt can produce flows orders of magnitude higher
-    -   A range of zero would mean every observation is identical---clearly wrong for river flow data
-    -   A negative minimum would mean a data entry error---flow cannot be negative
+    -   A standard deviation larger than the mean is common for streamflow data:
+	    most months are near baseflow, but spring snowmelt can produce flows orders of magnitude higher
+    -   A range of zero would mean every observation is identical: clearly wrong for river flow data
+    -   A negative minimum would mean a data entry error: flow cannot be negative
 
 ## Interpreting High Spread
 
@@ -67,7 +69,7 @@ or
 
 -   [%g standard-deviation "Standard deviation" %] measures how far a typical observation sits from the mean
     -   If the mean flow is 50 m³/s and the standard deviation is 200 m³/s, most months are far from the average
-    -   This is not a data error---Canadian rivers experience dramatic seasonal variation
+    -   This is not a data error: Canadian rivers experience dramatic seasonal variation
     -   A prairie river fed by snowmelt may run nearly dry in late summer and surge to hundreds of m³/s in May
 -   [%g stat-range "Range" %] is the distance from the smallest to the largest value
     -   A high range reflects the difference between the lowest late-summer baseflow and the highest spring flood
@@ -110,18 +112,24 @@ The fix is to cast the column first: `df.with_columns(pl.col("YEAR").cast(pl.Int
 <summary markdown="1">The mean monthly flow is 35 m³/s and the standard deviation is 120 m³/s. A classmate says "the data must be wrong because the standard deviation is larger than the mean." Are they right?</summary>
 
 No.
-A standard deviation larger than the mean is common for streamflow data---it happens when the distribution is right-skewed.
-Most months have low flow near baseflow, but a few months during spring snowmelt have extremely high flows that pull the mean upward while the standard deviation reflects the wide spread.
-The correct response is to plot the distribution and check whether the high values are physically plausible, not to assume the data is wrong.
+A standard deviation larger than the mean is common for streamflow data;
+it happens when the distribution is [%g right-skewed "right-skewed" %].
+Most months have low flow near baseflow,
+but a few months during spring snowmelt have extremely high flows that pull the mean upward
+while the standard deviation reflects the wide spread.
+The correct response is to plot the distribution and check whether the high values are physically plausible,
+not to assume the data is wrong.
 
 </details>
 
 <details markdown="1">
 <summary markdown="1">You filter to station `02GA010` and get 0 rows. The documentation says this station has records going back to 1912. List two things you would check.</summary>
 
-First, check whether the station identifier column is named `STATION_NUMBER` in the actual CSV---it might be `Station_Number`, `stn_id`, or something else entirely.
+First, check whether the station identifier column is named `STATION_NUMBER` in the actual CSV:
+it might be `Station_Number`, `stn_id`, or something else entirely.
 Print `df.columns` to see the exact names before filtering.
-Second, check whether the value `"02GA010"` is stored with the same capitalisation and zero-padding in the data---if the file uses `"2GA010"` without the leading zero, the filter will not match.
+Second, check whether the value `"02GA010"` is stored with the same capitalisation and zero-padding in the data.
+If the file uses `"2GA010"` without the leading zero, the filter will not match.
 Print `df["STATION_NUMBER"].head()` to see the actual format.
 
 </details>
@@ -131,7 +139,8 @@ Print `df["STATION_NUMBER"].head()` to see the actual format.
 
 Yes, 99 999 is a suspicious round number that may be a sentinel value used to indicate an error or a missing data code in HYDAT's historic records.
 Check the HYDAT data dictionary for what sentinel values are used.
-Filter to rows where FLOW equals 99 999 and examine those rows for other patterns---a specific year, a specific data quality symbol, or a note column.
+Filter to rows where FLOW equals 99 999 and examine those rows for other patterns:
+a specific year, a specific data quality symbol, or a note column.
 Do not include that value in any statistical computation until you have confirmed what it represents.
 
 </details>

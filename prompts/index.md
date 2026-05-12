@@ -15,8 +15,8 @@
     -   It has one row per facility per substance reported, with columns for facility name, province, substance name (in English and French), the quantity released, and the units
     -   Under Canadian law, facilities that release more than threshold quantities of listed substances must report them here
 -   Consider the vague prompt: "How many facilities released dangerous amounts of lead?"
-    -   The LLM does not know the column name for substance---it invents one
-    -   It does not know the threshold or the substance name as it appears in the file---it guesses
+    -   The LLM does not know the column name for substance, so it invents one
+    -   It does not know the threshold or the substance name as it appears in the file, so it guesses
     -   The code may run without error and be entirely wrong
 
 [%inc vague_prompt.py %]
@@ -49,9 +49,10 @@
 [%inc lead_prop.py %]
 
 -   Read through the code before running it
-    -   `LEAD_THRESHOLD = 1.0` is a named constant---good
-    -   `LEAD_SUBSTANCE` names the exact string from the file---this will only work if it matches the CSV exactly
-    -   The final print statement shows the proportion and its 1-in-N equivalent---check that both numbers are consistent
+    -   `LEAD_THRESHOLD = 1.0` is a named constant (good)
+    -   `LEAD_SUBSTANCE` names the exact string from the file: this will only work if it matches the CSV exactly
+    -   The final print statement shows the proportion and its 1-in-N equivalent:
+	    check that both numbers are consistent
 
 ## Probability as a Proportion
 
@@ -92,7 +93,8 @@ With the exact column name in the prompt, the LLM cannot invent an alternative.
 <details markdown="1">
 <summary markdown="1">The code filters to `Substance_Name_English == "Lead (and its compounds)"` and returns 0 rows. You can see lead entries in the first few rows of the file. What are two likely causes?</summary>
 
-First, the substance name in the file might use different capitalisation or punctuation---for example, "Lead and its compounds" without parentheses, or "lead (and its compounds)" in lowercase.
+First, the substance name in the file might use different capitalisation or punctuation
+(for example, "Lead and its compounds" without parentheses, or "lead (and its compounds)" in lowercase).
 Print `df["Substance_Name_English"].unique()` and search for rows containing "Lead" to find the exact string.
 Second, the filter may be applied before the year filter, so the correct rows exist in the full data but are excluded by an earlier step.
 Print the dataframe at each step to find where the rows disappear.
@@ -112,7 +114,8 @@ Expand the hand-check to a random sample of rows rather than the first 20.
 <details markdown="1">
 <summary markdown="1">A report says "6% of facilities reporting to NPRI released more than 1 tonne of lead compounds." Someone reads this and says "my city's factory has a 6% chance of being a lead emitter." What is wrong with this interpretation?</summary>
 
-The 6% is a proportion across all NPRI-reporting facilities, which are a specific, non-random group---facilities large enough to meet reporting thresholds.
+The 6% is a proportion across all NPRI-reporting facilities, which are a specific, non-random group
+(facilities large enough to meet reporting thresholds).
 A factory that does not meet any NPRI reporting threshold is not in the denominator at all.
 The proportion from a non-random, self-selected reporting group cannot be applied as a probability to a specific facility that may or may not be in the group.
 

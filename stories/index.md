@@ -49,9 +49,10 @@ or
     -   This is a difference in group averages, not a measure of what caused it
     -   The bars tell you where each group ended up, not why
 -   Look at the size of the differences: a mean of 64% vs. 66% may look dramatic on a bar chart but is small in absolute terms
-    -   Check the y axis range---if it starts at 60 instead of 0, a 2-point difference looks enormous
+    -   Check the y axis range: if it starts at 60 instead of 0, a 2-point difference looks enormous
 -   Count whether both board types appear in both panels
-    -   If a bar is missing, there are no schools of that type in that language stream---not an error, but worth noting
+    -   If a bar is missing, there are no schools of that type in that language stream
+	-   This is not an error, but worth noting
 
 ## Why Correlation Is Not Causation
 
@@ -79,7 +80,7 @@ or
 
 -   Compare the two charts side by side
     -   In the version starting at 55, a 3-point difference looks large
-    -   In the version starting at 0, the same difference looks small relative to the full 0-100 scale---which is more honest
+    -   In the version starting at 0, the same difference looks small relative to the full 0-100 scale, which is more honest
 -   Starting a bar chart axis above zero is one of the most common ways charts mislead; always start bar charts at zero unless you have an explicit reason not to
 
 ## Validating Each Panel
@@ -114,7 +115,8 @@ A scatter plot would work but lacks the visual connection between years.
 
 Two errors.
 First, 67 minus 64 is 3 percentage points, not 5%.
-Second, on a scale from 0 to 100, a 3-point difference is 3% of the full scale---but the y axis starting at 60 makes the Catholic bar look nearly twice as tall as the Public bar.
+Second, on a scale from 0 to 100, a 3-point difference is 3% of the full scale,
+but the y axis starting at 60 makes the Catholic bar look nearly twice as tall as the Public bar.
 The correct description is "Catholic schools had a mean reading score 3 percentage points higher in this dataset," and the chart should start at 0 to make the difference look proportional.
 
 </details>
@@ -124,16 +126,18 @@ The correct description is "Catholic schools had a mean reading score 3 percenta
 
 Higher-income municipalities generate more local property tax revenue, which funds higher per-pupil spending and also tends to mean students come from families with more resources, more stability, and more access to books and enrichment activities.
 Both the funding and the scores may be driven by the same underlying factor (community wealth) rather than one causing the other.
-Establishing that funding itself causes higher scores would require comparing schools that received different funding levels for reasons unrelated to community wealth---for example, through a policy experiment.
+Establishing that funding itself causes higher scores would require comparing schools that received different funding levels for reasons unrelated to community wealth.
 
 </details>
 
 <details markdown="1">
 <summary markdown="1">You check the panel validation table and find that one cell contains only 2 schools with a mean reading percentage of 91%. Should this bar appear in the published chart? What should you do?</summary>
 
-A mean based on 2 schools is unreliable---one school with an unusual student population could set the mean at any value.
+A mean based on 2 schools is unreliable:
+one school with an unusual student population could set the mean at any value.
 Either remove bars with fewer than a minimum threshold (say, 10 schools) and note the cutoff, or add a note to the chart indicating that cells with fewer than 10 schools are suppressed or flagged.
-EQAO itself suppresses results for small schools for exactly this reason---follow the same practice.
+EQAO itself suppresses results for small schools for exactly this reason;
+you should follow the same practice.
 
 </details>
 

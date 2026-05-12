@@ -70,7 +70,7 @@
 [%inc correlation.py %]
 
 -   The output should be a number between -1 and +1
-    -   A value near 0 means no consistent linear relationship---deeper quakes are not systematically larger
+    -   A value near 0 means no consistent linear relationship, i.e., deeper quakes are not systematically larger
     -   A positive value means deeper quakes tend to be larger; a negative value means the opposite
     -   The scatter plot will tell you whether the relationship is linear or curved
 
@@ -98,7 +98,7 @@
 -   Prompts rarely produce a perfect chart on the first try
 -   Common improvements to ask for:
     -   "Add transparency (opacity 0.4) so overlapping points are visible."
-    -   "Remove earthquakes with magnitude below 1.5---they clutter the chart without adding information."
+    -   "Remove earthquakes with magnitude below 1.5: they clutter the chart without adding information."
     -   "Change the x axis label to 'Depth (km)' and the y axis label to 'Magnitude'."
 -   After each change, re-run the cell and look at the new PNG
     -   If the chart looks worse, describe what changed and ask the LLM to revert that part

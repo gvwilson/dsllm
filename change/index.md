@@ -34,7 +34,8 @@ or
 -   Run the cell and open the PNG
     -   The chart should show a repeating winter spike pattern
     -   Different years appear as different coloured lines
-    -   The seasonal pattern is immediately visible---this is why you plot before computing anything
+    -   The seasonal pattern is immediately visible
+	-   This is why you plot before computing anything
 
 ## Fitting a Trend Line
 
@@ -63,7 +64,7 @@ or
 
 -   A [%g regression "regression" %] line is the line that minimizes the total squared distance from each point to the line
     -   It is the best straight-line summary of the overall direction of the data
-    -   It does not describe any individual year---most years will be above or below the line
+    -   It does not describe any individual year: most years will be above or below the line
 -   The slope of the line tells you the direction and rate of change
     -   A slope of +0.1 means flu peak severity increases by about 0.1 percentage points per year on average
     -   A slope near 0 means no consistent trend over the period
@@ -79,7 +80,9 @@ or
     -   Seasonal patterns are short-cycle fluctuations driven by predictable factors (cold weather, school schedules, indoor crowding)
     -   Confusing the spike with a trend is one of the most common mistakes in time-series analysis
 -   A long-term trend is the underlying direction visible across many seasons
-    -   To see the trend, you need to compare the same part of each cycle---the annual peak, or the annual mean---across years
+    -   To see the trend, you need to compare the same part of each cycle,
+	    such as the annual peak or the annual mean,
+		across years
     -   Fitting a trend line to raw weekly data (including all the seasonal variation) will produce a line, but it will not be a meaningful trend
 -   Ask yourself: "Am I comparing like to like?"
     -   Annual peak to annual peak: yes
@@ -106,8 +109,13 @@ or
 <summary markdown="1">You plot annual FluWatch peaks from 1993 to 2023 and fit a trend line. The line has a slope of +0.12 percentage points per year. A classmate says "this proves Canadian flu seasons are getting worse." What is the correct interpretation, and what is missing?</summary>
 
 A slope of +0.12 means Canadian flu peaks have increased by an average of about 0.12 percentage points per year over this period in this dataset.
-It does not prove flu is getting worse---the trend could reverse, surveillance methodology may have changed, and 0.12 pp per year may or may not be practically meaningful.
-What is missing: a confidence interval on the slope (which would show whether the trend is distinguishable from zero) and a check on whether any pandemic years (2009, 2020) are distorting the estimate.
+It does not prove flu is getting worse:
+the trend could reverse,
+surveillance methodology may have changed,
+and 0.12 pp per year may or may not be practically meaningful.
+What is missing: a confidence interval on the slope
+(which would show whether the trend is distinguishable from zero)
+and a check on whether any pandemic years (2009, 2020) are distorting the estimate.
 
 </details>
 
@@ -126,14 +134,18 @@ A single year driven by a pandemic is qualitatively different from a severe seas
 
 Fitting a trend line to raw weekly data mixes the seasonal pattern with any long-term trend.
 If surveillance weeks shifted slightly over time (for example, more winter-week data in recent years due to expanded reporting), the raw weekly series will slope upward for reasons unrelated to actual flu severity.
-The correct approach is to compare annual peaks or annual means---comparable points across years---rather than raw weekly values.
+The correct approach is to compare annual peaks or annual means
+(i.e., comparable points across years)
+rather than raw weekly values.
 
 </details>
 
 <details markdown="1">
 <summary markdown="1">You ask the LLM to compute the slope of the trend line and it returns -0.09. But when you look at the chart, the line clearly slopes upward to the right. What should you do?</summary>
 
-A negative slope with an upward-sloping chart means the LLM computed the regression with the axes reversed---fitting year as a function of ILI rather than ILI as a function of year---or reported the slope of a different variable.
+A negative slope with an upward-sloping chart means the LLM computed the regression with the axes reversed
+i.e., fitted year as a function of ILI rather than ILI as a function of year,
+or reported the slope of a different variable.
 Ask the LLM: "In the regression, which variable is x (the predictor) and which is y (the response)?"
 Do not report the slope until the sign matches what you see in the chart.
 

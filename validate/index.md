@@ -23,7 +23,8 @@
 [%inc unit_error.py %]
 
 -   Run the cell and look at the ratio
-    -   Alberta produces far more gas than it consumes---a ratio well above 1 for a major exporting province is plausible
+    -   Alberta produces far more gas than it consumes:
+	    a ratio well above 1 for a major exporting province is plausible
     -   If the ratio is in the hundreds or in the thousandths, there is a unit error
 
 ## Checking Without Reading Code
@@ -78,7 +79,8 @@ or
 -   Rejecting the [%g null-hypothesis "null hypothesis" %] (the assumption of no difference) at p < 0.05 means "this result is surprising enough that we should take it seriously"
     -   It does not mean the difference is large enough to matter practically
     -   It does not mean the measurement was correct
--   A unit error that inflates one column by 1 000× will produce a very significant p-value---the difference is real, but you measured the wrong thing
+-   A unit error that inflates one column by 1 000× will produce a very significant p-value
+    -   The difference is real, but you measured the wrong thing
 
 ## When Significance Misleads
 
@@ -89,7 +91,7 @@ or
     -   A perfectly measured wrong quantity can be highly significant
 -   The unit error in this session is an example
     -   After the error, production appears 1 000 times larger relative to consumption than it should
-    -   That difference is highly statistically significant---and entirely artifactual
+    -   That difference is highly statistically significant, and entirely artifactual
 -   Before interpreting a significant p-value, confirm the inputs are correct
     -   Do the units match? Do the columns contain what you think they contain?
     -   Has someone checked a known row by hand?
@@ -110,7 +112,7 @@ If Alberta produced roughly 163 000 in 10³ m³ units (163 million m³) and cons
 <summary markdown="1">A t-test returns p = 0.0004. A classmate says "this proves Alberta and BC have different production levels." Correct their interpretation in one or two sentences.</summary>
 
 p = 0.0004 means that if Alberta and BC truly had identical production levels, only 0.04% of random samples would show a difference this large.
-It does not prove they are different---it says the observed difference is very unlikely under the null hypothesis---and it says nothing about whether the units were correct or whether the difference is large enough to be practically meaningful.
+It does not prove they are different. It says the observed difference is very unlikely under the null hypothesis, and it says nothing about whether the units were correct or whether the difference is large enough to be practically meaningful.
 
 </details>
 

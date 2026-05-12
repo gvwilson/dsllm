@@ -55,8 +55,8 @@ or
 [%inc add_ci.py %]
 
 -   The `ci_low` and `ci_high` columns bracket the mean
-    -   For departments with only a few contracts, the interval is wide---there is not enough data to be precise
-    -   For departments with hundreds of contracts, the interval is narrow---the mean is well-estimated
+    -   For departments with only a few contracts, the interval is wide: there is not enough data to be precise
+    -   For departments with hundreds of contracts, the interval is narrow: the mean is well-estimated
 
 ## Reading a Confidence Interval
 
@@ -89,7 +89,7 @@ or
 <details markdown="1">
 <summary markdown="1">You compute a 95% confidence interval of ($480K, $620K) for mean contract size in one department. A classmate says "there is a 95% chance the true mean is between $480K and $620K." What is wrong with this statement?</summary>
 
-The true mean is a fixed value---it either is or is not in the interval, with probability 1 or 0.
+The true mean is a fixed value: it either is or is not in the interval, with probability 1 or 0.
 The 95% refers to the procedure: if you built many intervals from different samples, 95% of them would contain the true mean.
 This particular interval either contains the true mean or does not; we just do not know which.
 
@@ -107,8 +107,11 @@ A formal hypothesis test would confirm this more rigorously, but non-overlapping
 <details markdown="1">
 <summary markdown="1">Your computed total for one department is $2.8 billion, but the Public Accounts show $1.4 billion. List two things you would check before concluding the data is wrong.</summary>
 
-First, check whether the years match---the dataset might include a different fiscal year than the Public Accounts reference, or might include amendments and modifications not in the original totals.
-Second, check whether the LLM summed all rows or only a subset---it may have failed to filter by department correctly and included other departments.
+First, check whether the years match:
+the dataset might include a different fiscal year than the Public Accounts reference,
+or might include amendments and modifications not in the original totals.
+Second, check whether the LLM summed all rows or only a subset:
+it may have failed to filter by department correctly and included other departments.
 Ask the LLM to print the number of rows it summed and the range of years included.
 
 </details>

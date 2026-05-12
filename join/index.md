@@ -59,12 +59,13 @@ or
 
 -   A left join keeps every row from the left table (temperatures) and adds matching columns from the right (stations)
     -   If a station ID appears in temperatures but not in stations, its province and elevation will be null
-    -   Many nulls after the join mean the station IDs do not match between files---a common problem when data is compiled from different sources
+    -   Many nulls after the join mean the station IDs do not match between files
+	-   This is a common problem when data is compiled from different sources
 -   Check how many rows have null province after the join:
 
 [%inc check_join.py %]
 
--   If the null count is zero, every temperature record matched a station---the join is complete
+-   If the null count is zero, every temperature record matched a station: the join is complete
     -   If the null count is large, inspect a few unmatched IDs and compare them to the station file format
 
 ## Comparing Groups
@@ -118,7 +119,7 @@ If they match after stripping a prefix, ask the LLM to normalize the IDs before 
 <summary markdown="1">The joined dataframe has 210 000 rows but the temperature file has only 200 000. A classmate says "the join added information so more rows is expected." Are they right?</summary>
 
 No.
-A left join cannot add rows---every row in the result corresponds to exactly one row in the left table.
+A left join cannot add rows: every row in the result corresponds to exactly one row in the left table.
 Having more rows after the join means the station inventory has duplicate entries for some station IDs.
 Each temperature reading for a duplicated station matched multiple station rows and was replicated.
 Find duplicated station IDs with `stations.group_by("station_id").count().filter(pl.col("count") > 1)`.

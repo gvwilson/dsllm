@@ -20,7 +20,8 @@
 -   Reproducibility means that running the same code on the same data produces the same result
     -   A saved notebook is a start, but reproducibility also requires the data and the software environment to be available and unchanged
 -   This session uses atmospheric CO2 data from the Environment and Climate Change Canada Alert Station [%b alert-co22025 %]
-    -   Alert, Nunavut sits at 82.5° N on the tip of Ellesmere Island---the northernmost point of Canada and one of the most remote places on Earth
+    -   Alert, Nunavut sits at 82.5° N on the tip of Ellesmere Island
+	    (the northernmost point of Canada and one of the most remote places on Earth)
     -   Continuous CO2 measurements have been taken there since 1975 as part of the Global Atmosphere Watch program
     -   Like the better-known Mauna Loa record from Hawaii, the Alert record shows the same unmistakable upward trend in atmospheric CO2
 
@@ -67,7 +68,7 @@ or
 -   Visit [ECCC Alert Station][eccc-alert] and view the official atmospheric CO2 graphic
     -   The x axis should cover the same year range (1975 to present)
     -   The y axis scale (approximately 330 to 425 ppm) should match
-    -   The shape---rising curve with seasonal sawtooth---should be identical
+    -   The shape (a rising curve with seasonal sawtooth) should be identical
 -   If your chart and the official figure disagree:
     -   Check whether you dropped the right rows (missing values coded as -999.99, not as 0 or blank)
     -   Check whether you used the `average` column rather than the `deseasonalized` column
@@ -102,7 +103,7 @@ or
 ## Check Understanding
 
 <details markdown="1">
-<summary markdown="1">You share a notebook with a colleague. They install the packages fresh and run all cells, but the Altair chart looks slightly different from yours---the axis labels are in a different font and the line is a slightly different shade of blue. Is the analysis reproducible?</summary>
+<summary markdown="1">You share a notebook with a colleague. They install the packages fresh and run all cells, but the Altair chart looks slightly different from yours: the axis labels are in a different font and the line is a slightly different shade of blue. Is the analysis reproducible?</summary>
 
 Yes, if the underlying numbers are the same.
 Visual rendering details like fonts and colour shades can vary between operating systems, browser versions, and Altair versions without affecting the data or computations.

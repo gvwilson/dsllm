@@ -79,9 +79,13 @@
 <summary markdown="1">A colleague says "I don't need to check the LLM's output because it's always right for standard tasks." What is the flaw in this reasoning, and how would you explain it?</summary>
 
 The LLM produces plausible text, not correct answers.
-For standard tasks it is right most of the time, which is what makes unchecked errors dangerous---they look like correct output.
-A unit error, a wrong column name, or a dropped null can all produce results that appear reasonable without a sanity check.
-The right approach is to check every result against something the LLM did not generate: a known row, a published figure, a by-hand calculation.
+For standard tasks it is right most of the time,
+which is what makes unchecked errors dangerous:
+they look like correct output.
+A unit error, a wrong column name, or a dropped null
+can all produce results that appear reasonable without a sanity check.
+The right approach is to check every result against something the LLM did *not* generate,
+such as a known row or a manual calculation.
 
 </details>
 
@@ -127,7 +131,7 @@ Include the data source, the cleaning steps, the software used, and the statisti
 ### Find a Retraction
 
 Search for a published paper in your field that was retracted because of a data or statistical error.
-Identify which step in the workflow---data cleaning, analysis, interpretation, or reporting---introduced the error.
+Identify which step in the workflow introduced the error.
 Describe what check from this course would have caught it.
 
 ### Teach It Back
