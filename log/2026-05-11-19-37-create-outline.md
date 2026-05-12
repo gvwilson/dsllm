@@ -15,6 +15,18 @@
    S5 central tendency, S6 correlation, S7 probability, S8 probability applied
    to seasonal patterns, S9 regression, S10 correlation vs causation,
    S11 inference/hypothesis testing, S12 confidence intervals.
+5. Finale does not count against 12-session limit.
+6. Move charts to session 3 (was session 6); move tables to session 6 (was 3).
+7. Add reproducibility bullet to session 2; make session 12 about reproducibility;
+   move confidence intervals to session 5 (replacing central tendency, which was
+   already covered in session 2).
+8. Replace dates-and-times session with "Tracking Change" (slug: change);
+   absorbs regression from old session 9.
+9. Session 9 (joining) statistical concept changed from regression to comparing groups.
+10. Add validation bullet to every session from 3 onward.
+11. Add real dataset URLs for all sessions; replace study habits with UCI
+    Student Performance dataset.
+12. Remove marimo from stack (user will find replacement notebook app).
 
 ## Actions
 
