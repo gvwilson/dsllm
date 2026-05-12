@@ -36,7 +36,7 @@ FIXME: we can't assume command-line skills for this audience
 -   The dataset for this session is
     the Environment and Climate Change Canada Historical Climate Data [%b eccc-climate2025 %]
     -   Go to [ECCC Climate Data][eccc-climate] and search for a station near you
-	    (e.g., Toronto Pearson International Airport or Vancouver International Airport)
+        (e.g., Toronto Pearson International Airport or Vancouver International Airport)
     -   Select "Monthly" data, choose all available years, and download as CSV
     -   The file is named something like `en_climate_monthly_ON_6158731_1840-2025_P1M.csv`
     -   It has one row per month with columns for mean temperature, precipitation, and other observations
@@ -73,7 +73,7 @@ FIXME: is Polars installed? What *is* Polars? How can we expect learners to know
 
 -   The mean is the sum of all values divided by the count
     -   It is pulled toward extreme values:
-	    a few very cold winters raise the magnitude of negative values and pull the mean down
+        a few very cold winters raise the magnitude of negative values and pull the mean down
 -   The median is the middle value when the data is sorted
     -   Exactly half the values are above it and half are below
     -   A few extreme months do not move it much

@@ -7,6 +7,12 @@
     Causation is stronger than correlation: two variables can be correlated without one causing the other.
     Establishing causation usually requires a controlled experiment in which everything except the variable of interest is held constant.
 
+<span id="csv">comma-separated values</span> (CSV)
+:   A plain-text file format for tabular data in which each line is one row and values
+    within a row are separated by commas.
+    The first line is usually a header row listing column names.
+    Empty values are represented by two consecutive commas or by a sentinel like `?` or `-99`.
+
 <span id="confidence-interval">confidence interval</span>
 :   A range of values computed from data such that, if the study were repeated many times,
     a specified percentage (commonly 95%) of the intervals computed would contain the true population value.
@@ -16,12 +22,6 @@
 :   A measure of how consistently two variables move together.
     A positive correlation means both tend to increase together; a negative correlation means one tends to increase as the other decreases.
     Correlation is commonly measured on a scale from -1 (perfect inverse relationship) to +1 (perfect direct relationship), with 0 indicating no linear relationship.
-
-<span id="csv">comma-separated values</span> (CSV)
-:   A plain-text file format for tabular data in which each line is one row and values
-    within a row are separated by commas.
-    The first line is usually a header row listing column names.
-    Empty values are represented by two consecutive commas or by a sentinel like `?` or `-99`.
 
 ## D
 
@@ -101,6 +101,10 @@
 
 ## R
 
+<span id="stat-range">range</span>
+:   The difference between the maximum and minimum values in a dataset.
+    Range is easy to compute but sensitive to a single extreme value; a dataset can have a large range because of one outlier even if almost all values are clustered tightly.
+
 <span id="regression">regression</span>
 :   A statistical method that fits a line (or curve) to a set of data points to summarize the overall relationship between two variables.
     A linear regression line minimizes the total squared distance from each point to the line.
@@ -128,10 +132,6 @@
 :   A measure of how far a typical value in a dataset is from the mean.
     A small standard deviation means most values are clustered near the mean; a large one means they are spread out.
     Standard deviation is in the same units as the original data, making it easier to interpret than variance.
-
-<span id="stat-range">range</span>
-:   The difference between the maximum and minimum values in a dataset.
-    Range is easy to compute but sensitive to a single extreme value; a dataset can have a large range because of one outlier even if almost all values are clustered tightly.
 
 ## T
 

@@ -40,9 +40,10 @@
 -   A [%g llm "large language model" %] (LLM) predicts the most plausible next word given everything before it
     -   It has no model of the world and does not reason about problems
     -   It produces text that resembles the answer to your question
-	    because it has seen thousands of similar questions and answers
+        because it has seen thousands of similar questions and answers
 -   This makes LLMs fast and useful for code that follows common patterns
-    -   "Read a CSV file and print the first five rows" appears thousands of times in public code repositories
+    -   "Read a [%g csv "CSV" %] file and print the first five rows"
+        appears thousands of times in public code repositories
     -   The LLM will produce something that works most of the time
 -   LLMs also fail in specific and predictable ways:
     -   They invent column names that do not exist in your data
@@ -76,7 +77,7 @@
     -   The people whose writing trained these models were not paid for that use
 -   There is a real risk of [%g deskilling "deskilling" %]: if you never practice a skill, you lose it
     -   Using an LLM to avoid reading your own data is different from
-	    using one to automate a tedious step you understand
+        using one to automate a tedious step you understand
     -   This course asks you to use LLMs for the tedious steps and to do the thinking yourself
 
 ## What This Course Does Not Do

@@ -6,8 +6,10 @@
 [eqao]: https://www.eqao.com/the-assessments/data-releases-and-technical-reports/
 [fluwatch]: https://www.canada.ca/en/public-health/services/diseases/flu-influenza/influenza-surveillance.html
 [gc-contracts]: https://open.canada.ca/data/en/dataset/d8f85d91-7dec-4fd1-8055-483b77225d8b
+[git]: https://git-scm.com/
 [hydat]: https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/national-archive-hydat.html
 [ncdb]: https://open.canada.ca/data/en/dataset/1eb9eba7-71d1-4b30-9fb1-30cbdab7e63a
 [npri]: https://www.canada.ca/en/environment-climate-change/services/national-pollutant-release-inventory.html
 [nrcan-quakes]: https://earthquakescanada.nrcan.gc.ca/stndon/NEDB-BNDS/bull-en.php
+[open-canada]: https://open.canada.ca/
 [polars]: https://docs.pola.rs/

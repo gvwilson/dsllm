@@ -12,12 +12,12 @@
 
 -   A set of four small datasets with identical means, variances, and [%g correlation "correlation" %] [%b anscombe1973 %]
     -   Their [%g scatter-plot "scatter plots" %] look completely different:
-	    one is linear, one is curved, one has a single extreme outlier
+        one is linear, one is curved, one has a single extreme outlier
     -   Any statistical summary alone would tell you they are the same;
-	    the charts immediately show they are not
+        the charts immediately show they are not
 -   The lesson: look at your data before computing anything
     -   A suspicious cluster, a curved pattern, or a handful of extreme points
-	    can invalidate a statistical summary
+        can invalidate a statistical summary
 -   Charts are not decoration; they are part of the analysis
 
 *What dataset will we use, and what question will we ask?*
@@ -25,9 +25,9 @@
 -   The dataset for this session is the Natural Resources Canada Earthquake Catalog [%b nrcan-quakes2025 %]
     -   Download the catalog from [NRCan Earthquakes][nrcan-quakes] as `earthquakes.csv`
     -   It has one row per recorded earthquake
-	    with columns for date, location, depth in kilometres, magnitude, and region
+        with columns for date, location, depth in kilometres, magnitude, and region
     -   Canada experiences thousands of earthquakes per year;
-	    most are too small to feel, but British Columbia and Quebec have significant seismic activity
+        most are too small to feel, but British Columbia and Quebec have significant seismic activity
 -   Do deeper earthquakes tend to have larger magnitudes?
     -   Subduction-zone earthquakes (such as those off the BC coast) can be both deep and very large
     -   But the relationship is not guaranteed: the chart will show the actual pattern
@@ -59,7 +59,7 @@
 
 -   A large mismatch is worth investigating before drawing conclusions
     -   If earthquakes in one region are more likely to have missing depth data,
-	    the chart misrepresents that region
+        the chart misrepresents that region
 
 ## Measuring Correlation
 
@@ -88,8 +88,8 @@
     -   This distinction matters more in sessions with human data
 -   A correlation near zero does not mean there is no relationship
     -   There may be a non-linear pattern that a linear correlation cannot capture
-	-   for example, very deep earthquakes in subduction zones tend to be large,
-	    while very shallow ones can be large or small
+    -   for example, very deep earthquakes in subduction zones tend to be large,
+        while very shallow ones can be large or small
 
 ## Iterating on Prompts
 

@@ -58,22 +58,28 @@
 <p><em>Why would data about the same topic be stored in two separate files?</em></p>
 <ul>
 <li>Different teams collect different parts of the picture<ul>
-<li>Temperature readings are collected continuously at each station; station locations and elevations are recorded once when the station is established</li>
-<li>Storing location data in every temperature row wastes space and creates inconsistency: if a station is relocated, you update one row in the station file instead of decades of readings</li>
+<li>Temperature readings are collected continuously at each station;
+    station locations and elevations are recorded once when the station is established</li>
+<li>Storing location data in every temperature row wastes space and creates inconsistency:
+    if a station is relocated, you update one row in the station file instead of decades of readings</li>
 </ul>
 </li>
-<li>The dataset for this session is the Environment and Climate Change Canada Adjusted and Homogenized Canadian Climate Data (AHCCD) [<a class="bib-ref" href="../bibliography/#ahccd2025">ahccd2025</a>]<ul>
-<li>Download both files from <a href="https://www.canada.ca/en/environment-climate-change/services/climate-change/science-research-data/climate-trends-variability/adjusted-homogenized-canadian-climate.html">AHCCD</a>: the annual temperature series (<code>ahccd_temp.csv</code>) and the station inventory (<code>ahccd_stations.csv</code>)</li>
+<li>The dataset for this session is the Environment and Climate Change Canada
+    Adjusted and Homogenized Canadian Climate Data (AHCCD) [<a class="bib-ref" href="../bibliography/#ahccd2025">ahccd2025</a>]<ul>
+<li>Download both files from <a href="https://www.canada.ca/en/environment-climate-change/services/climate-change/science-research-data/climate-trends-variability/adjusted-homogenized-canadian-climate.html">AHCCD</a>:
+    the annual temperature series (<code>ahccd_temp.csv</code>) and the station inventory (<code>ahccd_stations.csv</code>)</li>
 <li>The temperature file has one row per station per year with the mean annual temperature</li>
 <li>The station file has one row per station with name, province, latitude, longitude, and elevation</li>
 </ul>
 </li>
 </ul>
-<p><em>What is a join, in plain English?</em></p>
+<p><em>What is a join?</em></p>
 <ul>
 <li>A join combines two tables by matching rows that share a common value<ul>
-<li>If both tables have a <code>station_id</code> column, a join finds every temperature row and attaches the matching station row to it</li>
-<li>The result is one wide row per temperature record, with both the temperature and the station's province in the same row</li>
+<li>If both tables have a <code>station_id</code> column,
+    a join finds every temperature row and attaches the matching station row to it</li>
+<li>The result is one wide row per temperature record,
+    with both the temperature and the station's province in the same row</li>
 </ul>
 </li>
 <li>Without the join, you cannot answer "what is the mean annual temperature by province?"<ul>

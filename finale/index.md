@@ -65,7 +65,7 @@
     -   A next step is understanding when each is appropriate and what the assumptions behind them are
     -   A good free resource is the OpenIntro Statistics textbook [%b openintro2019 %]
 -   Reproducible research workflows: notebooks are a start, but projects with many collaborators need more
-    -   Version control with [%g git "git" %] tracks who changed what and when
+    -   Version control with [Git][git] tracks who changed what and when
     -   Environments managed with uv or conda ensure that someone else can re-run your analysis on their machine
 -   More Python: this course asked you to read code, not write it
     -   If you want to modify code or write your own analyses, a Python fundamentals course is a natural next step

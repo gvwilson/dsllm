@@ -12,13 +12,13 @@
 
 -   Different teams collect different parts of the picture
     -   Temperature readings are collected continuously at each station;
-	    station locations and elevations are recorded once when the station is established
+        station locations and elevations are recorded once when the station is established
     -   Storing location data in every temperature row wastes space and creates inconsistency:
-	    if a station is relocated, you update one row in the station file instead of decades of readings
+        if a station is relocated, you update one row in the station file instead of decades of readings
 -   The dataset for this session is the Environment and Climate Change Canada
     Adjusted and Homogenized Canadian Climate Data (AHCCD) [%b ahccd2025 %]
     -   Download both files from [AHCCD][ahccd]:
-	    the annual temperature series (`ahccd_temp.csv`) and the station inventory (`ahccd_stations.csv`)
+        the annual temperature series (`ahccd_temp.csv`) and the station inventory (`ahccd_stations.csv`)
     -   The temperature file has one row per station per year with the mean annual temperature
     -   The station file has one row per station with name, province, latitude, longitude, and elevation
 
@@ -26,9 +26,9 @@
 
 -   A join combines two tables by matching rows that share a common value
     -   If both tables have a `station_id` column,
-	    a join finds every temperature row and attaches the matching station row to it
+        a join finds every temperature row and attaches the matching station row to it
     -   The result is one wide row per temperature record,
-	    with both the temperature and the station's province in the same row
+        with both the temperature and the station's province in the same row
 -   Without the join, you cannot answer "what is the mean annual temperature by province?"
     -   Province is only in the station file; temperature is only in the readings file
     -   The join is what makes the question answerable

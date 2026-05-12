@@ -8,11 +8,12 @@
 
 ## The Replication Crisis
 
-*What is the replication crisis, and why does it matter for data science?*
+*Why does replication matter for data science?*
 
 -   Many published scientific findings fail when other researchers try to reproduce them [%b ioannidis2005 %]
     -   In one large study, only about 36% of psychology findings replicated successfully [%b osc2015 %]
     -   Similar problems have been found in medicine, economics, and ecology
+    -   A [%g replication-crisis "replication crisis" %]
 -   A common cause is that the analysis was not saved in a runnable form
     -   The researcher clicked through a spreadsheet, applied some filters, computed a number, and wrote it down
     -   Six months later, neither they nor anyone else can retrace the exact steps

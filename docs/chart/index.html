@@ -50,42 +50,46 @@
 <h1>First Charts</h1>
 <h2>Goals</h2>
 <ul>
-<li>Prompt an LLM to create a <a class="gl-ref" href="../glossary/#scatter-plot">scatter plot</a> and save it to a file.</li>
+<li>Prompt an LLM to create a scatter plot and save it to a file.</li>
 <li>Interpret whether a chart answers the question you asked.</li>
-<li>Explain what <a class="gl-ref" href="../glossary/#correlation">correlation</a> means and how to read it from a scatter plot.</li>
+<li>Explain what correlation means and how to read it from a scatter plot.</li>
 </ul>
 <h2>Why Charts Come First</h2>
 <p><em>What is Anscombe's quartet, and why does it matter before we compute any statistics?</em></p>
 <ul>
-<li>A set of four small datasets constructed by Francis Anscombe in 1973 has identical means, variances, and correlations [<a class="bib-ref" href="../bibliography/#anscombe1973">anscombe1973</a>]<ul>
-<li>Their scatter plots look completely different: one is linear, one is curved, one has a single extreme outlier</li>
-<li>Any statistical summary alone would tell you they are the same; the charts immediately show they are not</li>
+<li>A set of four small datasets with identical means, variances, and <a class="gl-ref" href="../glossary/#correlation">correlation</a> [<a class="bib-ref" href="../bibliography/#anscombe1973">anscombe1973</a>]<ul>
+<li>Their <a class="gl-ref" href="../glossary/#scatter-plot">scatter plots</a> look completely different:
+    one is linear, one is curved, one has a single extreme outlier</li>
+<li>Any statistical summary alone would tell you they are the same;
+    the charts immediately show they are not</li>
 </ul>
 </li>
 <li>The lesson: look at your data before computing anything<ul>
-<li>A suspicious cluster, a curved pattern, or a handful of extreme points can invalidate a statistical summary</li>
-<li>Charts are not decoration; they are part of the analysis</li>
+<li>A suspicious cluster, a curved pattern, or a handful of extreme points
+    can invalidate a statistical summary</li>
 </ul>
 </li>
+<li>Charts are not decoration; they are part of the analysis</li>
 </ul>
-<p><em>What dataset will we use, and what question are we asking?</em></p>
+<p><em>What dataset will we use, and what question will we ask?</em></p>
 <ul>
 <li>The dataset for this session is the Natural Resources Canada Earthquake Catalog [<a class="bib-ref" href="../bibliography/#nrcan-quakes2025">nrcan-quakes2025</a>]<ul>
 <li>Download the catalog from <a href="https://earthquakescanada.nrcan.gc.ca/stndon/NEDB-BNDS/bull-en.php">NRCan Earthquakes</a> as <code>earthquakes.csv</code></li>
-<li>It has one row per recorded earthquake with columns for date, location, depth in kilometres, magnitude, and region</li>
-<li>Canada experiences thousands of earthquakes per year; most are too small to feel, but British Columbia and Quebec have significant seismic activity</li>
+<li>It has one row per recorded earthquake
+    with columns for date, location, depth in kilometres, magnitude, and region</li>
+<li>Canada experiences thousands of earthquakes per year;
+    most are too small to feel, but British Columbia and Quebec have significant seismic activity</li>
 </ul>
 </li>
-<li>The question: do deeper earthquakes tend to have larger magnitudes?<ul>
+<li>Do deeper earthquakes tend to have larger magnitudes?<ul>
 <li>Subduction-zone earthquakes (such as those off the BC coast) can be both deep and very large</li>
-<li>But the relationship is not guaranteed---the chart will show the actual pattern</li>
+<li>But the relationship is not guaranteed: the chart will show the actual pattern</li>
 </ul>
 </li>
 </ul>
 <h2>Drawing the Scatter Plot</h2>
 <p><em>Make a scatter plot of earthquake depth on the x axis and magnitude on the y axis, coloured by region, and save it as a PNG.</em></p>
 <ul>
-<li>Paste this prompt: "Using Polars and Altair, read earthquakes.csv, drop rows where depth or magnitude is missing, make a scatter plot with depth in km on the x axis and magnitude on the y axis coloured by region, and save it as scatter.png."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="scatter.py"><span aria-label="Source: chart/scatter.py" class="inc-path" role="img" tabindex="0" title="chart/scatter.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -112,9 +116,9 @@
 </div>
 <ul>
 <li>Run the cell; the file <code>scatter.png</code> appears in the same folder as the notebook</li>
-<li>Open the PNG to see the chart<ul>
+<li>Open the file to see the chart<ul>
 <li>Most points should cluster at shallow depths and low magnitudes</li>
-<li>The largest earthquakes may appear at a range of depths---look for any pattern</li>
+<li>The largest earthquakes may appear at a range of depths, so look for any pattern</li>
 <li>Different regions (BC, Quebec, Yukon) should appear as distinct colours</li>
 </ul>
 </li>
@@ -123,7 +127,7 @@
 <p><em>How do I check that the chart shows all the data I expected?</em></p>
 <ul>
 <li>Count the rows in the dataframe and compare to the number of points in the chart<ul>
-<li>If the dataframe has 15 000 rows but the chart shows 12 000 points, some data was silently dropped</li>
+<li>If the dataframe has 15,000 rows but the chart shows 12,000 points, some data was silently dropped</li>
 <li>The most common cause is rows with missing values in the columns being plotted</li>
 </ul>
 </li>
@@ -141,14 +145,14 @@
 </div>
 <ul>
 <li>A large mismatch is worth investigating before drawing conclusions<ul>
-<li>If earthquakes in one region are more likely to have missing depth data, the chart misrepresents that region</li>
+<li>If earthquakes in one region are more likely to have missing depth data,
+    the chart misrepresents that region</li>
 </ul>
 </li>
 </ul>
 <h2>Measuring Correlation</h2>
-<p><em>Compute the correlation between earthquake depth and magnitude.</em></p>
+<p><em>Compute the correlation between earthquake depth and magnitude. Drop rows where depth or magnitude is missing.</em></p>
 <ul>
-<li>Paste this prompt: "Using Polars, read earthquakes.csv, drop rows where depth or magnitude is missing, and compute the Pearson correlation between the two columns."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="correlation.py"><span aria-label="Source: chart/correlation.py" class="inc-path" role="img" tabindex="0" title="chart/correlation.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -169,6 +173,10 @@
 </ul>
 </li>
 </ul>
+<p><em>What kind of correlation did you calculate?</em></p>
+<ul>
+<li>Should be Pearson</li>
+</ul>
 <p><em>What does the correlation coefficient actually tell you?</em></p>
 <ul>
 <li>Correlation measures the strength of a linear relationship between two variables<ul>
@@ -182,17 +190,16 @@
 </ul>
 </li>
 <li>A correlation near zero does not mean there is no relationship<ul>
-<li>There may be a non-linear pattern---for example, very deep earthquakes in subduction zones tend to be large, while very shallow ones can be large or small---that a linear correlation cannot capture</li>
+<li>There may be a non-linear pattern that a linear correlation cannot capture</li>
+<li>for example, very deep earthquakes in subduction zones tend to be large,
+    while very shallow ones can be large or small</li>
 </ul>
 </li>
 </ul>
 <h2>Iterating on Prompts</h2>
 <p><em>The chart is hard to read because the points overlap. Adjust the prompt to improve it.</em></p>
 <ul>
-<li>Prompts rarely produce a perfect chart on the first try<ul>
-<li>You might need transparency, better axis labels, a different colour palette, or filtered data</li>
-</ul>
-</li>
+<li>Prompts rarely produce a perfect chart on the first try</li>
 <li>Common improvements to ask for:<ul>
 <li>"Add transparency (opacity 0.4) so overlapping points are visible."</li>
 <li>"Remove earthquakes with magnitude below 1.5---they clutter the chart without adding information."</li>
@@ -206,10 +213,12 @@
 </ul>
 <h2>Check Understanding</h2>
 <details>
-<summary>Your scatter plot shows 12 000 points but the dataframe has 18 000 rows. The LLM says some rows were dropped because they had missing values. Is this a problem? How would you decide?</summary>
+<summary>Your scatter plot shows 12,000 points but the dataframe has 18,000 rows. The LLM says some rows were dropped because they had missing values. Is this a problem? How would you decide?</summary>
 <p>It depends on whether the missing values are random or systematic.
-If earthquakes in one region or detected by only a subset of seismograph networks are more likely to have missing depth data,
-the chart underrepresents those earthquakes and any correlation you compute is biased toward the ones with complete data.
+If earthquakes in one region or detected by only a subset of seismograph networks
+are more likely to have missing depth data,
+the chart underrepresents those earthquakes
+and any correlation you compute is biased toward the ones with complete data.
 Ask the LLM to show how many rows are dropped per region and per year,
 then decide whether the pattern is random or whether it affects your conclusions.</p>
 </details>
@@ -218,20 +227,26 @@ then decide whether the pattern is random or whether it affects your conclusions
 <p>A correlation of 0.12 is a weak positive relationship.
 It means deeper earthquakes in this dataset tend very slightly toward larger magnitudes on average,
 but the association is so weak that depth explains almost none of the variation in magnitude.
-"Proves" is too strong a word---the correlation is small and may reflect chance variation or the mix of tectonic settings in Canada rather than a physical mechanism.</p>
+"Proves" is too strong a word:
+the correlation is small and may reflect chance variation rather than a physical mechanism.</p>
 </details>
 <details>
 <summary>You ask the LLM to plot depth vs. magnitude, and all the points are compressed into the bottom-left corner. What should you add to the next prompt, and why?</summary>
 <p>Ask for log scales on both axes.
-Earthquake depth ranges from near-surface to over 600 km, and magnitude spans several orders of magnitude of energy release.
+Earthquake depth ranges from near-surface to over 600 km,
+and magnitude spans several orders of magnitude of energy release.
 A linear scale compresses most events into a small region.
-A log scale stretches the smaller values apart so the distribution of common earthquakes is visible alongside the rare large ones.</p>
+A log scale stretches the smaller values apart
+so the distribution of common earthquakes is visible alongside the rare large ones.</p>
 </details>
 <details>
 <summary>You ask the LLM to compute the correlation between two variables and it returns -0.03. You expected a strong relationship from the scatter plot. What is a likely explanation?</summary>
 <p>A correlation near zero with a visible pattern in the scatter plot usually means the relationship is not linear.
-The scatter plot may show a curved or clustered pattern (for example, two distinct populations of earthquakes at very different depths) that a linear correlation coefficient cannot capture.
-Ask the LLM to colour the points by a third variable such as region or fault type, or consider fitting a non-linear model.</p>
+The scatter plot may show a curved or clustered pattern
+(for example, two distinct populations of earthquakes at very different depths)
+that a linear correlation coefficient cannot capture.
+Ask the LLM to colour the points by a third variable such as region or fault type,
+or consider fitting a non-linear model.</p>
 </details>
 <h2>Exercises</h2>
 <h3>Magnitude Distribution</h3>
