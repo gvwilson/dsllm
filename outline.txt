@@ -40,8 +40,8 @@ dataframes; learners do not write or read SQL.
 ## Session 2: First Steps
 
 -   Slug: llm
--   Dataset: NASA GISS Surface Temperature Analysis (GISTEMP v4),
-    https://data.giss.nasa.gov/gistemp/
+-   Dataset: Environment and Climate Change Canada (ECCC) Historical Climate Data,
+    https://climate.weather.gc.ca/
 -   Statistical concept: mean and median
 -   Goals:
     -   Launch the notebook environment and run a first code cell
@@ -51,19 +51,19 @@ dataframes; learners do not write or read SQL.
     -   Launching the notebook environment; creating a new notebook; running a cell
     -   Prompting an LLM to write "read a CSV and print the first five rows";
         pasting the result into a cell; running it
-    -   Prompting: "compute the mean and median of the temperature column"
+    -   Prompting: "compute the mean and median of the mean temperature column"
     -   Mean vs. median in plain English: why they differ when the data is skewed,
         and which to report depending on whether outliers matter
     -   Saving the notebook: the saved file is a record of the analysis that
-        anyone (including future-you) can re-run to get the same result —
+        anyone (including future-you) can re-run to get the same result ---
         this is what reproducibility means in practice
     -   The prompt-paste-run loop: what we will do in every session from here on
 
 ## Session 3: First Charts
 
 -   Slug: chart
--   Dataset: NASA Exoplanet Archive Planetary Systems Composite Parameters,
-    https://exoplanetarchive.ipac.caltech.edu/
+-   Dataset: NRCan Earthquake Catalog,
+    https://www.earthquakescanada.nrcan.gc.ca/stndon/NEDB-BNDS/
 -   Statistical concept: correlation
 -   Goals:
     -   Prompt an LLM to create a scatter plot and save it to a file
@@ -73,23 +73,23 @@ dataframes; learners do not write or read SQL.
     -   Why looking at data before computing statistics is essential
         (Anscombe's quartet: four datasets with identical means and variances
         but completely different shapes)
-    -   Prompting: "make a scatter plot of orbital period on the x axis and
-        distance on the y axis, colored by planet type, and save it as a PNG"
+    -   Prompting: "make a scatter plot of earthquake depth on the x axis and
+        magnitude on the y axis, coloured by region, and save it as a PNG"
     -   Correlation in plain English: when one variable tends to increase as
         another increases (positive), decrease (negative), or show no pattern
-    -   Prompting: "compute the correlation between orbital period and distance"
+    -   Prompting: "compute the correlation between depth and magnitude"
         and matching the number to what the scatter plot shows
-    -   Iterating on prompts to improve the chart: log scales, axis labels,
-        removing extreme outliers — each time re-running and checking the result
+    -   Iterating on prompts to improve the chart: axis labels, removing
+        suspected data entry errors --- each time re-running and checking the result
     -   Validation: count the points visible in the chart and compare to the
-        number of rows in the dataframe — a mismatch means some data was
+        number of rows in the dataframe --- a mismatch means some data was
         silently dropped
 
 ## Session 4: Cleaning
 
 -   Slug: clean
--   Dataset: Diabetes 130-US Hospitals for Years 1999-2008 (UCI ML Repository),
-    https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008
+-   Dataset: Transport Canada National Collision Database (NCDB),
+    https://open.canada.ca/data/en/dataset/1eb9eba8-cf9b-4b7e-9d5a-6bba0e5fe2d5
 -   Statistical concept: sampling bias
 -   Goals:
     -   Prompt an LLM to find missing values and inconsistent categories
@@ -97,23 +97,23 @@ dataframes; learners do not write or read SQL.
     -   Explain how missing data can make a sample unrepresentative
 -   Content:
     -   Why real data is always dirty (data entry, format conversions, merges)
-    -   Prompting: "show me how many missing values each column has"
-    -   Prompting: "show me every distinct value in the gender column" and
-        interpreting the resulting list ("M", "Male", "male", "F", "female", ...)
-    -   Prompting: "normalize those values so only 'male' and 'female' appear";
+    -   Prompting: "show me how many missing or unknown values each column has"
+    -   Prompting: "show me every distinct value in the sex column" and
+        interpreting the resulting list ("M", "F", "U", "N")
+    -   Prompting: "treat U and N as missing, so only M and F remain";
         running the result; checking the distinct values again to confirm
-    -   Sampling bias: if records for one patient group are missing more often
-        than others, any conclusion drawn from the cleaned data may not apply
-        to the full population, and the LLM has no way to warn you about this
-    -   Validation: check that total row count after removing duplicates is
-        smaller than before, and spot-check one removed row to confirm it
-        really was a duplicate and not a legitimate record
+    -   Sampling bias: if records for collisions in remote areas are under-reported
+        compared to urban areas, any conclusion about where roads are most
+        dangerous may not apply to the full country
+    -   Validation: check that total row count after treating unknowns as missing
+        is smaller than before, and spot-check one changed row to confirm it
+        really was coded U and not a legitimate record
 
 ## Session 5: Summarizing
 
 -   Slug: summarize
--   Dataset: City of Chicago Annual Appropriations (Chicago Data Portal),
-    https://data.cityofchicago.org/
+-   Dataset: Government of Canada Proactive Disclosure --- Contracts (open.canada.ca),
+    https://open.canada.ca/data/en/dataset/d8f85d91-7dec-4fd1-8055-483b77225d8b
 -   Statistical concept: confidence intervals
 -   Goals:
     -   Prompt an LLM to group data and compute aggregations
@@ -121,24 +121,24 @@ dataframes; learners do not write or read SQL.
     -   Sanity-check a summary against a known published figure
 -   Content:
     -   What "group by" means in plain English (one row per department per year,
-        not one row per spending item)
-    -   Prompting: "show me total and mean spending by department for each year,
-        sorted by department name"
+        not one row per contract)
+    -   Prompting: "show me total and mean contract value by department for each
+        year, sorted by department name"
     -   Prompting: "add a 95% confidence interval to each group mean"
     -   Confidence intervals in plain English: if we repeated this study many
-        times, 95% of the intervals we built would contain the true mean — it
+        times, 95% of the intervals we built would contain the true mean --- it
         is a statement about the method, not a guarantee about this one interval
-    -   When two departments' confidence intervals do not overlap, their spending
-        levels are probably genuinely different; when they do overlap, we cannot
+    -   When two departments' confidence intervals do not overlap, their contract
+        sizes are probably genuinely different; when they do overlap, we cannot
         be sure
-    -   Sanity-checking: finding the city's published total in the original
-        budget document and confirming the LLM's sum matches
+    -   Sanity-checking: finding the government's published total contract value
+        in the Public Accounts of Canada and confirming the LLM's sum matches
 
 ## Session 6: Tables
 
 -   Slug: tables
--   Dataset: North American Breeding Bird Survey route-level data (USGS),
-    https://www.pwrc.usgs.gov/bbs/
+-   Dataset: Environment and Climate Change Canada HYDAT National Water Data Archive,
+    https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/national-archive-hydat.html
 -   Statistical concept: spread (standard deviation and range)
 -   Goals:
     -   Prompt an LLM to load tabular data and describe what it contains
@@ -149,19 +149,20 @@ dataframes; learners do not write or read SQL.
     -   Prompting: "load this CSV and tell me how many rows and columns it has
         and what each column contains"
     -   Reading the output: what shape, dtypes, and a sample row tell you
-    -   Prompting: "compute the standard deviation and range of the count column"
+    -   Prompting: "compute the standard deviation and range of the streamflow column"
     -   Standard deviation in plain English: how far a typical observation sits
         from the mean; range as the distance from smallest to largest
-    -   Interpreting the result: a high standard deviation for bird counts means
-        survey routes vary a lot, not that the data is wrong
-    -   Validation: filter to a single known route and check that its row count
-        matches the number of survey years in the dataset documentation
+    -   Interpreting the result: a high standard deviation for river flow means
+        discharge varies a lot --- spring snowmelt can be orders of magnitude
+        higher than late-summer baseflow --- not that the data is wrong
+    -   Validation: filter to a single known station and check that its row count
+        matches the number of months in the dataset's date range
 
 ## Session 7: Better Prompts
 
 -   Slug: prompts
--   Dataset: USGS National Geochemical Survey,
-    https://mrdata.usgs.gov/geochem/
+-   Dataset: Environment and Climate Change Canada National Pollutant Release Inventory (NPRI),
+    https://www.canada.ca/en/environment-climate-change/services/national-pollutant-release-inventory.html
 -   Statistical concept: probability
 -   Goals:
     -   Identify what information an LLM needs to write useful data-science code
@@ -172,9 +173,10 @@ dataframes; learners do not write or read SQL.
         it has not been told
     -   Anatomy of a useful prompt: data description (columns, types, a sample
         row) + goal + constraints (units, expected range)
-    -   Prompting: "what proportion of soil samples exceed the safe lead threshold?"
-    -   Probability as a proportion: if 23 of 200 samples exceed the threshold,
-        the probability is 0.115, meaning about 1 in 9 — not a certainty, not a rarity
+    -   Prompting: "what proportion of facilities released more than one tonne
+        of lead compounds in the most recent reporting year?"
+    -   Probability as a proportion: if 47 of 800 facilities exceeded the threshold,
+        the probability is 0.059, meaning about 1 in 17
     -   Giving the LLM a two-row sample of the data in the prompt to anchor its
         column names; re-prompting when the first result is wrong
     -   Validation: compute the proportion by hand on a small subset of rows
@@ -184,8 +186,8 @@ dataframes; learners do not write or read SQL.
 ## Session 8: Tracking Change
 
 -   Slug: change
--   Dataset: CDC FluView national and regional influenza surveillance,
-    https://gis.cdc.gov/grasp/fluview/fluportaldashboard.html
+-   Dataset: Public Health Agency of Canada FluWatch weekly influenza surveillance,
+    https://www.canada.ca/en/public-health/services/diseases/flu-influenza/influenza-surveillance.html
 -   Statistical concept: trends and regression
 -   Goals:
     -   Prompt an LLM to plot a variable over time and describe what it shows
@@ -204,14 +206,14 @@ dataframes; learners do not write or read SQL.
     -   Seasonal pattern vs. long-term trend: the winter spike is not the same
         as the multi-year trend; confusing them is a common mistake
     -   Validation: check that the trend line's direction matches what you
-        can see by eye in the line chart — if they disagree, something is wrong
+        can see by eye in the line chart --- if they disagree, something is wrong
 
 ## Session 9: Joining Data
 
 -   Slug: join
--   Dataset: NOAA Global Historical Climatology Network Daily (GHCN-D) —
-    station readings file and station inventory file (separate downloads),
-    https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily
+-   Dataset: ECCC Adjusted and Homogenized Canadian Climate Data (AHCCD) ---
+    station temperature file and station inventory file (separate downloads),
+    https://www.canada.ca/en/environment-climate-change/services/climate-change/science-research-data/climate-trends-variability/adjusted-homogenized-canadian-data.html
 -   Statistical concept: comparing groups
 -   Goals:
     -   Explain in plain English what a join does and when it is needed
@@ -220,25 +222,24 @@ dataframes; learners do not write or read SQL.
 -   Content:
     -   Why data arrives in separate files: readings collected by one team,
         station locations and classifications recorded by another
-    -   Prompting: "combine the readings dataframe and the stations dataframe
-        so each reading row also shows the station's elevation and climate zone"
-    -   Checking the result: does every reading row now have an elevation?
+    -   Prompting: "combine the temperature dataframe and the stations dataframe
+        so each temperature row also shows the station's province and elevation"
+    -   Checking the result: does every temperature row now have a province?
         Are there any nulls that were not there before?
-    -   Prompting: "show me the mean temperature by climate zone" — the join
+    -   Prompting: "show me the mean annual temperature by province" --- the join
         is what makes this question answerable
-    -   Comparing groups in plain English: do coastal stations show different
-        average temperatures than inland ones, and is the difference large
+    -   Comparing groups in plain English: do Atlantic stations show different
+        average temperatures than Prairie ones, and is the difference large
         enough to matter given the spread within each group?
     -   Validation: count rows before and after the join; a sudden increase
-        means one station matched multiple readings unexpectedly
+        means one station matched multiple temperature rows unexpectedly
 
 ## Session 10: Telling Stories
 
 -   Slug: stories
--   Dataset: Student Performance Data Set (Paulo Cortez, University of Minho,
-    UCI ML Repository), https://archive.ics.uci.edu/dataset/320/student+performance
--   Domain: student grades, study time, and family background in Portuguese
-    secondary schools
+-   Dataset: Education Quality and Accountability Office (EQAO) Ontario School Results,
+    https://www.eqao.com/
+-   Domain: Grade 3 reading and math results for Ontario schools, by board type and language
 -   Statistical concept: correlation vs. causation
 -   Goals:
     -   Choose chart types that match the question being asked
@@ -248,13 +249,13 @@ dataframes; learners do not write or read SQL.
 -   Content:
     -   Matching chart type to question: counts (bar), trends (line),
         distributions (histogram), relationships (scatter)
-    -   Prompting: "make a bar chart of average final grade by weekly study
-        time category, with one panel per school" and reading the result
-    -   The chart shows students who study more score higher: why this does
-        not prove that studying more causes higher scores (students from more
-        supportive family backgrounds may both study more and score higher
-        for independent reasons)
-    -   Prompting to fix a misleading chart: "the y axis starts at 60; start
+    -   Prompting: "make a bar chart of average percentage of students at
+        Level 3 or 4 in Grade 3 reading by board type (Public, Catholic),
+        with one panel per school language (English, French)" and reading the result
+    -   The chart shows Catholic boards score slightly higher: why this does
+        not prove that board type causes better results (Catholic schools may
+        serve different communities or have different admission practices)
+    -   Prompting to fix a misleading chart: "the y axis starts at 50; start
         it at 0 so the differences are not exaggerated"
     -   Validation: check that each panel in a faceted chart contains data
         and that the group sizes are roughly what the raw counts would predict
@@ -262,10 +263,10 @@ dataframes; learners do not write or read SQL.
 ## Session 11: Checking Your Work
 
 -   Slug: validate
--   Dataset: EIA Monthly Energy Review (US Energy Information Administration),
-    https://www.eia.gov/totalenergy/data/monthly/
--   Domain: two tables from the same publication that report related quantities
-    in different units (one in trillion BTU, one in billion kWh)
+-   Dataset: Canada Energy Regulator and Natural Resources Canada energy statistics ---
+    two tables from the same reporting framework in different units
+    (one in 10³ m³, one in 10⁶ m³),
+    https://www.cer-rec.gc.ca/en/data-analysis/
 -   Statistical concept: inference and hypothesis testing
 -   Goals:
     -   Verify LLM output by checking it against known values and common sense
@@ -273,12 +274,12 @@ dataframes; learners do not write or read SQL.
     -   Recognize that a confident-sounding LLM answer is not a correct answer
 -   Content:
     -   The scenario: the LLM produces a comparison that is off by a factor of
-        293 because it treated trillion BTU and billion kWh as the same unit
+        1 000 because it treated 10³ m³ and 10⁶ m³ as the same unit
     -   Strategies that do not require reading code: check a single known row
         by hand; compare the total to a published figure; ask the LLM "what
         units did you assume for each column?"
-    -   Prompting: "run a t-test to check whether electricity consumption
-        differs significantly between the two regions" and reading the p-value
+    -   Prompting: "run a t-test to check whether natural gas production
+        differs significantly between the two western provinces" and reading the p-value
     -   Inference and hypothesis testing in plain English: we assume there is
         no difference (the null hypothesis), then ask how surprising our data
         would be if that were true; a small p-value means "pretty surprising",
@@ -290,9 +291,9 @@ dataframes; learners do not write or read SQL.
 ## Session 12: Reproducibility
 
 -   Slug: repro
--   Dataset: NOAA Mauna Loa Atmospheric CO2 Concentration (Keeling Curve),
-    https://gml.noaa.gov/ccgg/trends/data.html
--   Statistical concept: none new — consolidation of the full workflow
+-   Dataset: Environment and Climate Change Canada Alert Station Atmospheric CO2,
+    https://www.canada.ca/en/environment-climate-change/services/climate-indicators/atmospheric-greenhouse-gas-concentrations.html
+-   Statistical concept: none new --- consolidation of the full workflow
 -   Goals:
     -   Re-run a complete analysis from a saved notebook and verify it produces
         identical output
@@ -303,9 +304,9 @@ dataframes; learners do not write or read SQL.
         often because the analysis was not saved in a runnable form
     -   What reproducibility requires: the data, the code, and the environment
         must all be available and unchanged
-    -   Prompting the LLM to write a complete analysis that recreates the
-        Keeling Curve (monthly CO2 at Mauna Loa from 1958 to the present)
-    -   Comparing the output chart to the published NOAA figure: if they match,
+    -   Prompting the LLM to write a complete analysis that recreates the Alert
+        Station CO2 curve (monthly CO2 at Alert, Nunavut from 1975 to the present)
+    -   Comparing the output chart to the published ECCC figure: if they match,
         the analysis is correct and reproducible
     -   Running the notebook a second time from scratch and confirming the
         output is bit-for-bit identical
