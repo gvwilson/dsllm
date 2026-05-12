@@ -4,7 +4,7 @@
 
 -   Identify what information an LLM needs to write useful data-science code.
 -   Write prompts that include data shape, goal, and constraints.
--   Interpret a [%g probability "probability" %] as a proportion and connect it to observed counts.
+-   Interpret a probability as a proportion and connect it to observed counts.
 
 ## Why Vague Prompts Fail
 

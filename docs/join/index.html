@@ -50,8 +50,8 @@
 <h1>Joining Data</h1>
 <h2>Goals</h2>
 <ul>
-<li>Explain in plain English what a <a class="gl-ref" href="../glossary/#join">join</a> does and when it is needed.</li>
-<li>Prompt an LLM to join two <a class="gl-ref" href="../glossary/#dataframe">dataframes</a> and interpret the result.</li>
+<li>Explain what a join does and when it is needed.</li>
+<li>Prompt an LLM to join two dataframes and interpret the result.</li>
 <li>Compare summary statistics across groups created by the join.</li>
 </ul>
 <h2>Why Data Arrives in Pieces</h2>
@@ -75,7 +75,7 @@
 </ul>
 <p><em>What is a join?</em></p>
 <ul>
-<li>A join combines two tables by matching rows that share a common value<ul>
+<li>A <a class="gl-ref" href="../glossary/#join">join</a> combines two tables by matching rows that share a common value<ul>
 <li>If both tables have a <code>station_id</code> column,
     a join finds every temperature row and attaches the matching station row to it</li>
 <li>The result is one wide row per temperature record,
@@ -90,8 +90,10 @@
 </ul>
 <h2>Joining the Tables</h2>
 <p><em>Combine the temperature dataframe and the stations dataframe so each temperature row also shows the station's province and elevation.</em></p>
+<p>or</p>
+<p><em>Using Polars, read ahccd_temp.csv and ahccd_stations.csv. Join them so each temperature row gains the matching station's province and elevation columns. Use a left join on the station_id column. Print the first five rows of the result.</em></p>
 <ul>
-<li>Read both files first and print their column names:</li>
+<li>Read both files first and print their column names so you know which column to join on:</li>
 </ul>
 <div data-inc="load_both.py"><span aria-label="Source: join/load_both.py" class="inc-path" role="img" tabindex="0" title="join/load_both.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
 
@@ -105,7 +107,6 @@
 </code></pre></div>
 </div>
 <ul>
-<li>Then paste this prompt: "Using Polars, read ahccd_temp.csv and ahccd_stations.csv. Join them so each temperature row gains the matching station's province and elevation columns. Use a left join on the station_id column. Print the first five rows of the result."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="join_climate.py"><span aria-label="Source: join/join_climate.py" class="inc-path" role="img" tabindex="0" title="join/join_climate.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -161,8 +162,9 @@
 </ul>
 <h2>Comparing Groups</h2>
 <p><em>Show me the mean annual temperature by province.</em></p>
+<p>or</p>
+<p><em>Using the joined dataframe, compute the mean annual temperature for each province. Sort from warmest to coolest. Drop rows where temperature or province is null.</em></p>
 <ul>
-<li>Paste this prompt: "Using the joined dataframe, compute the mean annual temperature for each province. Sort from warmest to coolest. Drop rows where temperature or province is null."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="mean_by_province.py"><span aria-label="Source: join/mean_by_province.py" class="inc-path" role="img" tabindex="0" title="join/mean_by_province.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>

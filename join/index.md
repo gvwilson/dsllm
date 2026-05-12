@@ -2,8 +2,8 @@
 
 ## Goals
 
--   Explain in plain English what a [%g join "join" %] does and when it is needed.
--   Prompt an LLM to join two [%g dataframe "dataframes" %] and interpret the result.
+-   Explain what a join does and when it is needed.
+-   Prompt an LLM to join two dataframes and interpret the result.
 -   Compare summary statistics across groups created by the join.
 
 ## Why Data Arrives in Pieces
@@ -24,7 +24,7 @@
 
 *What is a join?*
 
--   A join combines two tables by matching rows that share a common value
+-   A [%g join "join" %] combines two tables by matching rows that share a common value
     -   If both tables have a `station_id` column,
         a join finds every temperature row and attaches the matching station row to it
     -   The result is one wide row per temperature record,
@@ -37,11 +37,14 @@
 
 *Combine the temperature dataframe and the stations dataframe so each temperature row also shows the station's province and elevation.*
 
--   Read both files first and print their column names:
+or
+
+*Using Polars, read ahccd_temp.csv and ahccd_stations.csv. Join them so each temperature row gains the matching station's province and elevation columns. Use a left join on the station_id column. Print the first five rows of the result.*
+
+-   Read both files first and print their column names so you know which column to join on:
 
 [%inc load_both.py %]
 
--   Then paste this prompt: "Using Polars, read ahccd_temp.csv and ahccd_stations.csv. Join them so each temperature row gains the matching station's province and elevation columns. Use a left join on the station_id column. Print the first five rows of the result."
 -   The LLM will produce something like:
 
 [%inc join_climate.py %]
@@ -68,7 +71,10 @@
 
 *Show me the mean annual temperature by province.*
 
--   Paste this prompt: "Using the joined dataframe, compute the mean annual temperature for each province. Sort from warmest to coolest. Drop rows where temperature or province is null."
+or
+
+*Using the joined dataframe, compute the mean annual temperature for each province. Sort from warmest to coolest. Drop rows where temperature or province is null.*
+
 -   The LLM will produce something like:
 
 [%inc mean_by_province.py %]

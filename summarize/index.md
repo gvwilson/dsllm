@@ -3,7 +3,7 @@
 ## Goals
 
 -   Prompt an LLM to group data and compute aggregations.
--   Interpret a [%g confidence-interval "confidence interval" %] as a measure of how certain an estimate is.
+-   Interpret a confidence interval as a measure of how certain an estimate is.
 -   Sanity-check a summary against a known published figure.
 
 ## What "Group By" Means
@@ -29,7 +29,10 @@
 
 *Show me total and mean contract value by department for each year, sorted by department name.*
 
--   Paste this prompt: "Using Polars, read contracts.csv. Extract the year from the contract_date column. Compute the total and mean contract_value by department_en and year. Sort by department name, then year. Print the first twenty rows."
+or
+
+*Using Polars, read contracts.csv. Extract the year from the contract_date column. Compute the total and mean contract_value by department_en and year. Sort by department name, then year. Print the first twenty rows.*
+
 -   The LLM will produce something like:
 
 [%inc group_spend.py %]
@@ -43,7 +46,10 @@
 
 *Add a 95% confidence interval to each group mean.*
 
--   Paste this prompt: "Extend the previous code to also compute a 95% confidence interval for the mean contract value in each department-year group. Add columns ci_low and ci_high to the output."
+or
+
+*Extend the previous code to also compute a 95% confidence interval for the mean contract value in each department-year group. Add columns ci_low and ci_high to the output.*
+
 -   The LLM will produce something like:
 
 [%inc add_ci.py %]
@@ -69,7 +75,10 @@
 
 *The government publishes the total value of contracts. Let us compare our sum to that published number.*
 
--   Paste this prompt: "Compute the total contract_value across all departments for the most recent year in the dataset."
+or
+
+*Compute the total contract_value across all departments for the most recent year in the dataset.*
+
 -   Find the government's published total in the Public Accounts of Canada at [Open Government][open-canada]
     -   The published total should be in the same order of magnitude as your computed sum
     -   If your number is off by a factor of ten or more, the LLM probably misread the units or missed some rows

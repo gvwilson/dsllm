@@ -52,7 +52,7 @@
 <ul>
 <li>Re-run a complete analysis from a saved notebook and verify it produces identical output.</li>
 <li>Reproduce a published scientific figure from public data and code.</li>
-<li>Explain what makes an analysis <a class="gl-ref" href="../glossary/#reproducibility">reproducible</a> and why it matters.</li>
+<li>Explain what makes an analysis reproducible and why it matters.</li>
 </ul>
 <h2>The Replication Crisis</h2>
 <p><em>Why does replication matter for data science?</em></p>
@@ -68,7 +68,7 @@
 <li>Six months later, neither they nor anyone else can retrace the exact steps</li>
 </ul>
 </li>
-<li><a class="gl-ref" href="../glossary/#reproducibility">Reproducibility</a> means that running the same code on the same data produces the same result<ul>
+<li>Reproducibility means that running the same code on the same data produces the same result<ul>
 <li>A saved notebook is a start, but reproducibility also requires the data and the software environment to be available and unchanged</li>
 </ul>
 </li>
@@ -112,7 +112,10 @@
 <li>Missing values are coded as -999.99</li>
 </ul>
 </li>
-<li>Paste this prompt: "The file alert_co2_monthly.csv has no column headers. The columns in order are year, month, decimal date, monthly average CO2 in ppm, deseasonalized CO2, number of days, standard deviation, and uncertainty. Missing values are -999.99. Using Polars and Altair, read the file, drop missing values, plot monthly average CO2 over decimal date as a line chart, and save it as alert_co2.png."</li>
+</ul>
+<p>or</p>
+<p><em>The file alert_co2_monthly.csv has no column headers. The columns in order are year, month, decimal date, monthly average CO2 in ppm, deseasonalized CO2, number of days, standard deviation, and uncertainty. Missing values are -999.99. Using Polars and Altair, read the file, drop missing values, plot monthly average CO2 over decimal date as a line chart, and save it as alert_co2.png.</em></p>
+<ul>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="alert_co2.py"><span aria-label="Source: repro/alert_co2.py" class="inc-path" role="img" tabindex="0" title="repro/alert_co2.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>

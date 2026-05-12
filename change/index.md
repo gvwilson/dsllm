@@ -3,8 +3,8 @@
 ## Goals
 
 -   Prompt an LLM to plot a variable over time and describe what it shows.
--   Interpret a [%g trend-line "trend line" %]: direction, slope, and scatter around the line.
--   Distinguish a real [%g regression "trend" %] from seasonal or random fluctuation.
+-   Interpret a trend line: direction, slope, and scatter around the line.
+-   Distinguish a real trend from seasonal or random fluctuation.
 
 ## Why Change Matters
 
@@ -23,7 +23,10 @@
 
 *Plot weekly influenza-like illness percentage over time as a line chart.*
 
--   Paste this prompt: "Using Polars and Altair, read fluwatch.csv, plot the weekly ILI percentage over time as a line chart coloured by year, and save it as flu_line.png."
+or
+
+*Using Polars and Altair, read fluwatch.csv, plot the weekly ILI percentage over time as a line chart coloured by year, and save it as flu_line.png.*
+
 -   The LLM will produce something like:
 
 [%inc flu_line.py %]
@@ -35,9 +38,16 @@
 
 ## Fitting a Trend Line
 
+-   A [%g trend-line "trend line" %] is a straight line drawn through a scatter of points to show the overall direction of the data
+    -   It is not meant to pass through every point; it summarizes the direction of change across the whole dataset
+    -   The slope of the line tells you whether values are generally rising, falling, or staying flat over time
+
 *Fit a trend line to the annual peak ILI values and show the slope.*
 
--   Paste this prompt: "Using Polars and Altair, compute the maximum weekly ILI percentage for each year, then plot those annual peaks with a regression trend line. Save the chart as flu_trend.png."
+or
+
+*Using Polars and Altair, compute the maximum weekly ILI percentage for each year, then plot those annual peaks with a regression trend line. Save the chart as flu_trend.png.*
+
 -   The LLM will produce something like:
 
 [%inc flu_trend.py %]
@@ -82,9 +92,11 @@
 -   The most basic check: does the trend line agree with what you see by eye?
     -   If the dots appear to be drifting upward but the line slopes down, something is wrong
     -   The most common cause is the LLM using a variable that does not represent the trend you wanted
--   Ask the LLM to print the slope: "What is the slope of the regression line in the previous chart?"
-    -   A positive number should correspond to an upward-sloping line
-    -   If the sign does not match the visual direction, the regression used the wrong axis
+
+*What is the slope of the regression line in the previous chart?*
+
+-   A positive number should correspond to an upward-sloping line
+-   If the sign does not match the visual direction, the regression used the wrong axis
 
 [%inc check_slope.py %]
 

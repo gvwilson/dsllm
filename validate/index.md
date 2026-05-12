@@ -3,7 +3,7 @@
 ## Goals
 
 -   Verify LLM output by checking it against known values and common sense.
--   Interpret a [%g null-hypothesis "hypothesis test" %] result without misreading it as certainty.
+-   Interpret a hypothesis test result without misreading it as certainty.
 -   Recognize that a confident-sounding LLM answer is not a correct answer.
 
 ## The Unit Error
@@ -44,7 +44,10 @@
 
 *Fix the code so both columns use the same unit before comparing.*
 
--   Paste this prompt: "The production column is in 10³ m³ (thousands of cubic metres) and the consumption column is in 10⁶ m³ (millions of cubic metres). Convert the production column to 10⁶ m³ by dividing by 1 000 before computing the ratio."
+or
+
+*The production column is in 10³ m³ (thousands of cubic metres) and the consumption column is in 10⁶ m³ (millions of cubic metres). Convert the production column to 10⁶ m³ by dividing by 1 000 before computing the ratio.*
+
 -   The LLM will produce something like:
 
 [%inc unit_fix.py %]
@@ -55,7 +58,10 @@
 
 *Run a t-test to check whether natural gas production differs significantly between Alberta and British Columbia.*
 
--   Paste this prompt: "Using Polars and scipy.stats, read gas_production.csv, extract the production values for Alberta and BC, and run a Welch's t-test. Print the t-statistic and the p-value."
+or
+
+*Using Polars and scipy.stats, read gas_production.csv, extract the production values for Alberta and BC, and run a Welch's t-test. Print the t-statistic and the p-value.*
+
 -   The LLM will produce something like:
 
 [%inc ttest.py %]

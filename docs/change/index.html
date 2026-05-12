@@ -51,8 +51,8 @@
 <h2>Goals</h2>
 <ul>
 <li>Prompt an LLM to plot a variable over time and describe what it shows.</li>
-<li>Interpret a <a class="gl-ref" href="../glossary/#trend-line">trend line</a>: direction, slope, and scatter around the line.</li>
-<li>Distinguish a real <a class="gl-ref" href="../glossary/#regression">trend</a> from seasonal or random fluctuation.</li>
+<li>Interpret a trend line: direction, slope, and scatter around the line.</li>
+<li>Distinguish a real trend from seasonal or random fluctuation.</li>
 </ul>
 <h2>Why Change Matters</h2>
 <p><em>Why do researchers usually study change over time rather than a single snapshot?</em></p>
@@ -72,8 +72,9 @@
 </ul>
 <h2>Plotting Over Time</h2>
 <p><em>Plot weekly influenza-like illness percentage over time as a line chart.</em></p>
+<p>or</p>
+<p><em>Using Polars and Altair, read fluwatch.csv, plot the weekly ILI percentage over time as a line chart coloured by year, and save it as flu_line.png.</em></p>
 <ul>
-<li>Paste this prompt: "Using Polars and Altair, read fluwatch.csv, plot the weekly ILI percentage over time as a line chart coloured by year, and save it as flu_line.png."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="flu_line.py"><span aria-label="Source: change/flu_line.py" class="inc-path" role="img" tabindex="0" title="change/flu_line.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -110,9 +111,17 @@
 </li>
 </ul>
 <h2>Fitting a Trend Line</h2>
-<p><em>Fit a trend line to the annual peak ILI values and show the slope.</em></p>
 <ul>
-<li>Paste this prompt: "Using Polars and Altair, compute the maximum weekly ILI percentage for each year, then plot those annual peaks with a regression trend line. Save the chart as flu_trend.png."</li>
+<li>A <a class="gl-ref" href="../glossary/#trend-line">trend line</a> is a straight line drawn through a scatter of points to show the overall direction of the data<ul>
+<li>It is not meant to pass through every point; it summarizes the direction of change across the whole dataset</li>
+<li>The slope of the line tells you whether values are generally rising, falling, or staying flat over time</li>
+</ul>
+</li>
+</ul>
+<p><em>Fit a trend line to the annual peak ILI values and show the slope.</em></p>
+<p>or</p>
+<p><em>Using Polars and Altair, compute the maximum weekly ILI percentage for each year, then plot those annual peaks with a regression trend line. Save the chart as flu_trend.png.</em></p>
+<ul>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="flu_trend.py"><span aria-label="Source: change/flu_trend.py" class="inc-path" role="img" tabindex="0" title="change/flu_trend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -201,11 +210,11 @@
 <li>The most common cause is the LLM using a variable that does not represent the trend you wanted</li>
 </ul>
 </li>
-<li>Ask the LLM to print the slope: "What is the slope of the regression line in the previous chart?"<ul>
+</ul>
+<p><em>What is the slope of the regression line in the previous chart?</em></p>
+<ul>
 <li>A positive number should correspond to an upward-sloping line</li>
 <li>If the sign does not match the visual direction, the regression used the wrong axis</li>
-</ul>
-</li>
 </ul>
 <div data-inc="check_slope.py"><span aria-label="Source: change/check_slope.py" class="inc-path" role="img" tabindex="0" title="change/check_slope.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
 

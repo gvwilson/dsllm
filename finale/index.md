@@ -52,7 +52,7 @@
 -   The people whose writing trained these models were not compensated for that use
     -   This is an ongoing legal and ethical debate, not a resolved one
     -   Being aware of it is the beginning of making informed choices
--   The [%g deskilling "deskilling" %] risk is real but not inevitable
+-   The deskilling risk is real but not inevitable
     -   Every session in this course asked you to interpret the output yourself
     -   If you have been doing that, you have been building skills, not losing them
     -   If you have been copying results without reading them, review the sessions where you did not check the output

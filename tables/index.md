@@ -4,7 +4,7 @@
 
 -   Prompt an LLM to load tabular data and describe what it contains.
 -   Interpret shape, column names, and data types.
--   Ask the LLM to compute [%g standard-deviation "standard deviation" %] and [%g stat-range "range" %] and explain what they mean for this data.
+-   Ask the LLM to compute standard deviation and range and explain what they mean for this data.
 
 ## What a Dataframe Contains
 
@@ -29,7 +29,10 @@
 
 *Load the HYDAT flow data and tell me how many rows and columns it has, what each column contains, and what the data types are.*
 
--   Paste this prompt: "Using Polars, read flow_data.csv and print: the number of rows and columns, the name and type of each column, and the first two rows."
+or
+
+*Using Polars, read flow_data.csv and print: the number of rows and columns, the name and type of each column, and the first two rows.*
+
 -   The LLM will produce something like:
 
 [%inc describe_flow.py %]
@@ -45,7 +48,10 @@
 
 *Compute the standard deviation and range of the streamflow column.*
 
--   Paste this prompt: "Compute the mean, standard deviation, minimum, maximum, and range of the FLOW column in flow_data.csv."
+or
+
+*Compute the mean, standard deviation, minimum, maximum, and range of the FLOW column in flow_data.csv.*
+
 -   The LLM will produce something like:
 
 [%inc spread_flow.py %]
@@ -79,8 +85,11 @@
 
 *Filter to one known station and verify its row count against the dataset documentation.*
 
--   Paste this prompt: "Filter flow_data.csv to rows where STATION_NUMBER is '02GA010' and print the number of rows and the range of years covered."
-    -   Station `02GA010` is the Grand River at Galt (Cambridge, Ontario), one of the longest continuous records in Canada
+or
+
+*Filter flow_data.csv to rows where STATION_NUMBER is '02GA010' and print the number of rows and the range of years covered.*
+
+-   Station `02GA010` is the Grand River at Galt (Cambridge, Ontario), one of the longest continuous records in Canada
 -   The HYDAT documentation describes how many years each station has been active
     -   If the station has been active since 1912 and the dataset covers monthly data, you expect roughly (current year - 1912) × 12 rows
     -   A very different number suggests the filter is wrong or the station ID format does not match

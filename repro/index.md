@@ -4,7 +4,7 @@
 
 -   Re-run a complete analysis from a saved notebook and verify it produces identical output.
 -   Reproduce a published scientific figure from public data and code.
--   Explain what makes an analysis [%g reproducibility "reproducible" %] and why it matters.
+-   Explain what makes an analysis reproducible and why it matters.
 
 ## The Replication Crisis
 
@@ -17,7 +17,7 @@
 -   A common cause is that the analysis was not saved in a runnable form
     -   The researcher clicked through a spreadsheet, applied some filters, computed a number, and wrote it down
     -   Six months later, neither they nor anyone else can retrace the exact steps
--   [%g reproducibility "Reproducibility" %] means that running the same code on the same data produces the same result
+-   Reproducibility means that running the same code on the same data produces the same result
     -   A saved notebook is a start, but reproducibility also requires the data and the software environment to be available and unchanged
 -   This session uses atmospheric CO2 data from the Environment and Climate Change Canada Alert Station [%b alert-co22025 %]
     -   Alert, Nunavut sits at 82.5° N on the tip of Ellesmere Island---the northernmost point of Canada and one of the most remote places on Earth
@@ -46,7 +46,11 @@
     -   Save it as `alert_co2_monthly.csv`
     -   The file has no column headers; the columns in order are year, month, decimal date, monthly average CO2 in ppm, deseasonalized CO2, number of days, standard deviation, and uncertainty
     -   Missing values are coded as -999.99
--   Paste this prompt: "The file alert_co2_monthly.csv has no column headers. The columns in order are year, month, decimal date, monthly average CO2 in ppm, deseasonalized CO2, number of days, standard deviation, and uncertainty. Missing values are -999.99. Using Polars and Altair, read the file, drop missing values, plot monthly average CO2 over decimal date as a line chart, and save it as alert_co2.png."
+
+or
+
+*The file alert_co2_monthly.csv has no column headers. The columns in order are year, month, decimal date, monthly average CO2 in ppm, deseasonalized CO2, number of days, standard deviation, and uncertainty. Missing values are -999.99. Using Polars and Altair, read the file, drop missing values, plot monthly average CO2 over decimal date as a line chart, and save it as alert_co2.png.*
+
 -   The LLM will produce something like:
 
 [%inc alert_co2.py %]

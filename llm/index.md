@@ -4,20 +4,18 @@
 
 -   Launch the notebook environment and run a first code cell.
 -   Prompt an LLM to read a data file and print its contents.
--   Prompt an LLM to compute and interpret the [%g mean "mean" %] and [%g median "median" %] of a column.
+-   Prompt an LLM to compute and interpret the mean and median of a column.
 
 ## Starting the Notebook
-
-FIXME: we can't assume command-line skills for this audience
 
 *How do I start a notebook and create a first cell?*
 
 -   A [%g notebook "notebook" %] is a document that mixes text, code, and output in one file
     -   Jupyter notebooks have the extension `.ipynb`; each piece of code or text is called a "cell"
-    -   Marimo notebooks have the extension `.py` and look like specially-formatted Python scripts
--   To start Jupyter from the command line, type `jupyter notebook` and press Enter
-    -   A browser tab opens showing a file browser
-    -   Click "New" and choose "Python 3" to create a fresh notebook
+    -   Each cell can hold either code or explanatory text; you run code cells one at a time and the output appears directly below
+-   Your instructor will give you a URL to open the notebook environment in your browser
+    -   If you are running Jupyter on your own laptop, open the Terminal app (Mac) or Command Prompt (Windows), type `jupyter notebook`, and press Enter; a browser tab will open automatically
+    -   Either way, you will see a file browser; click "New" and choose "Python 3" to create a fresh notebook
 -   To add a code cell, click the `+` button in the toolbar or press `B` when a cell is selected
 -   To run a cell, press `Shift+Enter`
     -   The output appears directly below the cell
@@ -41,7 +39,10 @@ FIXME: we can't assume command-line skills for this audience
     -   The file is named something like `en_climate_monthly_ON_6158731_1840-2025_P1M.csv`
     -   It has one row per month with columns for mean temperature, precipitation, and other observations
 
-FIXME: is Polars installed? What *is* Polars? How can we expect learners to know any of this? And is this back on the command line, which learners don't understand?
+-   [Polars][polars] is a Python library for working with tables of data
+    -   It is already installed in the course environment; you do not need to do anything to set it up
+    -   Including "Using Polars" in your prompt tells the LLM which tool to use;
+        without it, the LLM might choose a different library and produce code that does not run in your environment
 
 *Use Polars to read a CSV file called climate.csv, skip the first row which is a title line, treat empty cells as missing, and print the first five rows.*
 
@@ -54,6 +55,9 @@ FIXME: is Polars installed? What *is* Polars? How can we expect learners to know
     -   If the code crashes with `FileNotFoundError`, the CSV is not in the same folder as the notebook
 
 ## Mean and Median
+
+-   The [%g mean "mean" %] is the sum of all values divided by the count---what most people call the average
+-   The [%g median "median" %] is the middle value when all observations are sorted from smallest to largest
 
 *Compute the mean and median of the monthly mean temperature column.*
 
@@ -101,7 +105,19 @@ FIXME: is Polars installed? What *is* Polars? How can we expect learners to know
 
 ## Saving Prompts
 
-FIXME: something on CLAUDE.md or equivalent file to avoid repeating yourself, with "use Polars" and similar prompts
+*I am tired of typing "use Polars" and "treat empty cells as missing" in every prompt. Is there a way to set these once?*
+
+-   Most LLM tools let you set custom instructions that are added to every conversation automatically
+    -   In Claude, open Settings and look for "Custom instructions" or create a Project and add instructions there
+    -   In ChatGPT, open Settings → Personalization → Custom instructions
+    -   Whatever you write there is sent to the LLM along with every prompt you type, without you having to repeat it
+-   Useful things to put in custom instructions for this course:
+    -   "Always use Polars for data manipulation, not pandas."
+    -   "Always use Altair for charts."
+    -   "Treat blank cells and the values U, Q, and N as missing unless I say otherwise."
+    -   "Print the first five rows after reading any CSV file."
+-   Custom instructions do not replace careful prompting---you still need to give the LLM the column names and goal for each specific task
+    -   They only save you from repeating the same background preferences in every session
 
 ## Check Understanding
 

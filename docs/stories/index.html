@@ -52,7 +52,7 @@
 <ul>
 <li>Choose chart types that match the question being asked.</li>
 <li>Prompt an LLM to create bar charts, line charts, and faceted charts.</li>
-<li>Explain why a <a class="gl-ref" href="../glossary/#correlation">correlation</a> between two variables does not prove one causes the other.</li>
+<li>Explain why a correlation between two variables does not prove one causes the other.</li>
 </ul>
 <h2>Matching Chart Type to Question</h2>
 <p><em>How do I decide which type of chart to make?</em></p>
@@ -80,8 +80,9 @@
 </ul>
 <h2>Building a Faceted Chart</h2>
 <p><em>Make a bar chart of mean percentage at Level 3 or 4 in Grade 3 reading by board type, with one panel per school language.</em></p>
+<p>or</p>
+<p><em>Using Polars and Altair, read eqao_school_results.csv. Make a bar chart of mean Grade 3 reading percentage (level 3 or 4) by board type, with a separate panel for English and French schools. Save it as reading_chart.png.</em></p>
 <ul>
-<li>Paste this prompt: "Using Polars and Altair, read eqao_school_results.csv. Make a bar chart of mean Grade 3 reading percentage (level 3 or 4) by board type, with a separate panel for English and French schools. Save it as reading_chart.png."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="grade_charts.py"><span aria-label="Source: stories/grade_charts.py" class="inc-path" role="img" tabindex="0" title="stories/grade_charts.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -148,8 +149,9 @@
 </ul>
 <h2>Fixing a Misleading Axis</h2>
 <p><em>The y axis starts at 55 instead of 0. Fix the chart so the differences are not visually exaggerated.</em></p>
+<p>or</p>
+<p><em>Remake the reading chart but set the y axis to start at 0 so the bar heights honestly show the magnitude of the differences.</em></p>
 <ul>
-<li>Paste this prompt: "Remake the reading chart but set the y axis to start at 0 so the bar heights honestly show the magnitude of the differences."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="grade_charts_fixed.py"><span aria-label="Source: stories/grade_charts_fixed.py" class="inc-path" role="img" tabindex="0" title="stories/grade_charts_fixed.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -186,9 +188,8 @@
 </ul>
 <h2>Validating Each Panel</h2>
 <p><em>How do I confirm that each panel in the faceted chart contains the data I expect?</em></p>
-<ul>
-<li>Paste this prompt: "For each combination of board type and school language, print the number of schools and the mean reading percentage."</li>
-</ul>
+<p>or</p>
+<p><em>For each combination of board type and school language, print the number of schools and the mean reading percentage.</em></p>
 <div data-inc="validate_panels.py"><span aria-label="Source: stories/validate_panels.py" class="inc-path" role="img" tabindex="0" title="stories/validate_panels.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"eqao_school_results.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>

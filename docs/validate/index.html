@@ -51,7 +51,7 @@
 <h2>Goals</h2>
 <ul>
 <li>Verify LLM output by checking it against known values and common sense.</li>
-<li>Interpret a <a class="gl-ref" href="../glossary/#null-hypothesis">hypothesis test</a> result without misreading it as certainty.</li>
+<li>Interpret a hypothesis test result without misreading it as certainty.</li>
 <li>Recognize that a confident-sounding LLM answer is not a correct answer.</li>
 </ul>
 <h2>The Unit Error</h2>
@@ -113,8 +113,9 @@
 </ul>
 <h2>The Correct Comparison</h2>
 <p><em>Fix the code so both columns use the same unit before comparing.</em></p>
+<p>or</p>
+<p><em>The production column is in 10³ m³ (thousands of cubic metres) and the consumption column is in 10⁶ m³ (millions of cubic metres). Convert the production column to 10⁶ m³ by dividing by 1 000 before computing the ratio.</em></p>
 <ul>
-<li>Paste this prompt: "The production column is in 10³ m³ (thousands of cubic metres) and the consumption column is in 10⁶ m³ (millions of cubic metres). Convert the production column to 10⁶ m³ by dividing by 1 000 before computing the ratio."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="unit_fix.py"><span aria-label="Source: validate/unit_fix.py" class="inc-path" role="img" tabindex="0" title="validate/unit_fix.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -141,8 +142,9 @@
 </ul>
 <h2>Running a Hypothesis Test</h2>
 <p><em>Run a t-test to check whether natural gas production differs significantly between Alberta and British Columbia.</em></p>
+<p>or</p>
+<p><em>Using Polars and scipy.stats, read gas_production.csv, extract the production values for Alberta and BC, and run a Welch's t-test. Print the t-statistic and the p-value.</em></p>
 <ul>
-<li>Paste this prompt: "Using Polars and scipy.stats, read gas_production.csv, extract the production values for Alberta and BC, and run a Welch's t-test. Print the t-statistic and the p-value."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="ttest.py"><span aria-label="Source: validate/ttest.py" class="inc-path" role="img" tabindex="0" title="validate/ttest.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>

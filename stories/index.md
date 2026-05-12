@@ -4,7 +4,7 @@
 
 -   Choose chart types that match the question being asked.
 -   Prompt an LLM to create bar charts, line charts, and faceted charts.
--   Explain why a [%g correlation "correlation" %] between two variables does not prove one causes the other.
+-   Explain why a correlation between two variables does not prove one causes the other.
 
 ## Matching Chart Type to Question
 
@@ -29,7 +29,10 @@
 
 *Make a bar chart of mean percentage at Level 3 or 4 in Grade 3 reading by board type, with one panel per school language.*
 
--   Paste this prompt: "Using Polars and Altair, read eqao_school_results.csv. Make a bar chart of mean Grade 3 reading percentage (level 3 or 4) by board type, with a separate panel for English and French schools. Save it as reading_chart.png."
+or
+
+*Using Polars and Altair, read eqao_school_results.csv. Make a bar chart of mean Grade 3 reading percentage (level 3 or 4) by board type, with a separate panel for English and French schools. Save it as reading_chart.png.*
+
 -   The LLM will produce something like:
 
 [%inc grade_charts.py %]
@@ -66,7 +69,10 @@
 
 *The y axis starts at 55 instead of 0. Fix the chart so the differences are not visually exaggerated.*
 
--   Paste this prompt: "Remake the reading chart but set the y axis to start at 0 so the bar heights honestly show the magnitude of the differences."
+or
+
+*Remake the reading chart but set the y axis to start at 0 so the bar heights honestly show the magnitude of the differences.*
+
 -   The LLM will produce something like:
 
 [%inc grade_charts_fixed.py %]
@@ -80,7 +86,9 @@
 
 *How do I confirm that each panel in the faceted chart contains the data I expect?*
 
--   Paste this prompt: "For each combination of board type and school language, print the number of schools and the mean reading percentage."
+or
+
+*For each combination of board type and school language, print the number of schools and the mean reading percentage.*
 
 [%inc validate_panels.py %]
 

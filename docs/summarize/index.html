@@ -51,7 +51,7 @@
 <h2>Goals</h2>
 <ul>
 <li>Prompt an LLM to group data and compute aggregations.</li>
-<li>Interpret a <a class="gl-ref" href="../glossary/#confidence-interval">confidence interval</a> as a measure of how certain an estimate is.</li>
+<li>Interpret a confidence interval as a measure of how certain an estimate is.</li>
 <li>Sanity-check a summary against a known published figure.</li>
 </ul>
 <h2>What "Group By" Means</h2>
@@ -80,8 +80,9 @@
 </ul>
 <h2>Computing Totals and Means</h2>
 <p><em>Show me total and mean contract value by department for each year, sorted by department name.</em></p>
+<p>or</p>
+<p><em>Using Polars, read contracts.csv. Extract the year from the contract_date column. Compute the total and mean contract_value by department_en and year. Sort by department name, then year. Print the first twenty rows.</em></p>
 <ul>
-<li>Paste this prompt: "Using Polars, read contracts.csv. Extract the year from the contract_date column. Compute the total and mean contract_value by department_en and year. Sort by department name, then year. Print the first twenty rows."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="group_spend.py"><span aria-label="Source: summarize/group_spend.py" class="inc-path" role="img" tabindex="0" title="summarize/group_spend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -113,8 +114,9 @@
 </ul>
 <h2>Adding Confidence Intervals</h2>
 <p><em>Add a 95% confidence interval to each group mean.</em></p>
+<p>or</p>
+<p><em>Extend the previous code to also compute a 95% confidence interval for the mean contract value in each department-year group. Add columns ci_low and ci_high to the output.</em></p>
 <ul>
-<li>Paste this prompt: "Extend the previous code to also compute a 95% confidence interval for the mean contract value in each department-year group. Add columns ci_low and ci_high to the output."</li>
 <li>The LLM will produce something like:</li>
 </ul>
 <div data-inc="add_ci.py"><span aria-label="Source: summarize/add_ci.py" class="inc-path" role="img" tabindex="0" title="summarize/add_ci.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -172,8 +174,9 @@
 </ul>
 <h2>Checking Against a Published Figure</h2>
 <p><em>The government publishes the total value of contracts. Let us compare our sum to that published number.</em></p>
+<p>or</p>
+<p><em>Compute the total contract_value across all departments for the most recent year in the dataset.</em></p>
 <ul>
-<li>Paste this prompt: "Compute the total contract_value across all departments for the most recent year in the dataset."</li>
 <li>Find the government's published total in the Public Accounts of Canada at <a href="https://open.canada.ca/">Open Government</a><ul>
 <li>The published total should be in the same order of magnitude as your computed sum</li>
 <li>If your number is off by a factor of ten or more, the LLM probably misread the units or missed some rows</li>
