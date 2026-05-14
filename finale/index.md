@@ -9,7 +9,7 @@
 
 ## The Workflow You Built
 
-*Look back at the code and charts you produced over twelve sessions. What steps appear in every session?*
+> Look back at the code and charts you produced over twelve sessions. What steps appear in every session?
 
 -   Every session followed the same loop, even when the dataset and question changed:
     -   Write a prompt that describes the data, the goal, and any constraints
@@ -28,7 +28,7 @@
 
 ## When LLMs Fail
 
-*What do I do when the LLM produces code that crashes, or code that runs but gives the wrong answer?*
+> What do I do when the LLM produces code that crashes, or code that runs but gives the wrong answer?
 
 -   When the code crashes, the error message is your first clue
     -   Copy the error message into a new prompt: "I got this error: [paste]. What is wrong?"
@@ -44,7 +44,7 @@
 
 ## The Environmental and Labor Costs
 
-*Given everything this course has covered, how should I decide when to use an LLM?*
+> Given everything this course has covered, how should I decide when to use an LLM?
 
 -   The energy cost of a single query is small; the aggregate cost of millions of queries is not [%b strubell2019 %]
     -   Using an LLM to automate a repetitive, well-understood step is a reasonable use of that energy
@@ -59,7 +59,7 @@
 
 ## Where to Go Next
 
-*What should I learn after finishing this course?*
+> What should I learn after finishing this course?
 
 -   More statistics: this course introduced mean, median, correlation, regression, confidence intervals, and hypothesis testing
     -   A next step is understanding when each is appropriate and what the assumptions behind them are

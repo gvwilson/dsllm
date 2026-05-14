@@ -55,7 +55,9 @@
 <li>Sanity-check a summary against a known published figure.</li>
 </ul>
 <h2>What "Group By" Means</h2>
-<p><em>What does it mean to group data, and what kinds of questions does it answer?</em></p>
+<blockquote>
+<p>What does it mean to group data, and what kinds of questions does it answer?</p>
+</blockquote>
 <ul>
 <li>A "group by" operation splits a table into groups that share a common value, computes something for each group, and returns one row per group<ul>
 <li>"Total contract value per department per year" requires grouping by department and year, then summing</li>
@@ -70,7 +72,9 @@
 </ul>
 </li>
 </ul>
-<p><em>Why would you want both the total and the mean for the same group?</em></p>
+<blockquote>
+<p>Why would you want both the total and the mean for the same group?</p>
+</blockquote>
 <ul>
 <li>The total tells you how much a department spent overall; the mean tells you how large a typical contract was<ul>
 <li>A department that awards one large infrastructure contract looks different from one that awards thousands of small consulting contracts, even if the totals are similar</li>
@@ -79,9 +83,13 @@
 </li>
 </ul>
 <h2>Computing Totals and Means</h2>
-<p><em>Show me total and mean contract value by department for each year, sorted by department name.</em></p>
+<blockquote>
+<p>Show me total and mean contract value by department for each year, sorted by department name.</p>
+</blockquote>
 <p>or</p>
-<p><em>Using Polars, read contracts.csv. Extract the year from the contract_date column. Compute the total and mean contract_value by department_en and year. Sort by department name, then year. Print the first twenty rows.</em></p>
+<blockquote>
+<p>Using Polars, read contracts.csv. Extract the year from the contract_date column. Compute the total and mean contract_value by department_en and year. Sort by department name, then year. Print the first twenty rows.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -113,9 +121,13 @@
 </li>
 </ul>
 <h2>Adding Confidence Intervals</h2>
-<p><em>Add a 95% confidence interval to each group mean.</em></p>
+<blockquote>
+<p>Add a 95% confidence interval to each group mean.</p>
+</blockquote>
 <p>or</p>
-<p><em>Extend the previous code to also compute a 95% confidence interval for the mean contract value in each department-year group. Add columns ci_low and ci_high to the output.</em></p>
+<blockquote>
+<p>Extend the previous code to also compute a 95% confidence interval for the mean contract value in each department-year group. Add columns ci_low and ci_high to the output.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -149,13 +161,15 @@
 </div>
 <ul>
 <li>The <code>ci_low</code> and <code>ci_high</code> columns bracket the mean<ul>
-<li>For departments with only a few contracts, the interval is wide---there is not enough data to be precise</li>
-<li>For departments with hundreds of contracts, the interval is narrow---the mean is well-estimated</li>
+<li>For departments with only a few contracts, the interval is wide: there is not enough data to be precise</li>
+<li>For departments with hundreds of contracts, the interval is narrow: the mean is well-estimated</li>
 </ul>
 </li>
 </ul>
 <h2>Reading a Confidence Interval</h2>
-<p><em>What does a 95% confidence interval actually mean?</em></p>
+<blockquote>
+<p>What does a 95% confidence interval actually mean?</p>
+</blockquote>
 <ul>
 <li>A 95% <a class="gl-ref" href="../glossary/#confidence-interval">confidence interval</a> does not mean "there is a 95% chance the true mean is in this range"<ul>
 <li>It means: if we built many such intervals from different samples, 95% of them would contain the true mean</li>
@@ -173,9 +187,13 @@
 </li>
 </ul>
 <h2>Checking Against a Published Figure</h2>
-<p><em>The government publishes the total value of contracts. Let us compare our sum to that published number.</em></p>
+<blockquote>
+<p>The government publishes the total value of contracts. Let us compare our sum to that published number.</p>
+</blockquote>
 <p>or</p>
-<p><em>Compute the total contract_value across all departments for the most recent year in the dataset.</em></p>
+<blockquote>
+<p>Compute the total contract_value across all departments for the most recent year in the dataset.</p>
+</blockquote>
 <ul>
 <li>Find the government's published total in the Public Accounts of Canada at <a href="https://open.canada.ca/">Open Government</a><ul>
 <li>The published total should be in the same order of magnitude as your computed sum</li>
@@ -187,7 +205,7 @@
 <h2>Check Understanding</h2>
 <details>
 <summary>You compute a 95% confidence interval of ($480K, $620K) for mean contract size in one department. A classmate says "there is a 95% chance the true mean is between $480K and $620K." What is wrong with this statement?</summary>
-<p>The true mean is a fixed value---it either is or is not in the interval, with probability 1 or 0.
+<p>The true mean is a fixed value: it either is or is not in the interval, with probability 1 or 0.
 The 95% refers to the procedure: if you built many intervals from different samples, 95% of them would contain the true mean.
 This particular interval either contains the true mean or does not; we just do not know which.</p>
 </details>
@@ -199,8 +217,11 @@ A formal hypothesis test would confirm this more rigorously, but non-overlapping
 </details>
 <details>
 <summary>Your computed total for one department is $2.8 billion, but the Public Accounts show $1.4 billion. List two things you would check before concluding the data is wrong.</summary>
-<p>First, check whether the years match---the dataset might include a different fiscal year than the Public Accounts reference, or might include amendments and modifications not in the original totals.
-Second, check whether the LLM summed all rows or only a subset---it may have failed to filter by department correctly and included other departments.
+<p>First, check whether the years match:
+the dataset might include a different fiscal year than the Public Accounts reference,
+or might include amendments and modifications not in the original totals.
+Second, check whether the LLM summed all rows or only a subset:
+it may have failed to filter by department correctly and included other departments.
 Ask the LLM to print the number of rows it summed and the range of years included.</p>
 </details>
 <details>

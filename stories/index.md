@@ -8,7 +8,7 @@
 
 ## Matching Chart Type to Question
 
-*How do I decide which type of chart to make?*
+> How do I decide which type of chart to make?
 
 -   The chart type should follow from the question, not from the tool's default
     -   "How many?" → bar chart (counts or totals per category)
@@ -19,7 +19,7 @@
     -   Download school-level results from [EQAO][eqao]
     -   It has one row per school with columns for school name, board name, board type (Public or Catholic), school language (English or French), and the percentage of Grade 3 students achieving Level 3 or 4 in reading and mathematics
 
-*What question will we ask?*
+> What question will we ask?
 
 -   The question: do Catholic board schools score differently from public board schools in Grade 3 reading, and does this pattern differ between English and French schools?
     -   Board type is a category with two values; score is a number; school language creates natural panels
@@ -27,11 +27,11 @@
 
 ## Building a Faceted Chart
 
-*Make a bar chart of mean percentage at Level 3 or 4 in Grade 3 reading by board type, with one panel per school language.*
+> Make a bar chart of mean percentage at Level 3 or 4 in Grade 3 reading by board type, with one panel per school language.
 
 or
 
-*Using Polars and Altair, read eqao_school_results.csv. Make a bar chart of mean Grade 3 reading percentage (level 3 or 4) by board type, with a separate panel for English and French schools. Save it as reading_chart.png.*
+> Using Polars and Altair, read eqao_school_results.csv. Make a bar chart of mean Grade 3 reading percentage (level 3 or 4) by board type, with a separate panel for English and French schools. Save it as reading_chart.png.
 
 -   The LLM will produce something like:
 
@@ -43,7 +43,7 @@ or
 
 ## Reading the Chart
 
-*What does the chart show, and what does it not show?*
+> What does the chart show, and what does it not show?
 
 -   A taller bar for Catholic schools than Public schools means students in Catholic schools had a higher mean percentage at Levels 3 and 4
     -   This is a difference in group averages, not a measure of what caused it
@@ -52,11 +52,11 @@ or
     -   Check the y axis range: if it starts at 60 instead of 0, a 2-point difference looks enormous
 -   Count whether both board types appear in both panels
     -   If a bar is missing, there are no schools of that type in that language stream
-	-   This is not an error, but worth noting
+    -   This is not an error, but worth noting
 
 ## Why Correlation Is Not Causation
 
-*The chart shows Catholic schools score slightly higher. Does that prove board type causes better scores?*
+> The chart shows Catholic schools score slightly higher. Does that prove board type causes better scores?
 
 -   No. Correlation means two things tend to appear together; causation means one thing produces the other
     -   Catholic schools may enrol students from communities with higher household incomes, lower family stress, or stronger cultural emphasis on academic achievement
@@ -68,11 +68,11 @@ or
 
 ## Fixing a Misleading Axis
 
-*The y axis starts at 55 instead of 0. Fix the chart so the differences are not visually exaggerated.*
+> The y axis starts at 55 instead of 0. Fix the chart so the differences are not visually exaggerated.
 
 or
 
-*Remake the reading chart but set the y axis to start at 0 so the bar heights honestly show the magnitude of the differences.*
+> Remake the reading chart but set the y axis to start at 0 so the bar heights honestly show the magnitude of the differences.
 
 -   The LLM will produce something like:
 
@@ -85,11 +85,11 @@ or
 
 ## Validating Each Panel
 
-*How do I confirm that each panel in the faceted chart contains the data I expect?*
+> How do I confirm that each panel in the faceted chart contains the data I expect?
 
 or
 
-*For each combination of board type and school language, print the number of schools and the mean reading percentage.*
+> For each combination of board type and school language, print the number of schools and the mean reading percentage.
 
 [%inc validate_panels.py %]
 

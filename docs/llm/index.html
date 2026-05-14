@@ -55,7 +55,9 @@
 <li>Prompt an LLM to compute and interpret the mean and median of a column.</li>
 </ul>
 <h2>Starting the Notebook</h2>
-<p><em>How do I start a notebook and create a first cell?</em></p>
+<blockquote>
+<p>How do I start a notebook and create a first cell?</p>
+</blockquote>
 <ul>
 <li>A <a class="gl-ref" href="../glossary/#notebook">notebook</a> is a document that mixes text, code, and output in one file<ul>
 <li>Jupyter notebooks have the extension <code>.ipynb</code>; each piece of code or text is called a "cell"</li>
@@ -74,7 +76,9 @@
 </ul>
 </li>
 </ul>
-<p><em>What should I type in the first cell to make sure everything is working?</em></p>
+<blockquote>
+<p>What should I type in the first cell to make sure everything is working?</p>
+</blockquote>
 <ul>
 <li>Paste <code>print("hello")</code> into the first cell and press <code>Shift+Enter</code><ul>
 <li>If you see <code>hello</code> appear below the cell, the environment is working</li>
@@ -83,7 +87,9 @@
 </li>
 </ul>
 <h2>Reading the Data</h2>
-<p><em>Read a CSV file of monthly climate observations and print its first five rows.</em></p>
+<blockquote>
+<p>Read a CSV file of monthly climate observations and print its first five rows.</p>
+</blockquote>
 <ul>
 <li>
 <p>The dataset for this session is
@@ -105,7 +111,9 @@
 </ul>
 </li>
 </ul>
-<p><em>Use Polars to read a CSV file called climate.csv, skip the first row which is a title line, treat empty cells as missing, and print the first five rows.</em></p>
+<blockquote>
+<p>Use Polars to read a CSV file called climate.csv, skip the first row which is a title line, treat empty cells as missing, and print the first five rows.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -124,14 +132,18 @@
 </ul>
 <h2>Mean and Median</h2>
 <ul>
-<li>The <a class="gl-ref" href="../glossary/#mean">mean</a> is the sum of all values divided by the count---what most people call the average</li>
+<li>The <a class="gl-ref" href="../glossary/#mean">mean</a> is the sum of all values divided by the count (also called the average)</li>
 <li>The <a class="gl-ref" href="../glossary/#median">median</a> is the middle value when all observations are sorted from smallest to largest</li>
 </ul>
-<p><em>Compute the mean and median of the monthly mean temperature column.</em></p>
+<blockquote>
+<p>Compute the mean and median of the monthly mean temperature column.</p>
+</blockquote>
 <ul>
 <li>If that doesn't work, try a more specific prompt:</li>
 </ul>
-<p><em>Using Polars, read climate.csv the same way, then compute and print the mean and median of the 'Mean Temp (°C)' column, excluding missing values.</em></p>
+<blockquote>
+<p>Using Polars, read climate.csv the same way, then compute and print the mean and median of the 'Mean Temp (°C)' column, excluding missing values.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -150,7 +162,9 @@
 </ul>
 </li>
 </ul>
-<p><em>Why would the mean and median of a dataset ever be different numbers?</em></p>
+<blockquote>
+<p>Why would the mean and median of a dataset ever be different numbers?</p>
+</blockquote>
 <ul>
 <li>The mean is the sum of all values divided by the count<ul>
 <li>It is pulled toward extreme values:
@@ -175,7 +189,9 @@
 </li>
 </ul>
 <h2>Saving the Notebook</h2>
-<p><em>What does it mean to save a notebook, and why does it matter?</em></p>
+<blockquote>
+<p>What does it mean to save a notebook, and why does it matter?</p>
+</blockquote>
 <ul>
 <li>Saving a Jupyter notebook writes all cells and all outputs to a <code>.ipynb</code> file on disk<ul>
 <li>In Jupyter, press <code>Ctrl+S</code> (or <code>Cmd+S</code> on Mac) or click the save icon</li>
@@ -192,7 +208,9 @@
 <li>The combination of the data file and the saved notebook is the smallest unit of reproducible analysis</li>
 </ul>
 <h2>Saving Prompts</h2>
-<p><em>I am tired of typing "use Polars" and "treat empty cells as missing" in every prompt. Is there a way to set these once?</em></p>
+<blockquote>
+<p>I am tired of typing "use Polars" and "treat empty cells as missing" in every prompt. Is there a way to set these once?</p>
+</blockquote>
 <ul>
 <li>Most LLM tools let you set custom instructions that are added to every conversation automatically<ul>
 <li>In Claude, open Settings and look for "Custom instructions" or create a Project and add instructions there</li>
@@ -207,7 +225,8 @@
 <li>"Print the first five rows after reading any CSV file."</li>
 </ul>
 </li>
-<li>Custom instructions do not replace careful prompting---you still need to give the LLM the column names and goal for each specific task<ul>
+<li>Custom instructions do not replace careful prompting<ul>
+<li>You still need to give the LLM the column names and goal for each specific task</li>
 <li>They only save you from repeating the same background preferences in every session</li>
 </ul>
 </li>

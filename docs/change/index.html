@@ -55,7 +55,9 @@
 <li>Distinguish a real trend from seasonal or random fluctuation.</li>
 </ul>
 <h2>Why Change Matters</h2>
-<p><em>Why do researchers usually study change over time rather than a single snapshot?</em></p>
+<blockquote>
+<p>Why do researchers usually study change over time rather than a single snapshot?</p>
+</blockquote>
 <ul>
 <li>A single measurement tells you where something is; a time series tells you where it is going<ul>
 <li>One year of flu data tells you how bad that season was; decades of data reveal whether flu is becoming more or less severe</li>
@@ -71,9 +73,13 @@
 <li>The question: has the peak severity of flu season in Canada been changing over the decades?</li>
 </ul>
 <h2>Plotting Over Time</h2>
-<p><em>Plot weekly influenza-like illness percentage over time as a line chart.</em></p>
+<blockquote>
+<p>Plot weekly influenza-like illness percentage over time as a line chart.</p>
+</blockquote>
 <p>or</p>
-<p><em>Using Polars and Altair, read fluwatch.csv, plot the weekly ILI percentage over time as a line chart coloured by year, and save it as flu_line.png.</em></p>
+<blockquote>
+<p>Using Polars and Altair, read fluwatch.csv, plot the weekly ILI percentage over time as a line chart coloured by year, and save it as flu_line.png.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -106,7 +112,8 @@
 <li>Run the cell and open the PNG<ul>
 <li>The chart should show a repeating winter spike pattern</li>
 <li>Different years appear as different coloured lines</li>
-<li>The seasonal pattern is immediately visible---this is why you plot before computing anything</li>
+<li>The seasonal pattern is immediately visible</li>
+<li>This is why you plot before computing anything</li>
 </ul>
 </li>
 </ul>
@@ -118,9 +125,13 @@
 </ul>
 </li>
 </ul>
-<p><em>Fit a trend line to the annual peak ILI values and show the slope.</em></p>
+<blockquote>
+<p>Fit a trend line to the annual peak ILI values and show the slope.</p>
+</blockquote>
 <p>or</p>
-<p><em>Using Polars and Altair, compute the maximum weekly ILI percentage for each year, then plot those annual peaks with a regression trend line. Save the chart as flu_trend.png.</em></p>
+<blockquote>
+<p>Using Polars and Altair, compute the maximum weekly ILI percentage for each year, then plot those annual peaks with a regression trend line. Save the chart as flu_trend.png.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -165,11 +176,13 @@
 </li>
 </ul>
 <h2>What a Regression Line Tells You</h2>
-<p><em>What does the trend line actually represent?</em></p>
+<blockquote>
+<p>What does the trend line actually represent?</p>
+</blockquote>
 <ul>
 <li>A <a class="gl-ref" href="../glossary/#regression">regression</a> line is the line that minimizes the total squared distance from each point to the line<ul>
 <li>It is the best straight-line summary of the overall direction of the data</li>
-<li>It does not describe any individual year---most years will be above or below the line</li>
+<li>It does not describe any individual year: most years will be above or below the line</li>
 </ul>
 </li>
 <li>The slope of the line tells you the direction and rate of change<ul>
@@ -184,7 +197,9 @@
 </li>
 </ul>
 <h2>Seasonal Pattern vs. Long-Term Trend</h2>
-<p><em>How do I tell the difference between the winter flu spike and a real long-term change?</em></p>
+<blockquote>
+<p>How do I tell the difference between the winter flu spike and a real long-term change?</p>
+</blockquote>
 <ul>
 <li>The winter spike is a seasonal pattern: it repeats every year and tells you nothing about whether flu is getting worse over time<ul>
 <li>Seasonal patterns are short-cycle fluctuations driven by predictable factors (cold weather, school schedules, indoor crowding)</li>
@@ -192,7 +207,9 @@
 </ul>
 </li>
 <li>A long-term trend is the underlying direction visible across many seasons<ul>
-<li>To see the trend, you need to compare the same part of each cycle---the annual peak, or the annual mean---across years</li>
+<li>To see the trend, you need to compare the same part of each cycle,
+    such as the annual peak or the annual mean,
+    across years</li>
 <li>Fitting a trend line to raw weekly data (including all the seasonal variation) will produce a line, but it will not be a meaningful trend</li>
 </ul>
 </li>
@@ -203,7 +220,9 @@
 </li>
 </ul>
 <h2>Checking the Trend Direction</h2>
-<p><em>How do I confirm the trend line is pointing in the right direction?</em></p>
+<blockquote>
+<p>How do I confirm the trend line is pointing in the right direction?</p>
+</blockquote>
 <ul>
 <li>The most basic check: does the trend line agree with what you see by eye?<ul>
 <li>If the dots appear to be drifting upward but the line slopes down, something is wrong</li>
@@ -211,7 +230,9 @@
 </ul>
 </li>
 </ul>
-<p><em>What is the slope of the regression line in the previous chart?</em></p>
+<blockquote>
+<p>What is the slope of the regression line in the previous chart?</p>
+</blockquote>
 <ul>
 <li>A positive number should correspond to an upward-sloping line</li>
 <li>If the sign does not match the visual direction, the regression used the wrong axis</li>
@@ -245,8 +266,13 @@
 <details>
 <summary>You plot annual FluWatch peaks from 1993 to 2023 and fit a trend line. The line has a slope of +0.12 percentage points per year. A classmate says "this proves Canadian flu seasons are getting worse." What is the correct interpretation, and what is missing?</summary>
 <p>A slope of +0.12 means Canadian flu peaks have increased by an average of about 0.12 percentage points per year over this period in this dataset.
-It does not prove flu is getting worse---the trend could reverse, surveillance methodology may have changed, and 0.12 pp per year may or may not be practically meaningful.
-What is missing: a confidence interval on the slope (which would show whether the trend is distinguishable from zero) and a check on whether any pandemic years (2009, 2020) are distorting the estimate.</p>
+It does not prove flu is getting worse:
+the trend could reverse,
+surveillance methodology may have changed,
+and 0.12 pp per year may or may not be practically meaningful.
+What is missing: a confidence interval on the slope
+(which would show whether the trend is distinguishable from zero)
+and a check on whether any pandemic years (2009, 2020) are distorting the estimate.</p>
 </details>
 <details>
 <summary>The FluWatch line chart shows an enormous spike in 2009 that is much higher than any other year. You fit a trend line to the full dataset. How does this spike affect the slope, and what should you do about it?</summary>
@@ -259,11 +285,15 @@ A single year driven by a pandemic is qualitatively different from a severe seas
 <summary>A classmate fits a trend line to raw weekly ILI percentages over all years and concludes "there is a slight upward trend in flu rates." What is wrong with this analysis?</summary>
 <p>Fitting a trend line to raw weekly data mixes the seasonal pattern with any long-term trend.
 If surveillance weeks shifted slightly over time (for example, more winter-week data in recent years due to expanded reporting), the raw weekly series will slope upward for reasons unrelated to actual flu severity.
-The correct approach is to compare annual peaks or annual means---comparable points across years---rather than raw weekly values.</p>
+The correct approach is to compare annual peaks or annual means
+(i.e., comparable points across years)
+rather than raw weekly values.</p>
 </details>
 <details>
 <summary>You ask the LLM to compute the slope of the trend line and it returns -0.09. But when you look at the chart, the line clearly slopes upward to the right. What should you do?</summary>
-<p>A negative slope with an upward-sloping chart means the LLM computed the regression with the axes reversed---fitting year as a function of ILI rather than ILI as a function of year---or reported the slope of a different variable.
+<p>A negative slope with an upward-sloping chart means the LLM computed the regression with the axes reversed
+i.e., fitted year as a function of ILI rather than ILI as a function of year,
+or reported the slope of a different variable.
 Ask the LLM: "In the regression, which variable is x (the predictor) and which is y (the response)?"
 Do not report the slope until the sign matches what you see in the chart.</p>
 </details>

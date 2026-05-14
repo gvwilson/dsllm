@@ -8,7 +8,7 @@
 
 ## What Is Data Science?
 
-*What is data science, and how is it different from statistics or spreadsheet work?*
+> What is data science, and how is it different from statistics or spreadsheet work?
 
 -   [%g data-science "Data science" %] is the practice of turning messy observations into defensible claims
     -   Data from a hospital or a climate station always has missing values, typos, and inconsistent formatting
@@ -20,7 +20,7 @@
 -   But writing a script is harder than clicking on a spreadsheet
     -   So we use LLMs to get started and help us learn
 
-*What kind of work will this course prepare you to do?*
+> What kind of work will this course prepare you to do?
 
 -   By the end of this course you will be able to:
     -   Read a dataset from a file and understand its shape and contents
@@ -35,7 +35,7 @@
 
 ## What LLMs Do
 
-*What does an LLM do when I ask it to write Python code?*
+> What does an LLM do when I ask it to write Python code?
 
 -   A [%g llm "large language model" %] (LLM) predicts the most plausible next word given everything before it
     -   It has no model of the world and does not reason about problems
@@ -51,7 +51,7 @@
     -   They choose the wrong statistical approach without warning you
     -   They produce confident-sounding code that silently computes the wrong answer
 
-*Why does it matter that LLMs do not actually understand data?*
+> Why does it matter that LLMs do not actually understand data?
 
 -   An LLM cannot look at your data file
     -   It can only see what you write in your prompt
@@ -66,7 +66,7 @@
 
 ## The Costs of LLMs
 
-*What are the environmental and labor costs of using LLM tools?*
+> What are the environmental and labor costs of using LLM tools?
 
 -   Training a large language model uses roughly as much electricity
     as flying a hundred passengers across the Atlantic [%b strubell2019 %]
@@ -82,7 +82,7 @@
 
 ## What This Course Does Not Do
 
-*What should I not use an LLM for in a research context?*
+> What should I not use an LLM for in a research context?
 
 -   LLMs should not interpret results for you
     -   "The correlation is 0.73, what does that mean for my study?" is a question only you can answer

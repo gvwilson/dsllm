@@ -52,8 +52,8 @@
 :   A machine-learning system trained on large amounts of text that generates new text
     by predicting the most plausible next word given everything before it.
     LLMs can write code, summarize documents, and answer questions,
-	but they do not reason about problems.
-	They produce plausible-sounding text based on patterns in their training data.
+    but they do not reason about problems.
+    They produce plausible-sounding text based on patterns in their training data.
 
 ## M
 
@@ -120,6 +120,12 @@
 <span id="reproducibility">reproducibility</span>
 :   The property of an analysis such that running the same code on the same data produces the same result.
     Reproducibility requires that the data file, the code, and the software environment are all available and unchanged.
+
+<span id="right-skewed">right-skewed</span>
+:   A distribution in which most values are clustered near the low end,
+    but a long tail extends toward higher values,
+    pulling the mean above the median.
+    Income distributions are a classic example.
 
 ## S
 

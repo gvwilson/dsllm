@@ -55,7 +55,9 @@
 <li>Explain what correlation means and how to read it from a scatter plot.</li>
 </ul>
 <h2>Why Charts Come First</h2>
-<p><em>What is Anscombe's quartet, and why does it matter before we compute any statistics?</em></p>
+<blockquote>
+<p>What is Anscombe's quartet, and why does it matter before we compute any statistics?</p>
+</blockquote>
 <ul>
 <li>A set of four small datasets with identical means, variances, and <a class="gl-ref" href="../glossary/#correlation">correlation</a> [<a class="bib-ref" href="../bibliography/#anscombe1973">anscombe1973</a>]<ul>
 <li>Their <a class="gl-ref" href="../glossary/#scatter-plot">scatter plots</a> look completely different:
@@ -71,7 +73,9 @@
 </li>
 <li>Charts are not decoration; they are part of the analysis</li>
 </ul>
-<p><em>What dataset will we use, and what question will we ask?</em></p>
+<blockquote>
+<p>What dataset will we use, and what question will we ask?</p>
+</blockquote>
 <ul>
 <li>The dataset for this session is the Natural Resources Canada Earthquake Catalog [<a class="bib-ref" href="../bibliography/#nrcan-quakes2025">nrcan-quakes2025</a>]<ul>
 <li>Download the catalog from <a href="https://earthquakescanada.nrcan.gc.ca/stndon/NEDB-BNDS/bull-en.php">NRCan Earthquakes</a> as <code>earthquakes.csv</code></li>
@@ -88,7 +92,9 @@
 </li>
 </ul>
 <h2>Drawing the Scatter Plot</h2>
-<p><em>Make a scatter plot of earthquake depth on the x axis and magnitude on the y axis, coloured by region, and save it as a PNG.</em></p>
+<blockquote>
+<p>Make a scatter plot of earthquake depth on the x axis and magnitude on the y axis, coloured by region, and save it as a PNG.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -124,7 +130,9 @@
 </li>
 </ul>
 <h2>Validating the Chart</h2>
-<p><em>How do I check that the chart shows all the data I expected?</em></p>
+<blockquote>
+<p>How do I check that the chart shows all the data I expected?</p>
+</blockquote>
 <ul>
 <li>Count the rows in the dataframe and compare to the number of points in the chart<ul>
 <li>If the dataframe has 15,000 rows but the chart shows 12,000 points, some data was silently dropped</li>
@@ -151,7 +159,9 @@
 </li>
 </ul>
 <h2>Measuring Correlation</h2>
-<p><em>Compute the correlation between earthquake depth and magnitude. Drop rows where depth or magnitude is missing.</em></p>
+<blockquote>
+<p>Compute the correlation between earthquake depth and magnitude. Drop rows where depth or magnitude is missing.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -167,17 +177,21 @@
 </div>
 <ul>
 <li>The output should be a number between -1 and +1<ul>
-<li>A value near 0 means no consistent linear relationship---deeper quakes are not systematically larger</li>
+<li>A value near 0 means no consistent linear relationship, i.e., deeper quakes are not systematically larger</li>
 <li>A positive value means deeper quakes tend to be larger; a negative value means the opposite</li>
 <li>The scatter plot will tell you whether the relationship is linear or curved</li>
 </ul>
 </li>
 </ul>
-<p><em>What kind of correlation did you calculate?</em></p>
+<blockquote>
+<p>What kind of correlation did you calculate?</p>
+</blockquote>
 <ul>
 <li>Should be Pearson</li>
 </ul>
-<p><em>What does the correlation coefficient actually tell you?</em></p>
+<blockquote>
+<p>What does the correlation coefficient actually tell you?</p>
+</blockquote>
 <ul>
 <li>Correlation measures the strength of a linear relationship between two variables<ul>
 <li>0.9 is a strong positive relationship; 0.3 is a weak one</li>
@@ -197,12 +211,14 @@
 </li>
 </ul>
 <h2>Iterating on Prompts</h2>
-<p><em>The chart is hard to read because the points overlap. Adjust the prompt to improve it.</em></p>
+<blockquote>
+<p>The chart is hard to read because the points overlap. Adjust the prompt to improve it.</p>
+</blockquote>
 <ul>
 <li>Prompts rarely produce a perfect chart on the first try</li>
 <li>Common improvements to ask for:<ul>
 <li>"Add transparency (opacity 0.4) so overlapping points are visible."</li>
-<li>"Remove earthquakes with magnitude below 1.5---they clutter the chart without adding information."</li>
+<li>"Remove earthquakes with magnitude below 1.5: they clutter the chart without adding information."</li>
 <li>"Change the x axis label to 'Depth (km)' and the y axis label to 'Magnitude'."</li>
 </ul>
 </li>

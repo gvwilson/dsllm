@@ -8,7 +8,7 @@
 
 ## Starting the Notebook
 
-*How do I start a notebook and create a first cell?*
+> How do I start a notebook and create a first cell?
 
 -   A [%g notebook "notebook" %] is a document that mixes text, code, and output in one file
     -   Jupyter notebooks have the extension `.ipynb`; each piece of code or text is called a "cell"
@@ -21,7 +21,7 @@
     -   The output appears directly below the cell
     -   If the cell causes an error, the error message appears there too
 
-*What should I type in the first cell to make sure everything is working?*
+> What should I type in the first cell to make sure everything is working?
 
 -   Paste `print("hello")` into the first cell and press `Shift+Enter`
     -   If you see `hello` appear below the cell, the environment is working
@@ -29,7 +29,7 @@
 
 ## Reading the Data
 
-*Read a CSV file of monthly climate observations and print its first five rows.*
+> Read a CSV file of monthly climate observations and print its first five rows.
 
 -   The dataset for this session is
     the Environment and Climate Change Canada Historical Climate Data [%b eccc-climate2025 %]
@@ -44,7 +44,7 @@
     -   Including "Using Polars" in your prompt tells the LLM which tool to use;
         without it, the LLM might choose a different library and produce code that does not run in your environment
 
-*Use Polars to read a CSV file called climate.csv, skip the first row which is a title line, treat empty cells as missing, and print the first five rows.*
+> Use Polars to read a CSV file called climate.csv, skip the first row which is a title line, treat empty cells as missing, and print the first five rows.
 
 -   The LLM will produce something like:
 
@@ -59,11 +59,11 @@
 -   The [%g mean "mean" %] is the sum of all values divided by the count (also called the average)
 -   The [%g median "median" %] is the middle value when all observations are sorted from smallest to largest
 
-*Compute the mean and median of the monthly mean temperature column.*
+> Compute the mean and median of the monthly mean temperature column.
 
 - If that doesn't work, try a more specific prompt:
 
-*Using Polars, read climate.csv the same way, then compute and print the mean and median of the 'Mean Temp (°C)' column, excluding missing values.*
+> Using Polars, read climate.csv the same way, then compute and print the mean and median of the 'Mean Temp (°C)' column, excluding missing values.
 
 -   The LLM will produce something like:
 
@@ -73,7 +73,7 @@
     -   For most Canadian cities the annual mean will be between -10° and +15° C
     -   If the number is in the hundreds, the LLM likely read the wrong column
 
-*Why would the mean and median of a dataset ever be different numbers?*
+> Why would the mean and median of a dataset ever be different numbers?
 
 -   The mean is the sum of all values divided by the count
     -   It is pulled toward extreme values:
@@ -91,7 +91,7 @@
 
 ## Saving the Notebook
 
-*What does it mean to save a notebook, and why does it matter?*
+> What does it mean to save a notebook, and why does it matter?
 
 -   Saving a Jupyter notebook writes all cells and all outputs to a `.ipynb` file on disk
     -   In Jupyter, press `Ctrl+S` (or `Cmd+S` on Mac) or click the save icon
@@ -105,7 +105,7 @@
 
 ## Saving Prompts
 
-*I am tired of typing "use Polars" and "treat empty cells as missing" in every prompt. Is there a way to set these once?*
+> I am tired of typing "use Polars" and "treat empty cells as missing" in every prompt. Is there a way to set these once?
 
 -   Most LLM tools let you set custom instructions that are added to every conversation automatically
     -   In Claude, open Settings and look for "Custom instructions" or create a Project and add instructions there

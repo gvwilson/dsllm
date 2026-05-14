@@ -55,7 +55,9 @@
 <li>Explain why a correlation between two variables does not prove one causes the other.</li>
 </ul>
 <h2>Matching Chart Type to Question</h2>
-<p><em>How do I decide which type of chart to make?</em></p>
+<blockquote>
+<p>How do I decide which type of chart to make?</p>
+</blockquote>
 <ul>
 <li>The chart type should follow from the question, not from the tool's default<ul>
 <li>"How many?" → bar chart (counts or totals per category)</li>
@@ -70,7 +72,9 @@
 </ul>
 </li>
 </ul>
-<p><em>What question will we ask?</em></p>
+<blockquote>
+<p>What question will we ask?</p>
+</blockquote>
 <ul>
 <li>The question: do Catholic board schools score differently from public board schools in Grade 3 reading, and does this pattern differ between English and French schools?<ul>
 <li>Board type is a category with two values; score is a number; school language creates natural panels</li>
@@ -79,9 +83,13 @@
 </li>
 </ul>
 <h2>Building a Faceted Chart</h2>
-<p><em>Make a bar chart of mean percentage at Level 3 or 4 in Grade 3 reading by board type, with one panel per school language.</em></p>
+<blockquote>
+<p>Make a bar chart of mean percentage at Level 3 or 4 in Grade 3 reading by board type, with one panel per school language.</p>
+</blockquote>
 <p>or</p>
-<p><em>Using Polars and Altair, read eqao_school_results.csv. Make a bar chart of mean Grade 3 reading percentage (level 3 or 4) by board type, with a separate panel for English and French schools. Save it as reading_chart.png.</em></p>
+<blockquote>
+<p>Using Polars and Altair, read eqao_school_results.csv. Make a bar chart of mean Grade 3 reading percentage (level 3 or 4) by board type, with a separate panel for English and French schools. Save it as reading_chart.png.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -116,7 +124,9 @@
 </li>
 </ul>
 <h2>Reading the Chart</h2>
-<p><em>What does the chart show, and what does it not show?</em></p>
+<blockquote>
+<p>What does the chart show, and what does it not show?</p>
+</blockquote>
 <ul>
 <li>A taller bar for Catholic schools than Public schools means students in Catholic schools had a higher mean percentage at Levels 3 and 4<ul>
 <li>This is a difference in group averages, not a measure of what caused it</li>
@@ -124,16 +134,19 @@
 </ul>
 </li>
 <li>Look at the size of the differences: a mean of 64% vs. 66% may look dramatic on a bar chart but is small in absolute terms<ul>
-<li>Check the y axis range---if it starts at 60 instead of 0, a 2-point difference looks enormous</li>
+<li>Check the y axis range: if it starts at 60 instead of 0, a 2-point difference looks enormous</li>
 </ul>
 </li>
 <li>Count whether both board types appear in both panels<ul>
-<li>If a bar is missing, there are no schools of that type in that language stream---not an error, but worth noting</li>
+<li>If a bar is missing, there are no schools of that type in that language stream</li>
+<li>This is not an error, but worth noting</li>
 </ul>
 </li>
 </ul>
 <h2>Why Correlation Is Not Causation</h2>
-<p><em>The chart shows Catholic schools score slightly higher. Does that prove board type causes better scores?</em></p>
+<blockquote>
+<p>The chart shows Catholic schools score slightly higher. Does that prove board type causes better scores?</p>
+</blockquote>
 <ul>
 <li>No. Correlation means two things tend to appear together; causation means one thing produces the other<ul>
 <li>Catholic schools may enrol students from communities with higher household incomes, lower family stress, or stronger cultural emphasis on academic achievement</li>
@@ -148,9 +161,13 @@
 </li>
 </ul>
 <h2>Fixing a Misleading Axis</h2>
-<p><em>The y axis starts at 55 instead of 0. Fix the chart so the differences are not visually exaggerated.</em></p>
+<blockquote>
+<p>The y axis starts at 55 instead of 0. Fix the chart so the differences are not visually exaggerated.</p>
+</blockquote>
 <p>or</p>
-<p><em>Remake the reading chart but set the y axis to start at 0 so the bar heights honestly show the magnitude of the differences.</em></p>
+<blockquote>
+<p>Remake the reading chart but set the y axis to start at 0 so the bar heights honestly show the magnitude of the differences.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -181,15 +198,19 @@
 <ul>
 <li>Compare the two charts side by side<ul>
 <li>In the version starting at 55, a 3-point difference looks large</li>
-<li>In the version starting at 0, the same difference looks small relative to the full 0-100 scale---which is more honest</li>
+<li>In the version starting at 0, the same difference looks small relative to the full 0-100 scale, which is more honest</li>
 </ul>
 </li>
 <li>Starting a bar chart axis above zero is one of the most common ways charts mislead; always start bar charts at zero unless you have an explicit reason not to</li>
 </ul>
 <h2>Validating Each Panel</h2>
-<p><em>How do I confirm that each panel in the faceted chart contains the data I expect?</em></p>
+<blockquote>
+<p>How do I confirm that each panel in the faceted chart contains the data I expect?</p>
+</blockquote>
 <p>or</p>
-<p><em>For each combination of board type and school language, print the number of schools and the mean reading percentage.</em></p>
+<blockquote>
+<p>For each combination of board type and school language, print the number of schools and the mean reading percentage.</p>
+</blockquote>
 <div data-inc="validate_panels.py"><span aria-label="Source: stories/validate_panels.py" class="inc-path" role="img" tabindex="0" title="stories/validate_panels.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"eqao_school_results.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
@@ -225,20 +246,23 @@ A scatter plot would work but lacks the visual connection between years.</p>
 <summary>A classmate makes a bar chart where the y axis runs from 60 to 68. The Catholic bar reaches 67 and the Public bar reaches 64. They say "Catholic schools perform 5% better." What is wrong?</summary>
 <p>Two errors.
 First, 67 minus 64 is 3 percentage points, not 5%.
-Second, on a scale from 0 to 100, a 3-point difference is 3% of the full scale---but the y axis starting at 60 makes the Catholic bar look nearly twice as tall as the Public bar.
+Second, on a scale from 0 to 100, a 3-point difference is 3% of the full scale,
+but the y axis starting at 60 makes the Catholic bar look nearly twice as tall as the Public bar.
 The correct description is "Catholic schools had a mean reading score 3 percentage points higher in this dataset," and the chart should start at 0 to make the difference look proportional.</p>
 </details>
 <details>
 <summary>The data shows that schools in boards with higher per-pupil funding have higher mean reading scores. A classmate says "more money causes better scores." What alternative explanations should you consider?</summary>
 <p>Higher-income municipalities generate more local property tax revenue, which funds higher per-pupil spending and also tends to mean students come from families with more resources, more stability, and more access to books and enrichment activities.
 Both the funding and the scores may be driven by the same underlying factor (community wealth) rather than one causing the other.
-Establishing that funding itself causes higher scores would require comparing schools that received different funding levels for reasons unrelated to community wealth---for example, through a policy experiment.</p>
+Establishing that funding itself causes higher scores would require comparing schools that received different funding levels for reasons unrelated to community wealth.</p>
 </details>
 <details>
 <summary>You check the panel validation table and find that one cell contains only 2 schools with a mean reading percentage of 91%. Should this bar appear in the published chart? What should you do?</summary>
-<p>A mean based on 2 schools is unreliable---one school with an unusual student population could set the mean at any value.
+<p>A mean based on 2 schools is unreliable:
+one school with an unusual student population could set the mean at any value.
 Either remove bars with fewer than a minimum threshold (say, 10 schools) and note the cutoff, or add a note to the chart indicating that cells with fewer than 10 schools are suppressed or flagged.
-EQAO itself suppresses results for small schools for exactly this reason---follow the same practice.</p>
+EQAO itself suppresses results for small schools for exactly this reason;
+you should follow the same practice.</p>
 </details>
 <h2>Exercises</h2>
 <h3>Histogram of Reading Scores</h3>

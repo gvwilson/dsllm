@@ -9,7 +9,7 @@
 
 ## Why Real Data Is Dirty
 
-*What kinds of problems appear in real datasets, and why?*
+> What kinds of problems appear in real datasets, and why?
 
 -   Real datasets almost always have problems that need fixing before analysis:
     -   [%g missing-value "Missing values" %] recorded as `U` (unknown),
@@ -27,13 +27,13 @@
 
 ## Finding Missing Values
 
-*Show me how many missing or unknown values each column has.*
+> Show me how many missing or unknown values each column has.
 
 or
 
-*Using Polars, read collision_data.csv, treat U, Q, and N as missing values,
-then print a table showing each column name and how many missing values it has,
-sorted from most to fewest.*
+> Using Polars, read collision_data.csv, treat U, Q, and N as missing values,
+> then print a table showing each column name and how many missing values it has,
+> sorted from most to fewest.
 
 -   The NCDB uses coded values: `U` means unknown, `Q` means not applicable, `N` means not stated
     -   None of these are the same as a number: they mean "we do not know this value"
@@ -48,12 +48,12 @@ sorted from most to fewest.*
 
 ## Checking Category Values
 
-*Show me every distinct value in the sex column.*
+> Show me every distinct value in the sex column.
 
 or:
 
-*Using Polars, read collision_data.csv with U, Q, and N as missing,
-then print every distinct value in the P_SEX column and how many times each appears.*
+> Using Polars, read collision_data.csv with U, Q, and N as missing,
+> then print every distinct value in the P_SEX column and how many times each appears.
 
 -   The LLM will produce something like:
 
@@ -67,13 +67,13 @@ then print every distinct value in the P_SEX column and how many times each appe
 
 ## Normalizing Values
 
-*Treat U and N as missing so only M and F remain in the sex column.*
+> Treat U and N as missing so only M and F remain in the sex column.
 
 or:
 
-*Using Polars, read collision_data.csv with U, Q, and N as missing.
-Print the distinct values and counts in P_SEX after cleaning.
-Print the total number of rows before and after dropping rows where P_SEX is null.*
+> Using Polars, read collision_data.csv with U, Q, and N as missing.
+> Print the distinct values and counts in P_SEX after cleaning.
+> Print the total number of rows before and after dropping rows where P_SEX is null.
 
 -   The LLM will produce something like:
 
@@ -86,7 +86,7 @@ Print the total number of rows before and after dropping rows where P_SEX is nul
 
 ## Understanding Sampling Bias
 
-*If collision records in remote areas are under-reported, what does that mean for our analysis?*
+> If collision records in remote areas are under-reported, what does that mean for our analysis?
 
 -   [%g sampling-bias "Sampling bias" %] occurs when the data we have
     is not a fair sample of the population we are studying
@@ -96,11 +96,11 @@ Print the total number of rows before and after dropping rows where P_SEX is nul
     -   The LLM has no way to warn you about this: it only knows the data you give it
 -   One way to check for bias is to compare what was recorded against what you know about the population
 
-*Show me the distribution of P_PROV (province) in the data. Is it proportional to provincial population?*
+> Show me the distribution of P_PROV (province) in the data. Is it proportional to provincial population?
 
 -   If a province is severely under-represented, its collision records may be less complete
 
-*Why can an LLM not fix sampling bias for you?*
+> Why can an LLM not fix sampling bias for you?
 
 -   The LLM can clean the coded values as instructed, but it cannot know what collisions were never recorded
     -   Knowing whether the bias matters requires understanding your research question and data collection process

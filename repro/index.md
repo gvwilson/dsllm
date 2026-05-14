@@ -8,7 +8,7 @@
 
 ## The Replication Crisis
 
-*Why does replication matter for data science?*
+> Why does replication matter for data science?
 
 -   Many published scientific findings fail when other researchers try to reproduce them [%b ioannidis2005 %]
     -   In one large study, only about 36% of psychology findings replicated successfully [%b osc2015 %]
@@ -21,13 +21,13 @@
     -   A saved notebook is a start, but reproducibility also requires the data and the software environment to be available and unchanged
 -   This session uses atmospheric CO2 data from the Environment and Climate Change Canada Alert Station [%b alert-co22025 %]
     -   Alert, Nunavut sits at 82.5° N on the tip of Ellesmere Island
-	    (the northernmost point of Canada and one of the most remote places on Earth)
+        (the northernmost point of Canada and one of the most remote places on Earth)
     -   Continuous CO2 measurements have been taken there since 1975 as part of the Global Atmosphere Watch program
     -   Like the better-known Mauna Loa record from Hawaii, the Alert record shows the same unmistakable upward trend in atmospheric CO2
 
 ## What Reproducibility Requires
 
-*What does an analysis need in order to be reproducible?*
+> What does an analysis need in order to be reproducible?
 
 -   Three things must all be available and unchanged:
     -   The data file, exactly as it was when the analysis was run
@@ -41,7 +41,7 @@
 
 ## Recreating the Alert CO2 Curve
 
-*Prompt the LLM to write a complete analysis that recreates the Alert Station CO2 curve.*
+> Prompt the LLM to write a complete analysis that recreates the Alert Station CO2 curve.
 
 -   Download the monthly CO2 data from [ECCC Alert Station][eccc-alert]
     -   Save it as `alert_co2_monthly.csv`
@@ -50,7 +50,7 @@
 
 or
 
-*The file alert_co2_monthly.csv has no column headers. The columns in order are year, month, decimal date, monthly average CO2 in ppm, deseasonalized CO2, number of days, standard deviation, and uncertainty. Missing values are -999.99. Using Polars and Altair, read the file, drop missing values, plot monthly average CO2 over decimal date as a line chart, and save it as alert_co2.png.*
+> The file alert_co2_monthly.csv has no column headers. The columns in order are year, month, decimal date, monthly average CO2 in ppm, deseasonalized CO2, number of days, standard deviation, and uncertainty. Missing values are -999.99. Using Polars and Altair, read the file, drop missing values, plot monthly average CO2 over decimal date as a line chart, and save it as alert_co2.png.
 
 -   The LLM will produce something like:
 
@@ -63,7 +63,7 @@ or
 
 ## Comparing to the Published Figure
 
-*How close does our chart come to the ECCC published figure?*
+> How close does our chart come to the ECCC published figure?
 
 -   Visit [ECCC Alert Station][eccc-alert] and view the official atmospheric CO2 graphic
     -   The x axis should cover the same year range (1975 to present)
@@ -76,7 +76,7 @@ or
 
 ## Running the Notebook Again
 
-*How do I confirm the analysis is truly reproducible?*
+> How do I confirm the analysis is truly reproducible?
 
 -   Restart the kernel (Kernel → Restart in Jupyter) and run all cells from top to bottom
     -   If any cell fails or produces different output, the notebook is not reproducible
@@ -88,7 +88,7 @@ or
 
 ## Sharing the Notebook
 
-*What does a collaborator need to re-run this analysis?*
+> What does a collaborator need to re-run this analysis?
 
 -   The minimum they need:
     -   The `.ipynb` notebook file

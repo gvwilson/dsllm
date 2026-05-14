@@ -8,7 +8,7 @@
 
 ## Why Charts Come First
 
-*What is Anscombe's quartet, and why does it matter before we compute any statistics?*
+> What is Anscombe's quartet, and why does it matter before we compute any statistics?
 
 -   A set of four small datasets with identical means, variances, and [%g correlation "correlation" %] [%b anscombe1973 %]
     -   Their [%g scatter-plot "scatter plots" %] look completely different:
@@ -20,7 +20,7 @@
         can invalidate a statistical summary
 -   Charts are not decoration; they are part of the analysis
 
-*What dataset will we use, and what question will we ask?*
+> What dataset will we use, and what question will we ask?
 
 -   The dataset for this session is the Natural Resources Canada Earthquake Catalog [%b nrcan-quakes2025 %]
     -   Download the catalog from [NRCan Earthquakes][nrcan-quakes] as `earthquakes.csv`
@@ -34,7 +34,7 @@
 
 ## Drawing the Scatter Plot
 
-*Make a scatter plot of earthquake depth on the x axis and magnitude on the y axis, coloured by region, and save it as a PNG.*
+> Make a scatter plot of earthquake depth on the x axis and magnitude on the y axis, coloured by region, and save it as a PNG.
 
 -   The LLM will produce something like:
 
@@ -48,7 +48,7 @@
 
 ## Validating the Chart
 
-*How do I check that the chart shows all the data I expected?*
+> How do I check that the chart shows all the data I expected?
 
 -   Count the rows in the dataframe and compare to the number of points in the chart
     -   If the dataframe has 15,000 rows but the chart shows 12,000 points, some data was silently dropped
@@ -63,7 +63,7 @@
 
 ## Measuring Correlation
 
-*Compute the correlation between earthquake depth and magnitude. Drop rows where depth or magnitude is missing.*
+> Compute the correlation between earthquake depth and magnitude. Drop rows where depth or magnitude is missing.
 
 -   The LLM will produce something like:
 
@@ -74,11 +74,11 @@
     -   A positive value means deeper quakes tend to be larger; a negative value means the opposite
     -   The scatter plot will tell you whether the relationship is linear or curved
 
-*What kind of correlation did you calculate?*
+> What kind of correlation did you calculate?
 
 -   Should be Pearson
 
-*What does the correlation coefficient actually tell you?*
+> What does the correlation coefficient actually tell you?
 
 -   Correlation measures the strength of a linear relationship between two variables
     -   0.9 is a strong positive relationship; 0.3 is a weak one
@@ -93,7 +93,7 @@
 
 ## Iterating on Prompts
 
-*The chart is hard to read because the points overlap. Adjust the prompt to improve it.*
+> The chart is hard to read because the points overlap. Adjust the prompt to improve it.
 
 -   Prompts rarely produce a perfect chart on the first try
 -   Common improvements to ask for:

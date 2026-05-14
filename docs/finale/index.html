@@ -56,7 +56,9 @@
 <li>Identify the next skills worth learning.</li>
 </ul>
 <h2>The Workflow You Built</h2>
-<p><em>Look back at the code and charts you produced over twelve sessions. What steps appear in every session?</em></p>
+<blockquote>
+<p>Look back at the code and charts you produced over twelve sessions. What steps appear in every session?</p>
+</blockquote>
 <ul>
 <li>Every session followed the same loop, even when the dataset and question changed:<ul>
 <li>Write a prompt that describes the data, the goal, and any constraints</li>
@@ -80,7 +82,9 @@
 </li>
 </ul>
 <h2>When LLMs Fail</h2>
-<p><em>What do I do when the LLM produces code that crashes, or code that runs but gives the wrong answer?</em></p>
+<blockquote>
+<p>What do I do when the LLM produces code that crashes, or code that runs but gives the wrong answer?</p>
+</blockquote>
 <ul>
 <li>When the code crashes, the error message is your first clue<ul>
 <li>Copy the error message into a new prompt: "I got this error: [paste]. What is wrong?"</li>
@@ -101,7 +105,9 @@
 </li>
 </ul>
 <h2>The Environmental and Labor Costs</h2>
-<p><em>Given everything this course has covered, how should I decide when to use an LLM?</em></p>
+<blockquote>
+<p>Given everything this course has covered, how should I decide when to use an LLM?</p>
+</blockquote>
 <ul>
 <li>The energy cost of a single query is small; the aggregate cost of millions of queries is not [<a class="bib-ref" href="../bibliography/#strubell2019">strubell2019</a>]<ul>
 <li>Using an LLM to automate a repetitive, well-understood step is a reasonable use of that energy</li>
@@ -121,7 +127,9 @@
 </li>
 </ul>
 <h2>Where to Go Next</h2>
-<p><em>What should I learn after finishing this course?</em></p>
+<blockquote>
+<p>What should I learn after finishing this course?</p>
+</blockquote>
 <ul>
 <li>More statistics: this course introduced mean, median, correlation, regression, confidence intervals, and hypothesis testing<ul>
 <li>A next step is understanding when each is appropriate and what the assumptions behind them are</li>
@@ -147,9 +155,13 @@
 <details>
 <summary>A colleague says "I don't need to check the LLM's output because it's always right for standard tasks." What is the flaw in this reasoning, and how would you explain it?</summary>
 <p>The LLM produces plausible text, not correct answers.
-For standard tasks it is right most of the time, which is what makes unchecked errors dangerous---they look like correct output.
-A unit error, a wrong column name, or a dropped null can all produce results that appear reasonable without a sanity check.
-The right approach is to check every result against something the LLM did not generate: a known row, a published figure, a by-hand calculation.</p>
+For standard tasks it is right most of the time,
+which is what makes unchecked errors dangerous:
+they look like correct output.
+A unit error, a wrong column name, or a dropped null
+can all produce results that appear reasonable without a sanity check.
+The right approach is to check every result against something the LLM did <em>not</em> generate,
+such as a known row or a manual calculation.</p>
 </details>
 <details>
 <summary>You want to share your analysis with a collaborator so they can re-run it. List three things they will need, and one thing that can silently break even when all three are present.</summary>
@@ -180,7 +192,7 @@ The difference is between describing what is in the data and predicting what is 
 Include the data source, the cleaning steps, the software used, and the statistical methods applied.</p>
 <h3>Find a Retraction</h3>
 <p>Search for a published paper in your field that was retracted because of a data or statistical error.
-Identify which step in the workflow---data cleaning, analysis, interpretation, or reporting---introduced the error.
+Identify which step in the workflow introduced the error.
 Describe what check from this course would have caught it.</p>
 <h3>Teach It Back</h3>
 <p>Pick one statistical concept from this course (mean vs. median, confidence intervals, correlation vs. causation) and write a one-page explanation aimed at a first-year undergraduate with no statistics background.

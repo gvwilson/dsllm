@@ -8,7 +8,7 @@
 
 ## What a Dataframe Contains
 
-*What is a dataframe, and what does it look like?*
+> What is a dataframe, and what does it look like?
 
 -   A [%g dataframe "dataframe" %] is a table with named columns where each column holds one type of data
     -   Text columns hold strings; numeric columns hold integers or decimal numbers; date columns hold dates
@@ -19,20 +19,20 @@
     -   Download a CSV export from [HYDAT][hydat] using the online data explorer, or use the tidyhydat R package to export a station subset as CSV
     -   The file has one row per station-month with columns for station number, station name, year, month, and mean monthly streamflow in cubic metres per second (m³/s)
 
-*Why do different columns have different types, and why does it matter?*
+> Why do different columns have different types, and why does it matter?
 
 -   A station number like `08MF065` looks like text but is stored as a string, so arithmetic on station IDs is meaningless
     -   Polars reads it correctly as a string by default
     -   Date columns stored as text cannot be sorted chronologically without conversion
-	-   Confirm the type of any date column before using it in a time-series analysis
+    -   Confirm the type of any date column before using it in a time-series analysis
 
 ## Shape, Types, and Sample Rows
 
-*Load the HYDAT flow data and tell me how many rows and columns it has, what each column contains, and what the data types are.*
+> Load the HYDAT flow data and tell me how many rows and columns it has, what each column contains, and what the data types are.
 
 or
 
-*Using Polars, read flow_data.csv and print: the number of rows and columns, the name and type of each column, and the first two rows.*
+> Using Polars, read flow_data.csv and print: the number of rows and columns, the name and type of each column, and the first two rows.
 
 -   The LLM will produce something like:
 
@@ -47,11 +47,11 @@ or
 
 ## Standard Deviation and Range
 
-*Compute the standard deviation and range of the streamflow column.*
+> Compute the standard deviation and range of the streamflow column.
 
 or
 
-*Compute the mean, standard deviation, minimum, maximum, and range of the FLOW column in flow_data.csv.*
+> Compute the mean, standard deviation, minimum, maximum, and range of the FLOW column in flow_data.csv.
 
 -   The LLM will produce something like:
 
@@ -59,13 +59,13 @@ or
 
 -   Run the cell and look at the numbers
     -   A standard deviation larger than the mean is common for streamflow data:
-	    most months are near baseflow, but spring snowmelt can produce flows orders of magnitude higher
+        most months are near baseflow, but spring snowmelt can produce flows orders of magnitude higher
     -   A range of zero would mean every observation is identical: clearly wrong for river flow data
     -   A negative minimum would mean a data entry error: flow cannot be negative
 
 ## Interpreting High Spread
 
-*What does a large standard deviation mean for river flow data?*
+> What does a large standard deviation mean for river flow data?
 
 -   [%g standard-deviation "Standard deviation" %] measures how far a typical observation sits from the mean
     -   If the mean flow is 50 m³/s and the standard deviation is 200 m³/s, most months are far from the average
@@ -75,7 +75,7 @@ or
     -   A high range reflects the difference between the lowest late-summer baseflow and the highest spring flood
     -   A single extreme flood event can set the maximum for decades of record
 
-*Why is spread as important as the mean?*
+> Why is spread as important as the mean?
 
 -   Two stations with the same mean monthly flow can look completely different across the year
     -   Station A: flows of 40, 45, 50, 55, 60 m³/s all year (low spread, stable, likely groundwater-fed)
@@ -85,11 +85,11 @@ or
 
 ## Checking a Single Station
 
-*Filter to one known station and verify its row count against the dataset documentation.*
+> Filter to one known station and verify its row count against the dataset documentation.
 
 or
 
-*Filter flow_data.csv to rows where STATION_NUMBER is '02GA010' and print the number of rows and the range of years covered.*
+> Filter flow_data.csv to rows where STATION_NUMBER is '02GA010' and print the number of rows and the range of years covered.
 
 -   Station `02GA010` is the Grand River at Galt (Cambridge, Ontario), one of the longest continuous records in Canada
 -   The HYDAT documentation describes how many years each station has been active

@@ -8,7 +8,7 @@
 
 ## What "Group By" Means
 
-*What does it mean to group data, and what kinds of questions does it answer?*
+> What does it mean to group data, and what kinds of questions does it answer?
 
 -   A "group by" operation splits a table into groups that share a common value, computes something for each group, and returns one row per group
     -   "Total contract value per department per year" requires grouping by department and year, then summing
@@ -19,7 +19,7 @@
     -   It has one row per contract awarded with columns for department, vendor name, contract value, and award date
     -   Every federal department with contracts over $10 000 must disclose them here
 
-*Why would you want both the total and the mean for the same group?*
+> Why would you want both the total and the mean for the same group?
 
 -   The total tells you how much a department spent overall; the mean tells you how large a typical contract was
     -   A department that awards one large infrastructure contract looks different from one that awards thousands of small consulting contracts, even if the totals are similar
@@ -27,11 +27,11 @@
 
 ## Computing Totals and Means
 
-*Show me total and mean contract value by department for each year, sorted by department name.*
+> Show me total and mean contract value by department for each year, sorted by department name.
 
 or
 
-*Using Polars, read contracts.csv. Extract the year from the contract_date column. Compute the total and mean contract_value by department_en and year. Sort by department name, then year. Print the first twenty rows.*
+> Using Polars, read contracts.csv. Extract the year from the contract_date column. Compute the total and mean contract_value by department_en and year. Sort by department name, then year. Print the first twenty rows.
 
 -   The LLM will produce something like:
 
@@ -44,11 +44,11 @@ or
 
 ## Adding Confidence Intervals
 
-*Add a 95% confidence interval to each group mean.*
+> Add a 95% confidence interval to each group mean.
 
 or
 
-*Extend the previous code to also compute a 95% confidence interval for the mean contract value in each department-year group. Add columns ci_low and ci_high to the output.*
+> Extend the previous code to also compute a 95% confidence interval for the mean contract value in each department-year group. Add columns ci_low and ci_high to the output.
 
 -   The LLM will produce something like:
 
@@ -60,7 +60,7 @@ or
 
 ## Reading a Confidence Interval
 
-*What does a 95% confidence interval actually mean?*
+> What does a 95% confidence interval actually mean?
 
 -   A 95% [%g confidence-interval "confidence interval" %] does not mean "there is a 95% chance the true mean is in this range"
     -   It means: if we built many such intervals from different samples, 95% of them would contain the true mean
@@ -73,11 +73,11 @@ or
 
 ## Checking Against a Published Figure
 
-*The government publishes the total value of contracts. Let us compare our sum to that published number.*
+> The government publishes the total value of contracts. Let us compare our sum to that published number.
 
 or
 
-*Compute the total contract_value across all departments for the most recent year in the dataset.*
+> Compute the total contract_value across all departments for the most recent year in the dataset.
 
 -   Find the government's published total in the Public Accounts of Canada at [Open Government][open-canada]
     -   The published total should be in the same order of magnitude as your computed sum

@@ -56,7 +56,9 @@
 <li>Explain how missing data can make a sample unrepresentative.</li>
 </ul>
 <h2>Why Real Data Is Dirty</h2>
-<p><em>What kinds of problems appear in real datasets, and why?</em></p>
+<blockquote>
+<p>What kinds of problems appear in real datasets, and why?</p>
+</blockquote>
 <ul>
 <li>Real datasets almost always have problems that need fixing before analysis:<ul>
 <li><a class="gl-ref" href="../glossary/#missing-value">Missing values</a> recorded as <code>U</code> (unknown),
@@ -79,11 +81,15 @@
 </li>
 </ul>
 <h2>Finding Missing Values</h2>
-<p><em>Show me how many missing or unknown values each column has.</em></p>
+<blockquote>
+<p>Show me how many missing or unknown values each column has.</p>
+</blockquote>
 <p>or</p>
-<p><em>Using Polars, read collision_data.csv, treat U, Q, and N as missing values,
+<blockquote>
+<p>Using Polars, read collision_data.csv, treat U, Q, and N as missing values,
 then print a table showing each column name and how many missing values it has,
-sorted from most to fewest.</em></p>
+sorted from most to fewest.</p>
+</blockquote>
 <ul>
 <li>The NCDB uses coded values: <code>U</code> means unknown, <code>Q</code> means not applicable, <code>N</code> means not stated<ul>
 <li>None of these are the same as a number: they mean "we do not know this value"</li>
@@ -113,10 +119,14 @@ sorted from most to fewest.</em></p>
 </li>
 </ul>
 <h2>Checking Category Values</h2>
-<p><em>Show me every distinct value in the sex column.</em></p>
+<blockquote>
+<p>Show me every distinct value in the sex column.</p>
+</blockquote>
 <p>or:</p>
-<p><em>Using Polars, read collision_data.csv with U, Q, and N as missing,
-then print every distinct value in the P_SEX column and how many times each appears.</em></p>
+<blockquote>
+<p>Using Polars, read collision_data.csv with U, Q, and N as missing,
+then print every distinct value in the P_SEX column and how many times each appears.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -136,11 +146,15 @@ then print every distinct value in the P_SEX column and how many times each appe
 </li>
 </ul>
 <h2>Normalizing Values</h2>
-<p><em>Treat U and N as missing so only M and F remain in the sex column.</em></p>
+<blockquote>
+<p>Treat U and N as missing so only M and F remain in the sex column.</p>
+</blockquote>
 <p>or:</p>
-<p><em>Using Polars, read collision_data.csv with U, Q, and N as missing.
+<blockquote>
+<p>Using Polars, read collision_data.csv with U, Q, and N as missing.
 Print the distinct values and counts in P_SEX after cleaning.
-Print the total number of rows before and after dropping rows where P_SEX is null.</em></p>
+Print the total number of rows before and after dropping rows where P_SEX is null.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -165,7 +179,9 @@ Print the total number of rows before and after dropping rows where P_SEX is nul
 </li>
 </ul>
 <h2>Understanding Sampling Bias</h2>
-<p><em>If collision records in remote areas are under-reported, what does that mean for our analysis?</em></p>
+<blockquote>
+<p>If collision records in remote areas are under-reported, what does that mean for our analysis?</p>
+</blockquote>
 <ul>
 <li><a class="gl-ref" href="../glossary/#sampling-bias">Sampling bias</a> occurs when the data we have
     is not a fair sample of the population we are studying<ul>
@@ -177,11 +193,15 @@ Print the total number of rows before and after dropping rows where P_SEX is nul
 </li>
 <li>One way to check for bias is to compare what was recorded against what you know about the population</li>
 </ul>
-<p><em>Show me the distribution of P_PROV (province) in the data. Is it proportional to provincial population?</em></p>
+<blockquote>
+<p>Show me the distribution of P_PROV (province) in the data. Is it proportional to provincial population?</p>
+</blockquote>
 <ul>
 <li>If a province is severely under-represented, its collision records may be less complete</li>
 </ul>
-<p><em>Why can an LLM not fix sampling bias for you?</em></p>
+<blockquote>
+<p>Why can an LLM not fix sampling bias for you?</p>
+</blockquote>
 <ul>
 <li>The LLM can clean the coded values as instructed, but it cannot know what collisions were never recorded<ul>
 <li>Knowing whether the bias matters requires understanding your research question and data collection process</li>

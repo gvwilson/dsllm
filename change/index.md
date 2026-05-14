@@ -8,7 +8,7 @@
 
 ## Why Change Matters
 
-*Why do researchers usually study change over time rather than a single snapshot?*
+> Why do researchers usually study change over time rather than a single snapshot?
 
 -   A single measurement tells you where something is; a time series tells you where it is going
     -   One year of flu data tells you how bad that season was; decades of data reveal whether flu is becoming more or less severe
@@ -21,11 +21,11 @@
 
 ## Plotting Over Time
 
-*Plot weekly influenza-like illness percentage over time as a line chart.*
+> Plot weekly influenza-like illness percentage over time as a line chart.
 
 or
 
-*Using Polars and Altair, read fluwatch.csv, plot the weekly ILI percentage over time as a line chart coloured by year, and save it as flu_line.png.*
+> Using Polars and Altair, read fluwatch.csv, plot the weekly ILI percentage over time as a line chart coloured by year, and save it as flu_line.png.
 
 -   The LLM will produce something like:
 
@@ -35,7 +35,7 @@ or
     -   The chart should show a repeating winter spike pattern
     -   Different years appear as different coloured lines
     -   The seasonal pattern is immediately visible
-	-   This is why you plot before computing anything
+    -   This is why you plot before computing anything
 
 ## Fitting a Trend Line
 
@@ -43,11 +43,11 @@ or
     -   It is not meant to pass through every point; it summarizes the direction of change across the whole dataset
     -   The slope of the line tells you whether values are generally rising, falling, or staying flat over time
 
-*Fit a trend line to the annual peak ILI values and show the slope.*
+> Fit a trend line to the annual peak ILI values and show the slope.
 
 or
 
-*Using Polars and Altair, compute the maximum weekly ILI percentage for each year, then plot those annual peaks with a regression trend line. Save the chart as flu_trend.png.*
+> Using Polars and Altair, compute the maximum weekly ILI percentage for each year, then plot those annual peaks with a regression trend line. Save the chart as flu_trend.png.
 
 -   The LLM will produce something like:
 
@@ -60,7 +60,7 @@ or
 
 ## What a Regression Line Tells You
 
-*What does the trend line actually represent?*
+> What does the trend line actually represent?
 
 -   A [%g regression "regression" %] line is the line that minimizes the total squared distance from each point to the line
     -   It is the best straight-line summary of the overall direction of the data
@@ -74,15 +74,15 @@ or
 
 ## Seasonal Pattern vs. Long-Term Trend
 
-*How do I tell the difference between the winter flu spike and a real long-term change?*
+> How do I tell the difference between the winter flu spike and a real long-term change?
 
 -   The winter spike is a seasonal pattern: it repeats every year and tells you nothing about whether flu is getting worse over time
     -   Seasonal patterns are short-cycle fluctuations driven by predictable factors (cold weather, school schedules, indoor crowding)
     -   Confusing the spike with a trend is one of the most common mistakes in time-series analysis
 -   A long-term trend is the underlying direction visible across many seasons
     -   To see the trend, you need to compare the same part of each cycle,
-	    such as the annual peak or the annual mean,
-		across years
+        such as the annual peak or the annual mean,
+        across years
     -   Fitting a trend line to raw weekly data (including all the seasonal variation) will produce a line, but it will not be a meaningful trend
 -   Ask yourself: "Am I comparing like to like?"
     -   Annual peak to annual peak: yes
@@ -90,13 +90,13 @@ or
 
 ## Checking the Trend Direction
 
-*How do I confirm the trend line is pointing in the right direction?*
+> How do I confirm the trend line is pointing in the right direction?
 
 -   The most basic check: does the trend line agree with what you see by eye?
     -   If the dots appear to be drifting upward but the line slopes down, something is wrong
     -   The most common cause is the LLM using a variable that does not represent the trend you wanted
 
-*What is the slope of the regression line in the previous chart?*
+> What is the slope of the regression line in the previous chart?
 
 -   A positive number should correspond to an upward-sloping line
 -   If the sign does not match the visual direction, the regression used the wrong axis

@@ -8,7 +8,7 @@
 
 ## Why Vague Prompts Fail
 
-*What goes wrong when I give an LLM a vague prompt?*
+> What goes wrong when I give an LLM a vague prompt?
 
 -   The dataset for this session is the Environment and Climate Change Canada National Pollutant Release Inventory (NPRI) [%b npri2025 %]
     -   Download the most recent annual CSV from [NPRI][npri]
@@ -25,7 +25,7 @@
 
 ## Anatomy of a Good Prompt
 
-*What information does a prompt need to include to get useful code?*
+> What information does a prompt need to include to get useful code?
 
 -   A useful prompt has three parts: a description of the data, the goal, and any constraints
     -   Data description: column names, data types, and a sample row
@@ -41,7 +41,7 @@
 
 ## Computing a Proportion
 
-*What proportion of facilities released more than one tonne of lead compounds in the most recent year?*
+> What proportion of facilities released more than one tonne of lead compounds in the most recent year?
 
 -   Paste the well-structured prompt from above
 -   The LLM will produce something like:
@@ -52,11 +52,11 @@
     -   `LEAD_THRESHOLD = 1.0` is a named constant (good)
     -   `LEAD_SUBSTANCE` names the exact string from the file: this will only work if it matches the CSV exactly
     -   The final print statement shows the proportion and its 1-in-N equivalent:
-	    check that both numbers are consistent
+        check that both numbers are consistent
 
 ## Probability as a Proportion
 
-*What does it mean to say the probability of exceeding the threshold is 0.059?*
+> What does it mean to say the probability of exceeding the threshold is 0.059?
 
 -   A [%g probability "probability" %] between 0 and 1 is a proportion
     -   0.059 means about 59 out of 1 000 facilities (or roughly 1 in 17)
@@ -68,7 +68,7 @@
 
 ## Verifying by Hand
 
-*How do I check that the code produced the right answer?*
+> How do I check that the code produced the right answer?
 
 -   For a proportion, the verification is simple: count a small subset by hand
     -   Sort the lead rows by quantity descending; check how many of the first 20 exceed 1 tonne

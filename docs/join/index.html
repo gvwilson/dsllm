@@ -55,7 +55,9 @@
 <li>Compare summary statistics across groups created by the join.</li>
 </ul>
 <h2>Why Data Arrives in Pieces</h2>
-<p><em>Why would data about the same topic be stored in two separate files?</em></p>
+<blockquote>
+<p>Why would data about the same topic be stored in two separate files?</p>
+</blockquote>
 <ul>
 <li>Different teams collect different parts of the picture<ul>
 <li>Temperature readings are collected continuously at each station;
@@ -73,7 +75,9 @@
 </ul>
 </li>
 </ul>
-<p><em>What is a join?</em></p>
+<blockquote>
+<p>What is a join?</p>
+</blockquote>
 <ul>
 <li>A <a class="gl-ref" href="../glossary/#join">join</a> combines two tables by matching rows that share a common value<ul>
 <li>If both tables have a <code>station_id</code> column,
@@ -89,9 +93,13 @@
 </li>
 </ul>
 <h2>Joining the Tables</h2>
-<p><em>Combine the temperature dataframe and the stations dataframe so each temperature row also shows the station's province and elevation.</em></p>
+<blockquote>
+<p>Combine the temperature dataframe and the stations dataframe so each temperature row also shows the station's province and elevation.</p>
+</blockquote>
 <p>or</p>
-<p><em>Using Polars, read ahccd_temp.csv and ahccd_stations.csv. Join them so each temperature row gains the matching station's province and elevation columns. Use a left join on the station_id column. Print the first five rows of the result.</em></p>
+<blockquote>
+<p>Using Polars, read ahccd_temp.csv and ahccd_stations.csv. Join them so each temperature row gains the matching station's province and elevation columns. Use a left join on the station_id column. Print the first five rows of the result.</p>
+</blockquote>
 <ul>
 <li>Read both files first and print their column names so you know which column to join on:</li>
 </ul>
@@ -130,11 +138,14 @@
 </li>
 </ul>
 <h2>Checking the Join Result</h2>
-<p><em>How do I know the join worked correctly?</em></p>
+<blockquote>
+<p>How do I know the join worked correctly?</p>
+</blockquote>
 <ul>
 <li>A left join keeps every row from the left table (temperatures) and adds matching columns from the right (stations)<ul>
 <li>If a station ID appears in temperatures but not in stations, its province and elevation will be null</li>
-<li>Many nulls after the join mean the station IDs do not match between files---a common problem when data is compiled from different sources</li>
+<li>Many nulls after the join mean the station IDs do not match between files</li>
+<li>This is a common problem when data is compiled from different sources</li>
 </ul>
 </li>
 <li>Check how many rows have null province after the join:</li>
@@ -155,15 +166,19 @@
 </code></pre></div>
 </div>
 <ul>
-<li>If the null count is zero, every temperature record matched a station---the join is complete<ul>
+<li>If the null count is zero, every temperature record matched a station: the join is complete<ul>
 <li>If the null count is large, inspect a few unmatched IDs and compare them to the station file format</li>
 </ul>
 </li>
 </ul>
 <h2>Comparing Groups</h2>
-<p><em>Show me the mean annual temperature by province.</em></p>
+<blockquote>
+<p>Show me the mean annual temperature by province.</p>
+</blockquote>
 <p>or</p>
-<p><em>Using the joined dataframe, compute the mean annual temperature for each province. Sort from warmest to coolest. Drop rows where temperature or province is null.</em></p>
+<blockquote>
+<p>Using the joined dataframe, compute the mean annual temperature for each province. Sort from warmest to coolest. Drop rows where temperature or province is null.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -197,7 +212,9 @@
 </ul>
 </li>
 </ul>
-<p><em>What does it mean when two provinces have different mean temperatures?</em></p>
+<blockquote>
+<p>What does it mean when two provinces have different mean temperatures?</p>
+</blockquote>
 <ul>
 <li>A difference in group means tells you the groups are different in this dataset, not that province determines temperature<ul>
 <li>Provincial boundaries do not align with climate zones: northern Ontario has a colder climate than southern Ontario</li>
@@ -207,7 +224,9 @@
 </li>
 </ul>
 <h2>Counting Rows Before and After</h2>
-<p><em>How do I detect if the join accidentally multiplied my rows?</em></p>
+<blockquote>
+<p>How do I detect if the join accidentally multiplied my rows?</p>
+</blockquote>
 <ul>
 <li>A left join multiplies rows when one station ID appears multiple times in the station file<ul>
 <li>If station XYZ has two entries (perhaps renamed or relocated), every temperature reading for XYZ will appear twice in the result</li>
@@ -255,7 +274,7 @@ If they match after stripping a prefix, ask the LLM to normalize the IDs before 
 <details>
 <summary>The joined dataframe has 210 000 rows but the temperature file has only 200 000. A classmate says "the join added information so more rows is expected." Are they right?</summary>
 <p>No.
-A left join cannot add rows---every row in the result corresponds to exactly one row in the left table.
+A left join cannot add rows: every row in the result corresponds to exactly one row in the left table.
 Having more rows after the join means the station inventory has duplicate entries for some station IDs.
 Each temperature reading for a duplicated station matched multiple station rows and was replicated.
 Find duplicated station IDs with <code>stations.group_by("station_id").count().filter(pl.col("count") &gt; 1)</code>.</p>

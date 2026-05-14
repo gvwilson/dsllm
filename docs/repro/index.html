@@ -55,7 +55,9 @@
 <li>Explain what makes an analysis reproducible and why it matters.</li>
 </ul>
 <h2>The Replication Crisis</h2>
-<p><em>Why does replication matter for data science?</em></p>
+<blockquote>
+<p>Why does replication matter for data science?</p>
+</blockquote>
 <ul>
 <li>Many published scientific findings fail when other researchers try to reproduce them [<a class="bib-ref" href="../bibliography/#ioannidis2005">ioannidis2005</a>]<ul>
 <li>In one large study, only about 36% of psychology findings replicated successfully [<a class="bib-ref" href="../bibliography/#osc2015">osc2015</a>]</li>
@@ -73,14 +75,17 @@
 </ul>
 </li>
 <li>This session uses atmospheric CO2 data from the Environment and Climate Change Canada Alert Station [<a class="bib-ref" href="../bibliography/#alert-co22025">alert-co22025</a>]<ul>
-<li>Alert, Nunavut sits at 82.5° N on the tip of Ellesmere Island---the northernmost point of Canada and one of the most remote places on Earth</li>
+<li>Alert, Nunavut sits at 82.5° N on the tip of Ellesmere Island
+    (the northernmost point of Canada and one of the most remote places on Earth)</li>
 <li>Continuous CO2 measurements have been taken there since 1975 as part of the Global Atmosphere Watch program</li>
 <li>Like the better-known Mauna Loa record from Hawaii, the Alert record shows the same unmistakable upward trend in atmospheric CO2</li>
 </ul>
 </li>
 </ul>
 <h2>What Reproducibility Requires</h2>
-<p><em>What does an analysis need in order to be reproducible?</em></p>
+<blockquote>
+<p>What does an analysis need in order to be reproducible?</p>
+</blockquote>
 <ul>
 <li>Three things must all be available and unchanged:<ul>
 <li>The data file, exactly as it was when the analysis was run</li>
@@ -104,7 +109,9 @@
 </code></pre></div>
 </div>
 <h2>Recreating the Alert CO2 Curve</h2>
-<p><em>Prompt the LLM to write a complete analysis that recreates the Alert Station CO2 curve.</em></p>
+<blockquote>
+<p>Prompt the LLM to write a complete analysis that recreates the Alert Station CO2 curve.</p>
+</blockquote>
 <ul>
 <li>Download the monthly CO2 data from <a href="https://www.canada.ca/en/environment-climate-change/services/environmental-indicators/greenhouse-gas-concentrations.html">ECCC Alert Station</a><ul>
 <li>Save it as <code>alert_co2_monthly.csv</code></li>
@@ -114,7 +121,9 @@
 </li>
 </ul>
 <p>or</p>
-<p><em>The file alert_co2_monthly.csv has no column headers. The columns in order are year, month, decimal date, monthly average CO2 in ppm, deseasonalized CO2, number of days, standard deviation, and uncertainty. Missing values are -999.99. Using Polars and Altair, read the file, drop missing values, plot monthly average CO2 over decimal date as a line chart, and save it as alert_co2.png.</em></p>
+<blockquote>
+<p>The file alert_co2_monthly.csv has no column headers. The columns in order are year, month, decimal date, monthly average CO2 in ppm, deseasonalized CO2, number of days, standard deviation, and uncertainty. Missing values are -999.99. Using Polars and Altair, read the file, drop missing values, plot monthly average CO2 over decimal date as a line chart, and save it as alert_co2.png.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -167,12 +176,14 @@
 </li>
 </ul>
 <h2>Comparing to the Published Figure</h2>
-<p><em>How close does our chart come to the ECCC published figure?</em></p>
+<blockquote>
+<p>How close does our chart come to the ECCC published figure?</p>
+</blockquote>
 <ul>
 <li>Visit <a href="https://www.canada.ca/en/environment-climate-change/services/environmental-indicators/greenhouse-gas-concentrations.html">ECCC Alert Station</a> and view the official atmospheric CO2 graphic<ul>
 <li>The x axis should cover the same year range (1975 to present)</li>
 <li>The y axis scale (approximately 330 to 425 ppm) should match</li>
-<li>The shape---rising curve with seasonal sawtooth---should be identical</li>
+<li>The shape (a rising curve with seasonal sawtooth) should be identical</li>
 </ul>
 </li>
 <li>If your chart and the official figure disagree:<ul>
@@ -183,7 +194,9 @@
 </li>
 </ul>
 <h2>Running the Notebook Again</h2>
-<p><em>How do I confirm the analysis is truly reproducible?</em></p>
+<blockquote>
+<p>How do I confirm the analysis is truly reproducible?</p>
+</blockquote>
 <ul>
 <li>Restart the kernel (Kernel → Restart in Jupyter) and run all cells from top to bottom<ul>
 <li>If any cell fails or produces different output, the notebook is not reproducible</li>
@@ -217,7 +230,9 @@
 </code></pre></div>
 </div>
 <h2>Sharing the Notebook</h2>
-<p><em>What does a collaborator need to re-run this analysis?</em></p>
+<blockquote>
+<p>What does a collaborator need to re-run this analysis?</p>
+</blockquote>
 <ul>
 <li>The minimum they need:<ul>
 <li>The <code>.ipynb</code> notebook file</li>
@@ -235,7 +250,7 @@
 </ul>
 <h2>Check Understanding</h2>
 <details>
-<summary>You share a notebook with a colleague. They install the packages fresh and run all cells, but the Altair chart looks slightly different from yours---the axis labels are in a different font and the line is a slightly different shade of blue. Is the analysis reproducible?</summary>
+<summary>You share a notebook with a colleague. They install the packages fresh and run all cells, but the Altair chart looks slightly different from yours: the axis labels are in a different font and the line is a slightly different shade of blue. Is the analysis reproducible?</summary>
 <p>Yes, if the underlying numbers are the same.
 Visual rendering details like fonts and colour shades can vary between operating systems, browser versions, and Altair versions without affecting the data or computations.
 The relevant test is whether the plotted CO2 values at each date are identical.

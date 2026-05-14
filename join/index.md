@@ -8,7 +8,7 @@
 
 ## Why Data Arrives in Pieces
 
-*Why would data about the same topic be stored in two separate files?*
+> Why would data about the same topic be stored in two separate files?
 
 -   Different teams collect different parts of the picture
     -   Temperature readings are collected continuously at each station;
@@ -22,7 +22,7 @@
     -   The temperature file has one row per station per year with the mean annual temperature
     -   The station file has one row per station with name, province, latitude, longitude, and elevation
 
-*What is a join?*
+> What is a join?
 
 -   A [%g join "join" %] combines two tables by matching rows that share a common value
     -   If both tables have a `station_id` column,
@@ -35,11 +35,11 @@
 
 ## Joining the Tables
 
-*Combine the temperature dataframe and the stations dataframe so each temperature row also shows the station's province and elevation.*
+> Combine the temperature dataframe and the stations dataframe so each temperature row also shows the station's province and elevation.
 
 or
 
-*Using Polars, read ahccd_temp.csv and ahccd_stations.csv. Join them so each temperature row gains the matching station's province and elevation columns. Use a left join on the station_id column. Print the first five rows of the result.*
+> Using Polars, read ahccd_temp.csv and ahccd_stations.csv. Join them so each temperature row gains the matching station's province and elevation columns. Use a left join on the station_id column. Print the first five rows of the result.
 
 -   Read both files first and print their column names so you know which column to join on:
 
@@ -55,12 +55,12 @@ or
 
 ## Checking the Join Result
 
-*How do I know the join worked correctly?*
+> How do I know the join worked correctly?
 
 -   A left join keeps every row from the left table (temperatures) and adds matching columns from the right (stations)
     -   If a station ID appears in temperatures but not in stations, its province and elevation will be null
     -   Many nulls after the join mean the station IDs do not match between files
-	-   This is a common problem when data is compiled from different sources
+    -   This is a common problem when data is compiled from different sources
 -   Check how many rows have null province after the join:
 
 [%inc check_join.py %]
@@ -70,11 +70,11 @@ or
 
 ## Comparing Groups
 
-*Show me the mean annual temperature by province.*
+> Show me the mean annual temperature by province.
 
 or
 
-*Using the joined dataframe, compute the mean annual temperature for each province. Sort from warmest to coolest. Drop rows where temperature or province is null.*
+> Using the joined dataframe, compute the mean annual temperature for each province. Sort from warmest to coolest. Drop rows where temperature or province is null.
 
 -   The LLM will produce something like:
 
@@ -84,7 +84,7 @@ or
     -   Does the ordering match your expectations? (BC coast warmest, Prairie provinces cold winters, North coldest)
     -   This question was only answerable after the join; the temperature file alone has no province column
 
-*What does it mean when two provinces have different mean temperatures?*
+> What does it mean when two provinces have different mean temperatures?
 
 -   A difference in group means tells you the groups are different in this dataset, not that province determines temperature
     -   Provincial boundaries do not align with climate zones: northern Ontario has a colder climate than southern Ontario
@@ -93,7 +93,7 @@ or
 
 ## Counting Rows Before and After
 
-*How do I detect if the join accidentally multiplied my rows?*
+> How do I detect if the join accidentally multiplied my rows?
 
 -   A left join multiplies rows when one station ID appears multiple times in the station file
     -   If station XYZ has two entries (perhaps renamed or relocated), every temperature reading for XYZ will appear twice in the result

@@ -55,7 +55,9 @@
 <li>Ask the LLM to compute standard deviation and range and explain what they mean for this data.</li>
 </ul>
 <h2>What a Dataframe Contains</h2>
-<p><em>What is a dataframe, and what does it look like?</em></p>
+<blockquote>
+<p>What is a dataframe, and what does it look like?</p>
+</blockquote>
 <ul>
 <li>A <a class="gl-ref" href="../glossary/#dataframe">dataframe</a> is a table with named columns where each column holds one type of data<ul>
 <li>Text columns hold strings; numeric columns hold integers or decimal numbers; date columns hold dates</li>
@@ -70,18 +72,25 @@
 </ul>
 </li>
 </ul>
-<p><em>Why do different columns have different types, and why does it matter?</em></p>
+<blockquote>
+<p>Why do different columns have different types, and why does it matter?</p>
+</blockquote>
 <ul>
-<li>A station number like <code>08MF065</code> looks like text but is stored as a string---arithmetic on station IDs is meaningless<ul>
+<li>A station number like <code>08MF065</code> looks like text but is stored as a string, so arithmetic on station IDs is meaningless<ul>
 <li>Polars reads it correctly as a string by default</li>
-<li>Date columns stored as text cannot be sorted chronologically without conversion---confirm the type of any date column before using it in a time-series analysis</li>
+<li>Date columns stored as text cannot be sorted chronologically without conversion</li>
+<li>Confirm the type of any date column before using it in a time-series analysis</li>
 </ul>
 </li>
 </ul>
 <h2>Shape, Types, and Sample Rows</h2>
-<p><em>Load the HYDAT flow data and tell me how many rows and columns it has, what each column contains, and what the data types are.</em></p>
+<blockquote>
+<p>Load the HYDAT flow data and tell me how many rows and columns it has, what each column contains, and what the data types are.</p>
+</blockquote>
 <p>or</p>
-<p><em>Using Polars, read flow_data.csv and print: the number of rows and columns, the name and type of each column, and the first two rows.</em></p>
+<blockquote>
+<p>Using Polars, read flow_data.csv and print: the number of rows and columns, the name and type of each column, and the first two rows.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -109,9 +118,13 @@
 </li>
 </ul>
 <h2>Standard Deviation and Range</h2>
-<p><em>Compute the standard deviation and range of the streamflow column.</em></p>
+<blockquote>
+<p>Compute the standard deviation and range of the streamflow column.</p>
+</blockquote>
 <p>or</p>
-<p><em>Compute the mean, standard deviation, minimum, maximum, and range of the FLOW column in flow_data.csv.</em></p>
+<blockquote>
+<p>Compute the mean, standard deviation, minimum, maximum, and range of the FLOW column in flow_data.csv.</p>
+</blockquote>
 <ul>
 <li>The LLM will produce something like:</li>
 </ul>
@@ -131,18 +144,21 @@
 </div>
 <ul>
 <li>Run the cell and look at the numbers<ul>
-<li>A standard deviation larger than the mean is common for streamflow data---most months are near baseflow, but spring snowmelt can produce flows orders of magnitude higher</li>
-<li>A range of zero would mean every observation is identical---clearly wrong for river flow data</li>
-<li>A negative minimum would mean a data entry error---flow cannot be negative</li>
+<li>A standard deviation larger than the mean is common for streamflow data:
+    most months are near baseflow, but spring snowmelt can produce flows orders of magnitude higher</li>
+<li>A range of zero would mean every observation is identical: clearly wrong for river flow data</li>
+<li>A negative minimum would mean a data entry error: flow cannot be negative</li>
 </ul>
 </li>
 </ul>
 <h2>Interpreting High Spread</h2>
-<p><em>What does a large standard deviation mean for river flow data?</em></p>
+<blockquote>
+<p>What does a large standard deviation mean for river flow data?</p>
+</blockquote>
 <ul>
 <li><a class="gl-ref" href="../glossary/#standard-deviation">Standard deviation</a> measures how far a typical observation sits from the mean<ul>
 <li>If the mean flow is 50 m³/s and the standard deviation is 200 m³/s, most months are far from the average</li>
-<li>This is not a data error---Canadian rivers experience dramatic seasonal variation</li>
+<li>This is not a data error: Canadian rivers experience dramatic seasonal variation</li>
 <li>A prairie river fed by snowmelt may run nearly dry in late summer and surge to hundreds of m³/s in May</li>
 </ul>
 </li>
@@ -152,7 +168,9 @@
 </ul>
 </li>
 </ul>
-<p><em>Why is spread as important as the mean?</em></p>
+<blockquote>
+<p>Why is spread as important as the mean?</p>
+</blockquote>
 <ul>
 <li>Two stations with the same mean monthly flow can look completely different across the year<ul>
 <li>Station A: flows of 40, 45, 50, 55, 60 m³/s all year (low spread, stable, likely groundwater-fed)</li>
@@ -163,9 +181,13 @@
 <li>A report that mentions only the mean without the spread hides information critical to flood risk and water management</li>
 </ul>
 <h2>Checking a Single Station</h2>
-<p><em>Filter to one known station and verify its row count against the dataset documentation.</em></p>
+<blockquote>
+<p>Filter to one known station and verify its row count against the dataset documentation.</p>
+</blockquote>
 <p>or</p>
-<p><em>Filter flow_data.csv to rows where STATION_NUMBER is '02GA010' and print the number of rows and the range of years covered.</em></p>
+<blockquote>
+<p>Filter flow_data.csv to rows where STATION_NUMBER is '02GA010' and print the number of rows and the range of years covered.</p>
+</blockquote>
 <ul>
 <li>Station <code>02GA010</code> is the Grand River at Galt (Cambridge, Ontario), one of the longest continuous records in Canada</li>
 <li>The HYDAT documentation describes how many years each station has been active<ul>
@@ -185,22 +207,29 @@ The fix is to cast the column first: <code>df.with_columns(pl.col("YEAR").cast(p
 <details>
 <summary>The mean monthly flow is 35 m³/s and the standard deviation is 120 m³/s. A classmate says "the data must be wrong because the standard deviation is larger than the mean." Are they right?</summary>
 <p>No.
-A standard deviation larger than the mean is common for streamflow data---it happens when the distribution is right-skewed.
-Most months have low flow near baseflow, but a few months during spring snowmelt have extremely high flows that pull the mean upward while the standard deviation reflects the wide spread.
-The correct response is to plot the distribution and check whether the high values are physically plausible, not to assume the data is wrong.</p>
+A standard deviation larger than the mean is common for streamflow data;
+it happens when the distribution is <a class="gl-ref" href="../glossary/#right-skewed">right-skewed</a>.
+Most months have low flow near baseflow,
+but a few months during spring snowmelt have extremely high flows that pull the mean upward
+while the standard deviation reflects the wide spread.
+The correct response is to plot the distribution and check whether the high values are physically plausible,
+not to assume the data is wrong.</p>
 </details>
 <details>
 <summary>You filter to station <code>02GA010</code> and get 0 rows. The documentation says this station has records going back to 1912. List two things you would check.</summary>
-<p>First, check whether the station identifier column is named <code>STATION_NUMBER</code> in the actual CSV---it might be <code>Station_Number</code>, <code>stn_id</code>, or something else entirely.
+<p>First, check whether the station identifier column is named <code>STATION_NUMBER</code> in the actual CSV:
+it might be <code>Station_Number</code>, <code>stn_id</code>, or something else entirely.
 Print <code>df.columns</code> to see the exact names before filtering.
-Second, check whether the value <code>"02GA010"</code> is stored with the same capitalisation and zero-padding in the data---if the file uses <code>"2GA010"</code> without the leading zero, the filter will not match.
+Second, check whether the value <code>"02GA010"</code> is stored with the same capitalisation and zero-padding in the data.
+If the file uses <code>"2GA010"</code> without the leading zero, the filter will not match.
 Print <code>df["STATION_NUMBER"].head()</code> to see the actual format.</p>
 </details>
 <details>
 <summary>You compute a maximum flow of 99 999 m³/s for one station. The mean is 18 m³/s and all other values are below 2 000 m³/s. Does this suggest a data error? What would you do next?</summary>
 <p>Yes, 99 999 is a suspicious round number that may be a sentinel value used to indicate an error or a missing data code in HYDAT's historic records.
 Check the HYDAT data dictionary for what sentinel values are used.
-Filter to rows where FLOW equals 99 999 and examine those rows for other patterns---a specific year, a specific data quality symbol, or a note column.
+Filter to rows where FLOW equals 99 999 and examine those rows for other patterns:
+a specific year, a specific data quality symbol, or a note column.
 Do not include that value in any statistical computation until you have confirmed what it represents.</p>
 </details>
 <h2>Exercises</h2>
