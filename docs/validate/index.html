@@ -295,6 +295,127 @@ What does this tell you about using a single fixed threshold?</p>
 Find their stated value for Alberta natural gas production in the most recent year
 and compare it to your computed total.
 Do they match?</p>
+<h3>Units Not Converted</h3>
+<p>The following code computes Alberta's production-to-consumption ratio,
+but the result is off by a factor of 1,000 because the two columns use different units.
+Work with an LLM to identify which column needs to be converted and fix the calculation.</p>
+<div data-inc="unit_bug.py"><span aria-label="Source: validate/unit_bug.py" class="inc-path" role="img" tabindex="0" title="validate/unit_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">production</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"gas_production_tcm.csv"</span><span class="p">)</span>   <span class="c1"># units: 10³ m³ (thousands)</span>
+<span class="n">consumption</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"gas_consumption_mcm.csv"</span><span class="p">)</span>  <span class="c1"># units: 10⁶ m³ (millions)</span>
+
+<span class="n">ab_prod</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"province"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"AB"</span><span class="p">)[</span><span class="s2">"production"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">ab_cons</span> <span class="o">=</span> <span class="n">consumption</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"province"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"AB"</span><span class="p">)[</span><span class="s2">"consumption"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">ratio</span> <span class="o">=</span> <span class="n">ab_prod</span> <span class="o">/</span> <span class="n">ab_cons</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Alberta mean annual production: </span><span class="si">{</span><span class="n">ab_prod</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Alberta mean annual consumption: </span><span class="si">{</span><span class="n">ab_cons</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Production-to-consumption ratio: </span><span class="si">{</span><span class="n">ratio</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>Alberta is a major natural gas exporter, so its ratio should be well above 1, around 5 to 10.
+If the result is in the thousandths or in the thousands, the unit conversion is still wrong.
+Check one year's production value against a published CER figure to confirm the units.</p>
+</details>
+<h3>One-Tailed Test When Two-Tailed Is Needed</h3>
+<p>The following code runs a t-test to compare Alberta and BC production,
+but uses <code>alternative="greater"</code> rather than testing for any difference.
+Work with an LLM to explain what this assumption means and correct the test.</p>
+<div data-inc="onetail_bug.py"><span aria-label="Source: validate/onetail_bug.py" class="inc-path" role="img" tabindex="0" title="validate/onetail_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="n">TCM_TO_MCM</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">1_000.0</span>
+
+<span class="n">production</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"gas_production_tcm.csv"</span><span class="p">)</span>
+<span class="n">production</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"production"</span><span class="p">)</span> <span class="o">*</span> <span class="n">TCM_TO_MCM</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"production_mcm"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">alberta</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"province"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"AB"</span><span class="p">)[</span><span class="s2">"production_mcm"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"province"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"BC"</span><span class="p">)[</span><span class="s2">"production_mcm"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">alberta</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">"greater"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"t-statistic: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">statistic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"p-value:     </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">pvalue</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Result: statistically significant at the 0.05 level."</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Result: not statistically significant at the 0.05 level."</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>The two-sided p-value is approximately twice the one-sided p-value when the test statistic is positive.
+Confirm this relationship holds by comparing the outputs of both versions.
+Also describe in one sentence what assumption <code>alternative="greater"</code> makes that may not be justified.</p>
+</details>
+<h3>Province Names Do Not Match</h3>
+<p>The following code runs a t-test but prints zero rows for both provinces,
+producing a <code>NaN</code> t-statistic.
+Work with an LLM to find why the filter returns no data and fix the province names.</p>
+<div data-inc="col_bug.py"><span aria-label="Source: validate/col_bug.py" class="inc-path" role="img" tabindex="0" title="validate/col_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="n">TCM_TO_MCM</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">1_000.0</span>
+
+<span class="n">production</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"gas_production_tcm.csv"</span><span class="p">)</span>
+<span class="n">production</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"production"</span><span class="p">)</span> <span class="o">*</span> <span class="n">TCM_TO_MCM</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"production_mcm"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Distinct province values: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">production</span><span class="p">[</span><span class="s1">'province'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">alberta</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"province"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"Alberta"</span><span class="p">)[</span><span class="s2">"production_mcm"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"province"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"British Columbia"</span><span class="p">)[</span><span class="s2">"production_mcm"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Alberta rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">alberta</span><span class="p">)</span><span class="si">}</span><span class="s2">, BC rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">bc</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">alberta</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"t-statistic: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">statistic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"p-value:     </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>The code already prints the distinct province values in the data.
+After fixing, the Alberta and BC arrays should each have one value per year,
+and the t-statistic should be a real number.</p>
+</details>
+<h3>Adding Effect Size</h3>
+<p>The following code runs a t-test and reports whether the result is statistically significant.
+Work with an LLM to extend it to also compute and print Cohen's d,
+along with a label indicating whether the effect size is small, medium, or large.</p>
+<div data-inc="effect_extend.py"><span aria-label="Source: validate/effect_extend.py" class="inc-path" role="img" tabindex="0" title="validate/effect_extend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="n">TCM_TO_MCM</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">1_000.0</span>
+
+<span class="n">production</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"gas_production_tcm.csv"</span><span class="p">)</span>
+<span class="n">production</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"production"</span><span class="p">)</span> <span class="o">*</span> <span class="n">TCM_TO_MCM</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"production_mcm"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">alberta</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"province"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"AB"</span><span class="p">)[</span><span class="s2">"production_mcm"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"province"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"BC"</span><span class="p">)[</span><span class="s2">"production_mcm"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">alberta</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"t-statistic: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">statistic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"p-value:     </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># TODO: compute Cohen's d = (mean_alberta - mean_bc) / pooled_std,</span>
+<span class="c1"># where pooled_std = sqrt((std_alberta**2 + std_bc**2) / 2),</span>
+<span class="c1"># and print it alongside an interpretation (small &lt; 0.2, medium 0.2–0.8, large &gt; 0.8)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the addition is correct?</summary>
+<p>Compute Cohen's d by hand using the means and standard deviations already available
+and confirm it matches the printed value.
+A very large or very small d that contradicts the t-test result suggests a calculation error.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

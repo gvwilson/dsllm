@@ -309,6 +309,116 @@ What might cause that pattern?</p>
 <p>After the join, count how many distinct stations each province has in the temperature file.
 Compare the station count to the province's area.
 Are larger provinces better-covered?</p>
+<h3>Inner Join Loses Rows</h3>
+<p>The following code joins the temperature and station files,
+but the combined row count is smaller than the number of temperature records.
+Work with an LLM to explain why rows disappeared and fix the join type.</p>
+<div data-inc="inner_bug.py"><span aria-label="Source: join/inner_bug.py" class="inc-path" role="img" tabindex="0" title="join/inner_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">temps</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"ahccd_temp.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">stations</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"ahccd_stations.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Temperature rows before join: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">combined</span> <span class="o">=</span> <span class="n">temps</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">stations</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">"station_id"</span><span class="p">,</span> <span class="s2">"province"</span><span class="p">,</span> <span class="s2">"elevation_m"</span><span class="p">]),</span>
+    <span class="n">on</span><span class="o">=</span><span class="s2">"station_id"</span><span class="p">,</span>
+    <span class="n">how</span><span class="o">=</span><span class="s2">"inner"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows after join: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">combined</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>After fixing, the row count of the joined result should equal <code>len(temps)</code>.
+If it is smaller, some temperature records had no matching station and were dropped.</p>
+</details>
+<h3>Join Key Capitalisation</h3>
+<p>The following code attempts to join the two files but crashes with an error about a missing column.
+Work with an LLM to find the column name mismatch and fix it.</p>
+<div data-inc="case_bug.py"><span aria-label="Source: join/case_bug.py" class="inc-path" role="img" tabindex="0" title="join/case_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">temps</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"ahccd_temp.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">stations</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"ahccd_stations.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+
+<span class="n">combined</span> <span class="o">=</span> <span class="n">temps</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">stations</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">"station_id"</span><span class="p">,</span> <span class="s2">"province"</span><span class="p">,</span> <span class="s2">"elevation_m"</span><span class="p">]),</span>
+    <span class="n">left_on</span><span class="o">=</span><span class="s2">"Station_ID"</span><span class="p">,</span>
+    <span class="n">right_on</span><span class="o">=</span><span class="s2">"station_id"</span><span class="p">,</span>
+    <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">null_province</span> <span class="o">=</span> <span class="n">combined</span><span class="p">[</span><span class="s2">"province"</span><span class="p">]</span><span class="o">.</span><span class="n">null_count</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows with null province: </span><span class="si">{</span><span class="n">null_province</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">combined</span><span class="o">.</span><span class="n">height</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">combined</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>Print <code>temps.columns</code> and <code>stations.columns</code> side by side and confirm the key column
+appears with exactly the same name and capitalisation in both.
+After fixing, the null province count should be zero or very small.</p>
+</details>
+<h3>Detecting Duplicate Station IDs</h3>
+<p>The following code joins the temperature and station files and prints the row counts.
+Work with an LLM to extend it so it also checks whether any <code>station_id</code>
+appears more than once in the station file, and prints those duplicated IDs if found.</p>
+<div data-inc="dup_extend.py"><span aria-label="Source: join/dup_extend.py" class="inc-path" role="img" tabindex="0" title="join/dup_extend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">temps</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"ahccd_temp.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">stations</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"ahccd_stations.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Temperature rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">combined</span> <span class="o">=</span> <span class="n">temps</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">stations</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">"station_id"</span><span class="p">,</span> <span class="s2">"province"</span><span class="p">,</span> <span class="s2">"elevation_m"</span><span class="p">]),</span>
+    <span class="n">on</span><span class="o">=</span><span class="s2">"station_id"</span><span class="p">,</span>
+    <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Combined rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># TODO: check whether any station_id appears more than once in the stations file;</span>
+<span class="c1"># if combined has more rows than temps, duplicates in stations are the cause</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the addition is correct?</summary>
+<p>If <code>combined</code> has more rows than <code>temps</code>, duplicated station IDs in the station file are the cause.
+The list of duplicated IDs printed by the new code should account for the extra rows exactly.</p>
+</details>
+<h3>Reporting Unmatched Stations</h3>
+<p>The following code joins the files and computes mean temperature by province,
+but does not report how many temperature records had no matching station.
+Work with an LLM to extend it so it prints the null province count
+and a sample of the unmatched station IDs before computing the group means.</p>
+<div data-inc="unmatched_extend.py"><span aria-label="Source: join/unmatched_extend.py" class="inc-path" role="img" tabindex="0" title="join/unmatched_extend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">temps</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"ahccd_temp.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">stations</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"ahccd_stations.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+
+<span class="n">combined</span> <span class="o">=</span> <span class="n">temps</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">stations</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">"station_id"</span><span class="p">,</span> <span class="s2">"province"</span><span class="p">,</span> <span class="s2">"elevation_m"</span><span class="p">]),</span>
+    <span class="n">on</span><span class="o">=</span><span class="s2">"station_id"</span><span class="p">,</span>
+    <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">mean_by_province</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">combined</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"mean_temp"</span><span class="p">,</span> <span class="s2">"province"</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">"province"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"mean_temp"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"mean_annual_temp"</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"mean_annual_temp"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mean_by_province</span><span class="p">)</span>
+<span class="c1"># TODO: before printing mean_by_province, print how many temperature rows</span>
+<span class="c1"># had a null province after the join, and print a sample of the unmatched</span>
+<span class="c1"># station_id values so you can see why they did not match</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the addition is correct?</summary>
+<p>The null count plus the non-null count should equal <code>len(combined)</code>.
+Look at the unmatched station IDs and compare them to the station file
+to understand why they did not match.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

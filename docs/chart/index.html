@@ -281,6 +281,126 @@ Does the correlation change meaningfully?</p>
 <p>Filter to earthquakes recorded in the last ten years.
 Is the density of points different from the full catalog?
 What might explain the difference (hint: think about improvements to monitoring networks)?</p>
+<h3>Axes in the Wrong Order</h3>
+<p>The following code draws a scatter plot of depth and magnitude,
+but the chart looks odd: the x axis runs from 0 to 9 while the label says "Depth (km)."
+Work with an LLM to find the mismatch and fix it.</p>
+<div data-inc="axis_bug.py"><span aria-label="Source: chart/axis_bug.py" class="inc-path" role="img" tabindex="0" title="chart/axis_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"earthquakes.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">,</span> <span class="s2">"magnitude"</span><span class="p">,</span> <span class="s2">"region"</span><span class="p">])</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_point</span><span class="p">(</span><span class="n">opacity</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s2">"magnitude:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Depth (km)"</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">"depth:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Magnitude"</span><span class="p">),</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">"region:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Region"</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Canadian Earthquakes: Depth vs. Magnitude"</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"scatter.png"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Points in chart: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>Depth values should reach hundreds of kilometres along the x axis,
+while magnitude values along the y axis should stay between 0 and 9.
+Confirm the axis ranges match the column ranges in the dataframe.</p>
+</details>
+<h3>Chart With No Points on One Axis</h3>
+<p>The following code draws a scatter plot, but the y axis is empty:
+all points sit at the bottom of the chart with no visible spread.
+Work with an LLM to explain why and fix the code.</p>
+<div data-inc="col_bug.py"><span aria-label="Source: chart/col_bug.py" class="inc-path" role="img" tabindex="0" title="chart/col_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"earthquakes.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">,</span> <span class="s2">"magnitude"</span><span class="p">])</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_point</span><span class="p">(</span><span class="n">opacity</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s2">"depth:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Depth (km)"</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">"Magnitude:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Magnitude"</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Canadian Earthquakes: Depth vs. Magnitude"</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"scatter.png"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Points in chart: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>Open the saved PNG and confirm that points are spread vertically.
+Print <code>df.columns</code> to verify the column name the code uses exactly matches what is in the file.</p>
+</details>
+<h3>Counting Instead of Binning</h3>
+<p>The following code is meant to plot a histogram of earthquake magnitudes,
+but every bar is exactly the same height.
+Work with an LLM to explain why and fix the encoding.</p>
+<div data-inc="type_bug.py"><span aria-label="Source: chart/type_bug.py" class="inc-path" role="img" tabindex="0" title="chart/type_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"earthquakes.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"magnitude"</span><span class="p">])</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_bar</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s2">"magnitude"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Magnitude"</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">"count()"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Number of Earthquakes"</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Earthquake Magnitude Distribution"</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"magnitude_hist.png"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows in data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>Open the chart: bars should be tallest at low magnitudes and shortest at high magnitudes,
+reflecting the fact that small earthquakes far outnumber large ones.</p>
+</details>
+<h3>Making Dense Points Visible</h3>
+<p>The following code draws the scatter plot without any transparency,
+so overlapping points form a solid mass in regions with many earthquakes.
+Work with an LLM to add opacity so individual points are visible through dense clusters.</p>
+<div data-inc="opacity_extend.py"><span aria-label="Source: chart/opacity_extend.py" class="inc-path" role="img" tabindex="0" title="chart/opacity_extend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"earthquakes.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">,</span> <span class="s2">"magnitude"</span><span class="p">,</span> <span class="s2">"region"</span><span class="p">])</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_point</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>  <span class="c1"># TODO: add opacity=0.4 so overlapping points are visible</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s2">"depth:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Depth (km)"</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">"magnitude:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Magnitude"</span><span class="p">),</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">"region:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Region"</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Canadian Earthquakes: Depth vs. Magnitude"</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"scatter.png"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Points in chart: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the addition worked?</summary>
+<p>Open the saved PNG and verify that regions with many overlapping points now show
+lighter areas rather than a solid block of colour.
+Compare the point count in the chart to <code>len(df)</code> to confirm no points were dropped.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

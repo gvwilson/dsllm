@@ -278,6 +278,79 @@ Which columns tend to have more missing data, and why might that be for a weathe
 <p>Download data for a second station in a different region (e.g., one coastal and one inland).
 Ask the LLM to compute the mean annual temperature for each station and display them side by side.
 Which station is warmer on average?</p>
+<h3>Skip the Right Rows</h3>
+<p>The following code reads the climate CSV and tries to compute mean and median temperature,
+but the first line of output looks like a column header rather than a real measurement.
+Work with an LLM to find and fix the problem.</p>
+<div data-inc="skip_bug.py"><span aria-label="Source: llm/skip_bug.py" class="inc-path" role="img" tabindex="0" title="llm/skip_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"climate.csv"</span><span class="p">,</span> <span class="n">skip_rows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="n">temps</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"Mean Temp (°C)"</span><span class="p">]</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean:   </span><span class="si">{</span><span class="n">temps</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> °C"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Median: </span><span class="si">{</span><span class="n">temps</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> °C"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>Check that <code>df.head(1)</code> shows a four-digit year in the <code>Year</code> column
+and a plausible temperature in <code>Mean Temp (°C)</code>, not the strings <code>"Year"</code> or <code>"Mean Temp (°C)"</code>.</p>
+</details>
+<h3>Right Number, Wrong Column</h3>
+<p>The following code reads the climate CSV and prints a mean and median,
+but the values are implausibly large for temperatures in Canada.
+Work with an LLM to identify which column is actually being used and correct it.</p>
+<div data-inc="wrong_col.py"><span aria-label="Source: llm/wrong_col.py" class="inc-path" role="img" tabindex="0" title="llm/wrong_col.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"climate.csv"</span><span class="p">,</span> <span class="n">skip_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">temps</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"Total Precip (mm)"</span><span class="p">]</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean:   </span><span class="si">{</span><span class="n">temps</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> °C"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Median: </span><span class="si">{</span><span class="n">temps</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> °C"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>For most Canadian stations, mean annual temperature is between -10 and +15 °C.
+Print the column name alongside the result and confirm it says <code>Mean Temp (°C)</code>.</p>
+</details>
+<h3>Missing Values Not Declared</h3>
+<p>The following code reads the climate CSV and computes mean and median,
+but both values print as <code>None</code>.
+Work with an LLM to find out why and fix the code.</p>
+<div data-inc="null_miss.py"><span aria-label="Source: llm/null_miss.py" class="inc-path" role="img" tabindex="0" title="llm/null_miss.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"climate.csv"</span><span class="p">,</span> <span class="n">skip_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Temperature column type: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'Mean Temp (°C)'</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">temps</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"Mean Temp (°C)"</span><span class="p">]</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Non-null rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean:   </span><span class="si">{</span><span class="n">temps</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Median: </span><span class="si">{</span><span class="n">temps</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>After fixing, <code>df["Mean Temp (°C)"].dtype</code> should show <code>Float64</code>, not <code>String</code>,
+and both the mean and median should be numbers, not <code>None</code>.</p>
+</details>
+<h3>More Than Mean and Median</h3>
+<p>The following code computes the mean and median monthly temperature.
+Work with an LLM to extend it so it also prints the minimum value,
+the maximum value, and the count of non-null observations.</p>
+<div data-inc="mm_extend.py"><span aria-label="Source: llm/mm_extend.py" class="inc-path" role="img" tabindex="0" title="llm/mm_extend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"climate.csv"</span><span class="p">,</span> <span class="n">skip_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">col</span> <span class="o">=</span> <span class="s2">"Mean Temp (°C)"</span>
+<span class="n">temps</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean:   </span><span class="si">{</span><span class="n">temps</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> °C"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Median: </span><span class="si">{</span><span class="n">temps</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> °C"</span><span class="p">)</span>
+<span class="c1"># TODO: also print the minimum value, maximum value, and count of non-null observations</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the additions are correct?</summary>
+<p>Confirm that minimum + maximum are consistent with the seasonal range at your station,
+and that count + null count equals the total number of rows in the dataframe.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

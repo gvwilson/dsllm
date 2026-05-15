@@ -186,3 +186,72 @@ Does the fatality rate change? What does that tell you?
 Ask the LLM to count how many records come from each province (C_PROV).
 Compare the provincial shares to the 2021 census population shares.
 Which provinces appear over- or under-represented in the collision database?
+
+### Incomplete Null List
+
+The following code reads the collision data and reports missing-value counts,
+but the number of null values is much lower than expected:
+the NCDB uses `U`, `Q`, and `N` as missing codes, but not all are declared.
+Work with an LLM to find what is missing and fix the `null_values` argument.
+
+[%inc null_partial.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+After fixing, the distinct values printed for `C_WTHR` should contain only numeric codes,
+not the letters `Q` or `N`.
+Re-run the missing-value count and confirm it is higher than before.
+
+</details>
+
+### Hidden Whitespace in Categories
+
+The following code counts province values, but prints more distinct provinces than Canada has.
+Work with an LLM to identify what is causing the extra groups and fix the code.
+
+[%inc strip_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Canada has 13 provinces and territories.
+After fixing, the number of distinct `C_PROV` values should be 13 or fewer.
+Print the unique values and confirm none look like duplicates with extra spaces.
+
+</details>
+
+### Dropping Too Many Rows
+
+The following code removes rows with unknown sex, but the row count after cleaning is far smaller than expected.
+Work with an LLM to explain why so many rows were dropped and rewrite the cleaning step.
+
+[%inc drop_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The correctly cleaned dataset should only lose the rows where `P_SEX` is null,
+not rows where any other column is null.
+Compare the before and after row counts to the count from `normalize.py` to verify.
+
+</details>
+
+### Raw Counts vs. Rates
+
+The following code prints the number of collision records per province,
+but raw counts are misleading because provinces have very different populations.
+Work with an LLM to add a column showing collisions per 100,000 people
+using 2021 census population figures.
+
+[%inc rate_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+Compute one rate by hand for a province whose population you know,
+and confirm it matches the new column.
+Re-sort by rate: if the ordering changes significantly compared to raw counts,
+the rates are doing their job.
+
+</details>

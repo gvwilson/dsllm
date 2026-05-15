@@ -170,3 +170,69 @@ What might cause that pattern?
 After the join, count how many distinct stations each province has in the temperature file.
 Compare the station count to the province's area.
 Are larger provinces better-covered?
+
+### Inner Join Loses Rows
+
+The following code joins the temperature and station files,
+but the combined row count is smaller than the number of temperature records.
+Work with an LLM to explain why rows disappeared and fix the join type.
+
+[%inc inner_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+After fixing, the row count of the joined result should equal `len(temps)`.
+If it is smaller, some temperature records had no matching station and were dropped.
+
+</details>
+
+### Join Key Capitalisation
+
+The following code attempts to join the two files but crashes with an error about a missing column.
+Work with an LLM to find the column name mismatch and fix it.
+
+[%inc case_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Print `temps.columns` and `stations.columns` side by side and confirm the key column
+appears with exactly the same name and capitalisation in both.
+After fixing, the null province count should be zero or very small.
+
+</details>
+
+### Detecting Duplicate Station IDs
+
+The following code joins the temperature and station files and prints the row counts.
+Work with an LLM to extend it so it also checks whether any `station_id`
+appears more than once in the station file, and prints those duplicated IDs if found.
+
+[%inc dup_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+If `combined` has more rows than `temps`, duplicated station IDs in the station file are the cause.
+The list of duplicated IDs printed by the new code should account for the extra rows exactly.
+
+</details>
+
+### Reporting Unmatched Stations
+
+The following code joins the files and computes mean temperature by province,
+but does not report how many temperature records had no matching station.
+Work with an LLM to extend it so it prints the null province count
+and a sample of the unmatched station IDs before computing the group means.
+
+[%inc unmatched_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+The null count plus the non-null count should equal `len(combined)`.
+Look at the unmatched station IDs and compare them to the station file
+to understand why they did not match.
+
+</details>

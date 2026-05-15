@@ -184,3 +184,71 @@ The CER publishes annual energy market reports.
 Find their stated value for Alberta natural gas production in the most recent year
 and compare it to your computed total.
 Do they match?
+
+### Units Not Converted
+
+The following code computes Alberta's production-to-consumption ratio,
+but the result is off by a factor of 1,000 because the two columns use different units.
+Work with an LLM to identify which column needs to be converted and fix the calculation.
+
+[%inc unit_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Alberta is a major natural gas exporter, so its ratio should be well above 1, around 5 to 10.
+If the result is in the thousandths or in the thousands, the unit conversion is still wrong.
+Check one year's production value against a published CER figure to confirm the units.
+
+</details>
+
+### One-Tailed Test When Two-Tailed Is Needed
+
+The following code runs a t-test to compare Alberta and BC production,
+but uses `alternative="greater"` rather than testing for any difference.
+Work with an LLM to explain what this assumption means and correct the test.
+
+[%inc onetail_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The two-sided p-value is approximately twice the one-sided p-value when the test statistic is positive.
+Confirm this relationship holds by comparing the outputs of both versions.
+Also describe in one sentence what assumption `alternative="greater"` makes that may not be justified.
+
+</details>
+
+### Province Names Do Not Match
+
+The following code runs a t-test but prints zero rows for both provinces,
+producing a `NaN` t-statistic.
+Work with an LLM to find why the filter returns no data and fix the province names.
+
+[%inc col_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The code already prints the distinct province values in the data.
+After fixing, the Alberta and BC arrays should each have one value per year,
+and the t-statistic should be a real number.
+
+</details>
+
+### Adding Effect Size
+
+The following code runs a t-test and reports whether the result is statistically significant.
+Work with an LLM to extend it to also compute and print Cohen's d,
+along with a label indicating whether the effect size is small, medium, or large.
+
+[%inc effect_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+Compute Cohen's d by hand using the means and standard deviations already available
+and confirm it matches the printed value.
+A very large or very small d that contradicts the t-test result suggests a calculation error.
+
+</details>

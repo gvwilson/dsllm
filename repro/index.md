@@ -168,3 +168,70 @@ Plot the amplitude over time and describe the trend.
 Run the notebook twice, saving the output chart each time as `alert_co2_run1.png` and `alert_co2_run2.png`.
 Ask the LLM to write code that checks whether the two files are identical pixel-for-pixel.
 Are they?
+
+### Hardcoded Path
+
+The following code reads the Alert CO2 data from an absolute path that only works on one computer.
+Work with an LLM to replace it with a relative path so the script runs on any machine
+where the data file sits next to the script.
+
+[%inc path_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Move the data file and script to a different folder and run the script from there.
+If it runs without a `FileNotFoundError`, the path is now relative and portable.
+A classmate should be able to run the script on their own machine without editing it.
+
+</details>
+
+### Sentinel Values Not Removed
+
+The following code reads the CO2 data but forgets to treat `-999.99` as missing,
+so the chart shows a dramatic downward spike that is not in the published figure.
+Work with an LLM to add the missing filter and fix the chart.
+
+[%inc sentinel_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+After fixing, the printed CO2 minimum should be around 330 ppm (the 1975 value),
+not -999.99.
+The chart should show a smooth rising curve with a seasonal oscillation and no downward spikes.
+
+</details>
+
+### Using a Variable Before It Is Defined
+
+The following script crashes with a `NameError` on its first print statement.
+Work with an LLM to explain why the error happens and reorder the lines to fix it.
+
+[%inc order_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The script should run from top to bottom without any errors.
+After fixing, the CO2 range printed at the top should match the range computed at the bottom.
+This error is the script-level equivalent of running notebook cells out of order.
+
+</details>
+
+### Recording the Environment
+
+The following code reads and summarises the CO2 data but does not record
+which versions of Python, Polars, and Altair were used.
+Work with an LLM to extend it to print those version numbers.
+
+[%inc version_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+Run `pip show polars altair` in the terminal and compare the versions it reports
+to the ones your script prints.
+They should match exactly.
+
+</details>

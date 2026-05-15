@@ -295,6 +295,141 @@ Plot the amplitude over time and describe the trend.</p>
 <p>Run the notebook twice, saving the output chart each time as <code>alert_co2_run1.png</code> and <code>alert_co2_run2.png</code>.
 Ask the LLM to write code that checks whether the two files are identical pixel-for-pixel.
 Are they?</p>
+<h3>Hardcoded Path</h3>
+<p>The following code reads the Alert CO2 data from an absolute path that only works on one computer.
+Work with an LLM to replace it with a relative path so the script runs on any machine
+where the data file sits next to the script.</p>
+<div data-inc="path_bug.py"><span aria-label="Source: repro/path_bug.py" class="inc-path" role="img" tabindex="0" title="repro/path_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">COLUMN_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"year"</span><span class="p">,</span> <span class="s2">"month"</span><span class="p">,</span> <span class="s2">"decimal_date"</span><span class="p">,</span> <span class="s2">"average"</span><span class="p">,</span>
+    <span class="s2">"deseasonalized"</span><span class="p">,</span> <span class="s2">"ndays"</span><span class="p">,</span> <span class="s2">"std_dev"</span><span class="p">,</span> <span class="s2">"uncertainty"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">"/Users/alice/Desktop/alert_co2_monthly.csv"</span><span class="p">,</span>
+    <span class="n">comment_prefix</span><span class="o">=</span><span class="s2">"#"</span><span class="p">,</span>
+    <span class="n">has_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">new_columns</span><span class="o">=</span><span class="n">COLUMN_NAMES</span><span class="p">,</span>
+    <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">"-999.99"</span><span class="p">,</span> <span class="s2">"-1"</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"average"</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">, CO</span><span class="se">\u2082</span><span class="s2"> range: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'average'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="se">\u2013</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'average'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> ppm"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>Move the data file and script to a different folder and run the script from there.
+If it runs without a <code>FileNotFoundError</code>, the path is now relative and portable.
+A classmate should be able to run the script on their own machine without editing it.</p>
+</details>
+<h3>Sentinel Values Not Removed</h3>
+<p>The following code reads the CO2 data but forgets to treat <code>-999.99</code> as missing,
+so the chart shows a dramatic downward spike that is not in the published figure.
+Work with an LLM to add the missing filter and fix the chart.</p>
+<div data-inc="sentinel_bug.py"><span aria-label="Source: repro/sentinel_bug.py" class="inc-path" role="img" tabindex="0" title="repro/sentinel_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">COLUMN_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"year"</span><span class="p">,</span> <span class="s2">"month"</span><span class="p">,</span> <span class="s2">"decimal_date"</span><span class="p">,</span> <span class="s2">"average"</span><span class="p">,</span>
+    <span class="s2">"deseasonalized"</span><span class="p">,</span> <span class="s2">"ndays"</span><span class="p">,</span> <span class="s2">"std_dev"</span><span class="p">,</span> <span class="s2">"uncertainty"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">"alert_co2_monthly.csv"</span><span class="p">,</span>
+    <span class="n">comment_prefix</span><span class="o">=</span><span class="s2">"#"</span><span class="p">,</span>
+    <span class="n">has_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">new_columns</span><span class="o">=</span><span class="n">COLUMN_NAMES</span><span class="p">,</span>
+    <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CO</span><span class="se">\u2082</span><span class="s2"> min: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'average'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, max: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'average'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"average"</span><span class="p">]))</span>
+    <span class="o">.</span><span class="n">mark_line</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"steelblue"</span><span class="p">,</span> <span class="n">strokeWidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s2">"decimal_date:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Year"</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">"average:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"CO</span><span class="se">\u2082</span><span class="s2"> Concentration (ppm)"</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Atmospheric CO</span><span class="se">\u2082</span><span class="s2"> at Alert Station"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">350</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"alert_co2.png"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Saved alert_co2.png"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>After fixing, the printed CO2 minimum should be around 330 ppm (the 1975 value),
+not -999.99.
+The chart should show a smooth rising curve with a seasonal oscillation and no downward spikes.</p>
+</details>
+<h3>Using a Variable Before It Is Defined</h3>
+<p>The following script crashes with a <code>NameError</code> on its first print statement.
+Work with an LLM to explain why the error happens and reorder the lines to fix it.</p>
+<div data-inc="order_bug.py"><span aria-label="Source: repro/order_bug.py" class="inc-path" role="img" tabindex="0" title="repro/order_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">COLUMN_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"year"</span><span class="p">,</span> <span class="s2">"month"</span><span class="p">,</span> <span class="s2">"decimal_date"</span><span class="p">,</span> <span class="s2">"average"</span><span class="p">,</span>
+    <span class="s2">"deseasonalized"</span><span class="p">,</span> <span class="s2">"ndays"</span><span class="p">,</span> <span class="s2">"std_dev"</span><span class="p">,</span> <span class="s2">"uncertainty"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># This line uses df_clean before it is defined below.</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CO</span><span class="se">\u2082</span><span class="s2"> range: </span><span class="si">{</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'average'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="se">\u2013</span><span class="si">{</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'average'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> ppm"</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">"alert_co2_monthly.csv"</span><span class="p">,</span>
+    <span class="n">comment_prefix</span><span class="o">=</span><span class="s2">"#"</span><span class="p">,</span>
+    <span class="n">has_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">new_columns</span><span class="o">=</span><span class="n">COLUMN_NAMES</span><span class="p">,</span>
+    <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">"-999.99"</span><span class="p">,</span> <span class="s2">"-1"</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"average"</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows after removing missing values: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>The script should run from top to bottom without any errors.
+After fixing, the CO2 range printed at the top should match the range computed at the bottom.
+This error is the script-level equivalent of running notebook cells out of order.</p>
+</details>
+<h3>Recording the Environment</h3>
+<p>The following code reads and summarises the CO2 data but does not record
+which versions of Python, Polars, and Altair were used.
+Work with an LLM to extend it to print those version numbers.</p>
+<div data-inc="version_extend.py"><span aria-label="Source: repro/version_extend.py" class="inc-path" role="img" tabindex="0" title="repro/version_extend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">COLUMN_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"year"</span><span class="p">,</span> <span class="s2">"month"</span><span class="p">,</span> <span class="s2">"decimal_date"</span><span class="p">,</span> <span class="s2">"average"</span><span class="p">,</span>
+    <span class="s2">"deseasonalized"</span><span class="p">,</span> <span class="s2">"ndays"</span><span class="p">,</span> <span class="s2">"std_dev"</span><span class="p">,</span> <span class="s2">"uncertainty"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">"alert_co2_monthly.csv"</span><span class="p">,</span>
+    <span class="n">comment_prefix</span><span class="o">=</span><span class="s2">"#"</span><span class="p">,</span>
+    <span class="n">has_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">new_columns</span><span class="o">=</span><span class="n">COLUMN_NAMES</span><span class="p">,</span>
+    <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">"-999.99"</span><span class="p">,</span> <span class="s2">"-1"</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"average"</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">, Date range: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="se">\u2013</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CO</span><span class="se">\u2082</span><span class="s2"> range: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'average'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="se">\u2013</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'average'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> ppm"</span><span class="p">)</span>
+<span class="c1"># TODO: print the versions of Python, Polars, and Altair being used,</span>
+<span class="c1"># so that anyone re-running this analysis can confirm they have the same environment</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the addition is correct?</summary>
+<p>Run <code>pip show polars altair</code> in the terminal and compare the versions it reports
+to the ones your script prints.
+They should match exactly.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

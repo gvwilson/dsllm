@@ -178,3 +178,69 @@ Does the correlation change meaningfully?
 Filter to earthquakes recorded in the last ten years.
 Is the density of points different from the full catalog?
 What might explain the difference (hint: think about improvements to monitoring networks)?
+
+### Axes in the Wrong Order
+
+The following code draws a scatter plot of depth and magnitude,
+but the chart looks odd: the x axis runs from 0 to 9 while the label says "Depth (km)."
+Work with an LLM to find the mismatch and fix it.
+
+[%inc axis_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Depth values should reach hundreds of kilometres along the x axis,
+while magnitude values along the y axis should stay between 0 and 9.
+Confirm the axis ranges match the column ranges in the dataframe.
+
+</details>
+
+### Chart With No Points on One Axis
+
+The following code draws a scatter plot, but the y axis is empty:
+all points sit at the bottom of the chart with no visible spread.
+Work with an LLM to explain why and fix the code.
+
+[%inc col_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Open the saved PNG and confirm that points are spread vertically.
+Print `df.columns` to verify the column name the code uses exactly matches what is in the file.
+
+</details>
+
+### Counting Instead of Binning
+
+The following code is meant to plot a histogram of earthquake magnitudes,
+but every bar is exactly the same height.
+Work with an LLM to explain why and fix the encoding.
+
+[%inc type_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Open the chart: bars should be tallest at low magnitudes and shortest at high magnitudes,
+reflecting the fact that small earthquakes far outnumber large ones.
+
+</details>
+
+### Making Dense Points Visible
+
+The following code draws the scatter plot without any transparency,
+so overlapping points form a solid mass in regions with many earthquakes.
+Work with an LLM to add opacity so individual points are visible through dense clusters.
+
+[%inc opacity_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition worked?</summary>
+
+Open the saved PNG and verify that regions with many overlapping points now show
+lighter areas rather than a solid block of colour.
+Compare the point count in the chart to `len(df)` to confirm no points were dropped.
+
+</details>

@@ -168,3 +168,72 @@ How many rows have each kind of extreme value?
 
 For one station with records going back at least fifty years, ask the LLM to compute the mean annual flow for each year and plot it over time.
 Is there a trend?
+
+### Column Forced to the Wrong Type
+
+The following code loads the streamflow data and prints basic statistics,
+but mean, max, and min all print as `None`.
+Work with an LLM to explain why and fix the code.
+
+[%inc type_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+After fixing, `df["FLOW"].dtype` should show `Float64`.
+The mean should be a positive number, and the maximum should be larger than the mean.
+
+</details>
+
+### Sentinel Value Skewing the Statistics
+
+The following code computes spread statistics for the `FLOW` column,
+but the reported maximum is an implausibly round large number.
+Work with an LLM to identify what kind of value this is, remove it, and recompute.
+
+[%inc sentinel_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+After removing sentinel values, the maximum should be physically plausible for a Canadian river
+(check the HYDAT station description for the station's known peak flow).
+Also confirm that the mean drops noticeably once the sentinel is removed.
+
+</details>
+
+### Adding Coefficient of Variation
+
+The following code computes mean and standard deviation per station.
+Work with an LLM to extend it so it also computes and prints the coefficient of variation
+(standard deviation divided by mean) for each station, sorted from highest to lowest.
+
+[%inc std_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+For one station, compute `std / mean` by hand from the values already printed
+and confirm it matches the new `cv` column.
+Stations in snowmelt-dominated regions should have higher coefficients of variation
+than groundwater-fed stations.
+
+</details>
+
+### Column Name Capitalisation
+
+The following code filters to one station and prints its row count,
+but the output says zero rows were found even though HYDAT records show this station
+has been active since 1912.
+Work with an LLM to find the cause and fix it.
+
+[%inc filter_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Print `df.columns` before filtering to confirm the exact column name.
+After fixing, the row count should be roughly `(current year - 1912) × 12`,
+and the year range should start in or near 1912.
+
+</details>

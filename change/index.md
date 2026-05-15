@@ -176,3 +176,70 @@ What might explain a difference?
 For each week number (1 through 52), compute the mean ILI percentage across all years.
 Plot the result as a line chart.
 In which week does flu typically peak in Canada?
+
+### Slope With the Wrong Sign
+
+The following code computes the slope of the trend in annual flu peaks,
+but the sign is wrong: the printed slope says "downward" while the chart clearly rises.
+Work with an LLM to find the error in the regression and fix it.
+
+[%inc axes_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The sign of the slope should match the visual direction of the trend line in `flu_trend.png`.
+Also check that the units make sense: the slope should be in percentage points per year,
+so a value like `+0.05` is plausible, but `+200` is not.
+
+</details>
+
+### Mean Instead of Peak
+
+The following code is meant to plot the annual peak ILI percentage,
+but the values are noticeably lower than the peaks visible in the weekly line chart.
+Work with an LLM to identify the wrong aggregation and fix it.
+
+[%inc mean_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+For each year, the peak value should be at least as large as any individual weekly value that year.
+Pick one year from the raw data, find the highest weekly ILI value yourself,
+and confirm the annual summary matches.
+
+</details>
+
+### Trend on Raw Weekly Data
+
+The following code fits a trend line and prints the number of data points used,
+but the count is far higher than the number of years in the dataset.
+Work with an LLM to explain why and rewrite the code to fit the trend to annual peaks instead.
+
+[%inc raw_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+After fixing, the number of data points used should equal the number of distinct years in `fluwatch.csv`.
+Compare the slope from the corrected version to the slope from `check_slope.py`.
+
+</details>
+
+### Before and After Removing the Pandemic Year
+
+The following code computes the trend slope using all available years.
+Work with an LLM to extend it so it also computes and prints the slope
+after removing the 2009 pandemic year from the annual peak data.
+
+[%inc pandemic_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+Print the number of rows used in each regression to confirm the second fit uses one fewer year.
+If removing 2009 changes the slope noticeably, explain in one sentence why that year
+has such a large effect on the estimate.
+
+</details>

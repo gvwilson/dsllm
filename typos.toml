@@ -1,2 +1,3 @@
 [default.extend-words]
+PN = "PN"
 ttest = "ttest"

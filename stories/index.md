@@ -164,3 +164,69 @@ Does the pattern match what you would expect?
 
 Make three versions of the mean reading score by board type chart: one starting the y axis at 0, one starting at 50, and one starting at the minimum mean value.
 Write one sentence describing how the visual impression changes in each version.
+
+### Exaggerated Differences
+
+The following code draws the reading score chart with a y axis that starts at 55 instead of 0,
+making small differences look much larger than they are.
+Work with an LLM to fix the axis so the bars are drawn to an honest scale.
+
+[%inc axis_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Open both the original and fixed PNGs side by side.
+In the fixed version, the Catholic and Public bars should look similar in height
+if their mean scores differ by only a few percentage points on a 0-to-100 scale.
+
+</details>
+
+### Facets on the Wrong Variable
+
+The following code is meant to show one panel per school language,
+but the panels are labelled with board types instead.
+Work with an LLM to find the wrong column and fix it.
+
+[%inc facet_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The fixed chart should have panels labelled "English" and "French,"
+not "Public" and "Catholic."
+Check that each panel contains bars for both board types.
+
+</details>
+
+### Colour Scale for a Continuous Variable
+
+The following code draws a scatter plot of reading vs. math scores coloured by reading percentage,
+but the legend shows dozens of discrete colour swatches instead of a smooth gradient.
+Work with an LLM to find the encoding error and fix it.
+
+[%inc color_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+After fixing, the legend should show a continuous colour gradient from low to high reading scores.
+Print `df["grade3_reading_pct"].dtype` and confirm it is `Float64`, not `String`.
+
+</details>
+
+### Showing School Counts on the Bars
+
+The following code draws a bar chart of mean reading scores per board type per language panel.
+Work with an LLM to extend it so the number of schools in each group
+appears as a text label on top of each bar.
+
+[%inc count_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+Compare the text labels to the `n_schools` values already in `summary`.
+For one group, count the matching rows in the raw CSV yourself and confirm the label is right.
+
+</details>

@@ -279,6 +279,140 @@ Does the pattern match what you would expect?</p>
 <h3>Chart Comparison</h3>
 <p>Make three versions of the mean reading score by board type chart: one starting the y axis at 0, one starting at 50, and one starting at the minimum mean value.
 Write one sentence describing how the visual impression changes in each version.</p>
+<h3>Exaggerated Differences</h3>
+<p>The following code draws the reading score chart with a y axis that starts at 55 instead of 0,
+making small differences look much larger than they are.
+Work with an LLM to fix the axis so the bars are drawn to an honest scale.</p>
+<div data-inc="axis_bug.py"><span aria-label="Source: stories/axis_bug.py" class="inc-path" role="img" tabindex="0" title="stories/axis_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"eqao_school_results.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_bar</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s2">"board_type:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Board Type"</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">"mean(grade3_reading_pct):Q"</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">"Mean </span><span class="si">% a</span><span class="s2">t Level 3 or 4"</span><span class="p">,</span>
+                <span class="n">scale</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mi">55</span><span class="p">,</span> <span class="mi">75</span><span class="p">])),</span>
+        <span class="n">column</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">"school_language:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"School Language"</span><span class="p">),</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">"board_type:N"</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Mean Grade 3 Reading Score by Board Type and Language"</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"reading_chart.png"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Saved reading_chart.png"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>Open both the original and fixed PNGs side by side.
+In the fixed version, the Catholic and Public bars should look similar in height
+if their mean scores differ by only a few percentage points on a 0-to-100 scale.</p>
+</details>
+<h3>Facets on the Wrong Variable</h3>
+<p>The following code is meant to show one panel per school language,
+but the panels are labelled with board types instead.
+Work with an LLM to find the wrong column and fix it.</p>
+<div data-inc="facet_bug.py"><span aria-label="Source: stories/facet_bug.py" class="inc-path" role="img" tabindex="0" title="stories/facet_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"eqao_school_results.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_bar</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s2">"board_type:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Board Type"</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">"mean(grade3_reading_pct):Q"</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">"Mean </span><span class="si">% a</span><span class="s2">t Level 3 or 4"</span><span class="p">),</span>
+        <span class="n">column</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">"board_type:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Board Type"</span><span class="p">),</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">"board_type:N"</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Mean Grade 3 Reading Score by Board Type and Language"</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"reading_chart.png"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Saved reading_chart.png"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>The fixed chart should have panels labelled "English" and "French,"
+not "Public" and "Catholic."
+Check that each panel contains bars for both board types.</p>
+</details>
+<h3>Colour Scale for a Continuous Variable</h3>
+<p>The following code draws a scatter plot of reading vs. math scores coloured by reading percentage,
+but the legend shows dozens of discrete colour swatches instead of a smooth gradient.
+Work with an LLM to find the encoding error and fix it.</p>
+<div data-inc="color_bug.py"><span aria-label="Source: stories/color_bug.py" class="inc-path" role="img" tabindex="0" title="stories/color_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"eqao_school_results.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_nulls</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"grade3_reading_pct"</span><span class="p">,</span> <span class="s2">"grade3_math_pct"</span><span class="p">])</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_point</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s2">"grade3_reading_pct:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Grade 3 Reading (%)"</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">"grade3_math_pct:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Grade 3 Math (%)"</span><span class="p">),</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">"grade3_reading_pct:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Reading Score"</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Reading vs. Math by School"</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"reading_math.png"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Saved reading_math.png"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>After fixing, the legend should show a continuous colour gradient from low to high reading scores.
+Print <code>df["grade3_reading_pct"].dtype</code> and confirm it is <code>Float64</code>, not <code>String</code>.</p>
+</details>
+<h3>Showing School Counts on the Bars</h3>
+<p>The following code draws a bar chart of mean reading scores per board type per language panel.
+Work with an LLM to extend it so the number of schools in each group
+appears as a text label on top of each bar.</p>
+<div data-inc="count_extend.py"><span aria-label="Source: stories/count_extend.py" class="inc-path" role="img" tabindex="0" title="stories/count_extend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"eqao_school_results.csv"</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="p">[</span><span class="s2">""</span><span class="p">])</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">group_by</span><span class="p">([</span><span class="s2">"board_type"</span><span class="p">,</span> <span class="s2">"school_language"</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">([</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"grade3_reading_pct"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"mean_reading"</span><span class="p">),</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">len</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"n_schools"</span><span class="p">),</span>
+    <span class="p">])</span>
+<span class="p">)</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_bar</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s2">"board_type:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Board Type"</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">"mean_reading:Q"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Mean </span><span class="si">% a</span><span class="s2">t Level 3 or 4"</span><span class="p">,</span>
+                <span class="n">scale</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">])),</span>
+        <span class="n">column</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s2">"school_language:N"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"School Language"</span><span class="p">),</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">"board_type:N"</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"reading_chart.png"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Saved reading_chart.png"</span><span class="p">)</span>
+<span class="c1"># TODO: add a text mark showing n_schools on top of each bar</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the addition is correct?</summary>
+<p>Compare the text labels to the <code>n_schools</code> values already in <code>summary</code>.
+For one group, count the matching rows in the raw CSV yourself and confirm the label is right.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

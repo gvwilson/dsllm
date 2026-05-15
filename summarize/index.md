@@ -147,3 +147,71 @@ What do those groups have in common?
 
 Ask the LLM to create a chart showing the mean contract value and 95% confidence interval for each department in the most recent year.
 Sort the departments from highest to lowest mean.
+
+### Sum Before Group
+
+The following code is meant to compute the mean contract value per department per year,
+but the output has only one row instead of one row per department.
+Work with an LLM to explain what went wrong and fix the pipeline.
+
+[%inc order_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The corrected output should have one row per unique combination of department and year.
+Count the distinct department names in the result and compare to the number of departments
+in the original file.
+
+</details>
+
+### Month Instead of Year
+
+The following code groups contracts by year, but the `year` column in the output
+contains values between 1 and 12 instead of four-digit years.
+Work with an LLM to find the error and fix it.
+
+[%inc year_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Print the distinct values in the `year` column of the summary.
+They should be four-digit years matching the range of dates in `contracts.csv`.
+
+</details>
+
+### Flag Unreliable Intervals
+
+The following code computes 95% confidence intervals for the mean contract value per department per year.
+Work with an LLM to extend it so it also adds a column `ci_reliable`
+that is `True` when the group has five or more contracts and `False` otherwise,
+then prints only the unreliable rows.
+
+[%inc small_n_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+Find one department-year group with a very small `n` in the output of `add_ci.py`
+and confirm it appears in the `ci_reliable == False` rows.
+Also check that no group with `n >= 5` appears there.
+
+</details>
+
+### Wrong Grouping Column
+
+The following code is meant to find the top 10 vendors by total contract value,
+but the output shows department names instead of vendor names.
+Work with an LLM to identify the wrong column and fix it.
+
+[%inc vendor_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The output should contain company and supplier names, not the names of government departments.
+Spot-check one of the top vendors by searching for their name in the contracts CSV
+and summing their rows by hand.
+
+</details>

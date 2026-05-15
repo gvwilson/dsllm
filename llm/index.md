@@ -188,3 +188,67 @@ Which columns tend to have more missing data, and why might that be for a weathe
 Download data for a second station in a different region (e.g., one coastal and one inland).
 Ask the LLM to compute the mean annual temperature for each station and display them side by side.
 Which station is warmer on average?
+
+### Skip the Right Rows
+
+The following code reads the climate CSV and tries to compute mean and median temperature,
+but the first line of output looks like a column header rather than a real measurement.
+Work with an LLM to find and fix the problem.
+
+[%inc skip_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+Check that `df.head(1)` shows a four-digit year in the `Year` column
+and a plausible temperature in `Mean Temp (°C)`, not the strings `"Year"` or `"Mean Temp (°C)"`.
+
+</details>
+
+### Right Number, Wrong Column
+
+The following code reads the climate CSV and prints a mean and median,
+but the values are implausibly large for temperatures in Canada.
+Work with an LLM to identify which column is actually being used and correct it.
+
+[%inc wrong_col.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+For most Canadian stations, mean annual temperature is between -10 and +15 °C.
+Print the column name alongside the result and confirm it says `Mean Temp (°C)`.
+
+</details>
+
+### Missing Values Not Declared
+
+The following code reads the climate CSV and computes mean and median,
+but both values print as `None`.
+Work with an LLM to find out why and fix the code.
+
+[%inc null_miss.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+After fixing, `df["Mean Temp (°C)"].dtype` should show `Float64`, not `String`,
+and both the mean and median should be numbers, not `None`.
+
+</details>
+
+### More Than Mean and Median
+
+The following code computes the mean and median monthly temperature.
+Work with an LLM to extend it so it also prints the minimum value,
+the maximum value, and the count of non-null observations.
+
+[%inc mm_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the additions are correct?</summary>
+
+Confirm that minimum + maximum are consistent with the seasonal range at your station,
+and that count + null count equals the total number of rows in the dataframe.
+
+</details>

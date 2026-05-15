@@ -244,6 +244,121 @@ What do those groups have in common?</p>
 <h3>Plot the Intervals</h3>
 <p>Ask the LLM to create a chart showing the mean contract value and 95% confidence interval for each department in the most recent year.
 Sort the departments from highest to lowest mean.</p>
+<h3>Sum Before Group</h3>
+<p>The following code is meant to compute the mean contract value per department per year,
+but the output has only one row instead of one row per department.
+Work with an LLM to explain what went wrong and fix the pipeline.</p>
+<div data-inc="order_bug.py"><span aria-label="Source: summarize/order_bug.py" class="inc-path" role="img" tabindex="0" title="summarize/order_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"contracts.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_date"</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">Int64</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"year"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_value"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">"department_en"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_value"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"mean"</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"department_en"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>The corrected output should have one row per unique combination of department and year.
+Count the distinct department names in the result and compare to the number of departments
+in the original file.</p>
+</details>
+<h3>Month Instead of Year</h3>
+<p>The following code groups contracts by year, but the <code>year</code> column in the output
+contains values between 1 and 12 instead of four-digit years.
+Work with an LLM to find the error and fix it.</p>
+<div data-inc="year_bug.py"><span aria-label="Source: summarize/year_bug.py" class="inc-path" role="img" tabindex="0" title="summarize/year_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"contracts.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_date"</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">to_date</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"year"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">group_by</span><span class="p">([</span><span class="s2">"department_en"</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">([</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_value"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"total"</span><span class="p">),</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_value"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"mean"</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="o">.</span><span class="n">sort</span><span class="p">([</span><span class="s2">"department_en"</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">])</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>Print the distinct values in the <code>year</code> column of the summary.
+They should be four-digit years matching the range of dates in <code>contracts.csv</code>.</p>
+</details>
+<h3>Flag Unreliable Intervals</h3>
+<p>The following code computes 95% confidence intervals for the mean contract value per department per year.
+Work with an LLM to extend it so it also adds a column <code>ci_reliable</code>
+that is <code>True</code> when the group has five or more contracts and <code>False</code> otherwise,
+then prints only the unreliable rows.</p>
+<div data-inc="small_n_extend.py"><span aria-label="Source: summarize/small_n_extend.py" class="inc-path" role="img" tabindex="0" title="summarize/small_n_extend.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">T_CRIT</span> <span class="o">=</span> <span class="mf">1.96</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"contracts.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_date"</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">Int64</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"year"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">group_by</span><span class="p">([</span><span class="s2">"department_en"</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">([</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_value"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"mean"</span><span class="p">),</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_value"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"n"</span><span class="p">),</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_value"</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"std"</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="o">.</span><span class="n">sort</span><span class="p">([</span><span class="s2">"department_en"</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">with_columns</span><span class="p">([</span>
+        <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"mean"</span><span class="p">)</span> <span class="o">-</span> <span class="n">T_CRIT</span> <span class="o">*</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"std"</span><span class="p">)</span> <span class="o">/</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"n"</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"ci_low"</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"mean"</span><span class="p">)</span> <span class="o">+</span> <span class="n">T_CRIT</span> <span class="o">*</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"std"</span><span class="p">)</span> <span class="o">/</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"n"</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"ci_high"</span><span class="p">),</span>
+    <span class="p">])</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+<span class="c1"># TODO: add a column "ci_reliable" that is True when n &gt;= 5 and False otherwise,</span>
+<span class="c1"># then print only the rows where ci_reliable is False</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the addition is correct?</summary>
+<p>Find one department-year group with a very small <code>n</code> in the output of <code>add_ci.py</code>
+and confirm it appears in the <code>ci_reliable == False</code> rows.
+Also check that no group with <code>n &gt;= 5</code> appears there.</p>
+</details>
+<h3>Wrong Grouping Column</h3>
+<p>The following code is meant to find the top 10 vendors by total contract value,
+but the output shows department names instead of vendor names.
+Work with an LLM to identify the wrong column and fix it.</p>
+<div data-inc="vendor_bug.py"><span aria-label="Source: summarize/vendor_bug.py" class="inc-path" role="img" tabindex="0" title="summarize/vendor_bug.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"contracts.csv"</span><span class="p">)</span>
+
+<span class="n">top_vendors</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">"department_en"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"contract_value"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"total_value"</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"total_value"</span><span class="p">,</span> <span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Top 10 vendors by total contract value:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">top_vendors</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details>
+<summary>How do you know the fix worked?</summary>
+<p>The output should contain company and supplier names, not the names of government departments.
+Spot-check one of the top vendors by searching for their name in the contracts CSV
+and summing their rows by hand.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

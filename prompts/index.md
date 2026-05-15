@@ -145,3 +145,70 @@ Has the proportion changed over time?
 Give the LLM the vague prompt "How many facilities released dangerous amounts of lead?" and record what it produces.
 Then give it the well-structured prompt from this session and compare the two results.
 Write one sentence describing what changed between the two outputs.
+
+### Threshold Set Too High
+
+The following code computes the proportion of lead-reporting facilities that exceeded a threshold,
+but the proportion is much smaller than the figure reported in published NPRI summaries.
+Work with an LLM to find the wrong constant and correct it.
+
+[%inc threshold_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The corrected proportion should be close to the figure in the NPRI annual summary for the same year.
+Also check that the constant name `LEAD_THRESHOLD` matches the value described in the NPRI documentation.
+
+</details>
+
+### Substance Name Does Not Match
+
+The following code filters to lead-reporting facilities but returns zero rows.
+Work with an LLM to explain why the filter finds nothing and fix the string.
+
+[%inc substance_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+After fixing, the row count should be greater than zero.
+Print `df["Substance_Name_English"].unique()` and search for "lead" to find the exact string as it appears in the file,
+then confirm the constant matches it character for character.
+
+</details>
+
+### Wrong Denominator
+
+The following code computes the proportion of facilities exceeding the lead threshold,
+but uses the total number of NPRI-reporting facilities as the denominator rather than
+just the facilities that reported lead.
+Work with an LLM to identify which denominator is correct and fix the calculation.
+
+[%inc denom_bug.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the fix worked?</summary>
+
+The code already prints both `all_facilities` and `len(df_lead)`.
+Compute both proportions by hand and decide which one answers the question
+"of facilities that reported lead, what fraction exceeded the threshold?"
+
+</details>
+
+### Print the Evidence
+
+The following code prints a proportion but not the numerator or denominator,
+so there is no way to verify the arithmetic by eye.
+Work with an LLM to extend it to also print the count of facilities exceeding the threshold
+and the total count of lead-reporting facilities.
+
+[%inc count_extend.py %]
+
+<details markdown="1">
+<summary markdown="1">How do you know the addition is correct?</summary>
+
+Divide the two new numbers yourself and confirm the result matches the printed proportion.
+If `exceeds / total` does not equal the proportion shown, there is a bug in the original computation.
+
+</details>
